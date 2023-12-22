@@ -423,18 +423,18 @@
       </div>
     {/each}
   </div>
-  <div class="grid grid-cols-1 place-content-center mt-10 ">
+  <div class="grid grid-cols-1 place-content-center mt-5 md:mt-10 ">
     <div class="border-solid hover:border-dotted border-2 rounded mr-1">
       <canvas bind:this={chartPayer} height="20px" />
     </div>
   </div>
 
-  <div class="grid grid-cols-1 place-content-center mt-10 ">
+  <div class="grid grid-cols-1 place-content-center mt-5 md:mt-10 ">
     <div class="border-solid hover:border-dotted border-2 rounded mr-1">
       <canvas bind:this={chartExpensesType} id="ExpensesType" />
     </div>
   </div>
-  <div class="grid grid-cols-6 md:grid-cols-12 place-content-center mt-10">
+  <div class="grid grid-cols-6 md:grid-cols-12 place-content-center mt-5 md:mt-10">
     {#each months as m, i}
       <div>
         <input
