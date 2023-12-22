@@ -259,7 +259,7 @@
       expensesCategoryType = [];
       for (var j = 0; j < categories.length; j++) {
         if (categories[j].type === categoryTypes[i].type) {
-          categoriesPerType.push(categories[j].category);
+          categoriesPerType.push(categories[j].category.substr(0,5));
           expensesCategoryType.push(0);
           for (var k = 0; k < pivot.length; k++) {
             for (var l = 0; l < months.length; l++) {

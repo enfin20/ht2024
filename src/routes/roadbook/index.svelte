@@ -243,7 +243,7 @@
             class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
             for="grid-first-name"
           >
-            Start
+            Début
           </label>
           <input
             type="text"
@@ -256,7 +256,7 @@
             class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
             for="grid-first-name"
           >
-            End
+            Fin
           </label>
           <input
             type="text"
@@ -271,7 +271,7 @@
             class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
             for="grid-first-name"
           >
-            Weather
+            Météo
           </label>
           {#each weatherIcon as wi, i}
             <input
@@ -302,7 +302,7 @@
             class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
             for="grid-first-name"
           >
-            Difficulty
+            Difficulté
           </label>
           {#each difficultyIcon as di, i}
             <input
@@ -331,7 +331,7 @@
             class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
             for="grid-first-name"
           >
-            Night
+            Nuit
           </label>
           {#each nightIcon as ni, i}
             <input
@@ -392,7 +392,7 @@
             class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
             for="grid-first-name"
           >
-            Mood
+            Humeur
           </label>
           {#each moodIcon as mi, i}
             <input
@@ -423,7 +423,7 @@
             class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
             for="grid-first-name"
           >
-            Summary
+            Résumé
           </label>
           <textarea
             bind:value={edit_Day.summary}
@@ -436,7 +436,7 @@
             class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
             for="grid-first-name"
           >
-            Details
+            Détails
           </label>
           <textarea
             bind:value={edit_Day.detail}
@@ -528,16 +528,16 @@
             </td>
             <td class="text-left align-middle py-1 px-1 ">
               {#each starsIcon as si, i}
-                {#if i === 0}
+              {#if i === 0}
                   {#if r.landscape === 0}
                     <img
-                      src="/images/{starsIcon[i]}.png"
+                      src="/images/{starsIcon[0]}.png"
                       alt=""
                       class="w-[20px] md:w-[30px] inline"
                     />
                   {:else}
                     <img
-                      src="/images/{starsIcon[i]}_in.png"
+                      src="/images/{starsIcon[0]}_in.png"
                       alt=""
                       class="w-[20px] md:w-[30px] inline"
                     />
@@ -546,18 +546,19 @@
                 {#if i === 1}
                   {#if r.landscape === 1}
                     <img
-                      src="/images/{starsIcon[i]}.png"
+                      src="/images/{starsIcon[1]}.png"
                       alt=""
                       class="w-[20px] md:w-[30px] inline"
                     />
                   {:else}
                     <img
-                      src="/images/{starsIcon[i]}_in.png"
+                      src="/images/{starsIcon[1]}_in.png"
                       alt=""
                       class="w-[20px] md:w-[30px] inline"
                     />
                   {/if}
                 {/if}
+                {#if i >= 2}                 
                   {#if r.landscape >= i}
                     <img
                       src="/images/{starsIcon[i]}.png"
@@ -571,7 +572,8 @@
                       class="w-[20px] md:w-[30px] inline"
                     />
                   {/if}
-              {/each}
+                {/if}
+             {/each}
             </td>
             <td class="align-middle py-1 px-1 ">
               <button

@@ -180,12 +180,11 @@
                 )}
                 >Add
               </button>
-            </td><td class="align-middle py-1 px-1 w-1/12"></td>
+            </td>
+            <td class="align-middle py-1 px-1 w-1/12"></td>
           </tr>
           {#each expenses as e}
-            <tr
-              class="align-middle text-center border-collapse border-t-[1px] border-slate-200"
-            >
+            <tr class="align-middle text-center border-collapse border-t-[1px] border-slate-200">
               <td class="text-left align-middle py-1 px-1 w-1/12">
                 <select
                   bind:value={e.month}
@@ -236,7 +235,6 @@
                   {/each}
                 </select>
               </td>
-
               <td class="align-middle py-1 px-1 w-1/12">
                 <button
                   class="text-xs bg-green-400 hover:bg-green-600 text-gray-500 py-1 px-1 rounded"
@@ -248,13 +246,13 @@
                     e.description,
                     e.category,
                     e.payer
-                  )}>Update</button
-                ></td><td class="align-middle py-1 px-1 w-1/12">
+                  )}>Update</button>
+                  </td>
+                  <td class="align-middle py-1 px-1 w-1/12">
                 <button
                   class="text-xs bg-red-400 hover:bg-red-600 text-gray-500 py-1 px-1 rounded"
                   id={e.key}
-                  on:click={deleteExpense(e.key)}>Delete</button
-                >
+                  on:click={deleteExpense(e.key)}>Delete</button>
               </td>
             </tr>
           {/each}
