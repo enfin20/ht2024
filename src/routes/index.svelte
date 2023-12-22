@@ -355,6 +355,7 @@
             scales: {
               x: {
                 stacked: false,
+                display: false,
 
                 ticks: {
                   min: 0,
@@ -369,7 +370,7 @@
             },
             plugins: {
               legend: {
-                display: false,
+                display: true,
               },
             },
           },
