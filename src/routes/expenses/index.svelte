@@ -105,11 +105,11 @@
       <table id="ExpensesListe" class="text-sm text-gray-500 table-auto">
         <thead>
           <tr>
-            <th>Month</th>
-            <th>Amount</th>
+            <th>Mois</th>
+            <th>Montant</th>
             <th>Description</th>
-            <th>Category</th>
-            <th>Payer</th>
+            <th>Catégorie</th>
+            <th>Qui</th>
             <th></th>
           </tr>
         </thead>
@@ -136,7 +136,7 @@
                 class="text-xs appearance-none border-2 border-gray-200 rounded w-full py-1 px-1 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-pink-400"
               />
             </td>
-            <td class="text-left align-middle py-1 px-1 w-1/2">
+            <td class="text-left align-middle py-1 px-1 w-1/3">
               <input
                 type="text"
                 bind:value={new_description}
@@ -155,7 +155,7 @@
                 {/each}
               </select>
             </td>
-            <td class="text-left align-middle py-1 px-1 w-1/12">
+            <td class="text-left align-middle py-1 px-1 w-1/6">
               <select
                 bind:value={new_payer}
                 class="text-xs appearance-none border-2 border-gray-200 rounded w-full py-1 px-1 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-pink-400"
@@ -167,7 +167,7 @@
                 {/each}
               </select>
             </td>
-            <td class="align-middle py-1 px-1 w-1/12">
+            <td class="align-middle py-1 px-1 w-1/6">
               <button
                 class="text-xs bg-green-600 hover:bg-green-800 text-white py-1 px-1 rounded"
                 on:click={insertExpense(
@@ -204,7 +204,7 @@
                   class="text-xs appearance-none border-2 border-gray-200 rounded w-full py-1 px-1 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-pink-400"
                 />
               </td>
-              <td class="text-left align-middle py-1 px-1 w-1/2">
+              <td class="text-left align-middle py-1 px-1 w-1/3">
                 <input
                   type="text"
                   bind:value={e.description}
@@ -223,7 +223,7 @@
                   {/each}
                 </select>
               </td>
-              <td class="text-left align-middle py-1 px-1 w-1/12">
+              <td class="text-left align-middle py-1 px-1 w-1/6">
                 <select
                   bind:value={e.payer}
                   class="text-xs appearance-none border-2 border-gray-200 rounded w-full py-1 px-1 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-pink-400"
@@ -236,7 +236,7 @@
                 </select>
               </td>
 
-              <td class="align-middle py-1 px-1 w-1/12">
+              <td class="align-middle py-1 px-1 w-1/6">
                 <button
                   class="text-xs bg-green-400 hover:bg-green-600 text-gray-500 py-1 px-1 rounded"
                   id={e.key}
@@ -247,12 +247,12 @@
                     e.description,
                     e.category,
                     e.payer
-                  )}>Upd</button
+                  )}>Update</button
                 >
                 <button
                   class="text-xs bg-red-400 hover:bg-red-600 text-gray-500 py-1 px-1 rounded"
                   id={e.key}
-                  on:click={deleteExpense(e.key)}>Del</button
+                  on:click={deleteExpense(e.key)}>Delete</button
                 >
               </td>
             </tr>
