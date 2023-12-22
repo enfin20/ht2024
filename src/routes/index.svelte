@@ -69,6 +69,7 @@
   ];
   let erreurMessage = "";
 
+  let chartPayer;
   let chartExpensesType;
   let chartExpensesCategoryType_0;
   let chartExpensesCategoryType_1;
@@ -76,7 +77,7 @@
   let chartExpensesCategoryType_3;
   let chartExpensesCategoryType_4;
 
- 
+  let ctxPayer;
   let ctxExpensesType;
   let ctxExpensesCategoryType_0;
   let ctxExpensesCategoryType_1;
@@ -85,6 +86,7 @@
   let ctxExpensesCategoryType_4;
 
  
+  var chartPayerData = [];
   var chartExpensesTypeData = [];
   var chartExpensesCategoryTypeData_0 = [];
   var chartExpensesCategoryTypeData_1 = [];
@@ -95,6 +97,9 @@
 
   onMount(async (promise) => {
     loadData();
+
+    ctxPayer = chartPayer.getContext("2d");
+    chartPayerData = new chartjs(ctxPayer, {});
 
     ctxExpensesType = chartExpensesType.getContext("2d");
     chartExpensesTypeData = new chartjs(ctxExpensesType, {});
@@ -322,6 +327,53 @@
       data: datasetExpensesCategoryType[4],
       options: optionsCategoryType[4],
     });
+
+    let datasetPayer = [];
+          datasetPayer.push({
+            label: "Anne",
+            backgroundColor: categoryTypesColor[1],
+            borderColor: categoryTypesColor[1],
+            data: [38],
+          });
+          datasetPayer.push({
+            label: "Olivier",
+            backgroundColor: categoryTypesColor[4],
+            borderColor: categoryTypesColor[4],
+            data: [100],
+          });
+ 
+        chartPayerData.destroy();
+        chartPayerData = new chartjs(ctxPayer, {
+          type: "bar",
+          data: {
+            labels: ["Répartition"],
+            datasets: datasetPayer,
+          },
+          options: {
+            responsive: true,
+            indexAxis: "y",
+            scales: {
+              x: {
+                stacked: false,
+
+                ticks: {
+                  min: 0,
+                  max: 100,
+                  stepSize: 10,
+                },
+              },
+              y: {
+                stacked: true,
+                display: false,
+              },
+            },
+            plugins: {
+              legend: {
+                display: false,
+              },
+            },
+          },
+        });
   }
 </script>
 
@@ -370,6 +422,12 @@
       </div>
     {/each}
   </div>
+  <div class="grid grid-cols-1 place-content-center mt-10 ">
+    <div class="border-solid hover:border-dotted border-2 rounded mr-1">
+      <canvas bind:this={chartPayer} height="20px" />
+    </div>
+  </div>
+
   <div class="grid grid-cols-1 place-content-center mt-10 ">
     <div class="border-solid hover:border-dotted border-2 rounded mr-1">
       <canvas bind:this={chartExpensesType} id="ExpensesType" />

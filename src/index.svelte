@@ -7,7 +7,7 @@
 </script>
 
 <svelte:head>
-  <title>HT 2024</title>
+  <title>RANDO 24</title>
 </svelte:head>
 
 <style>
