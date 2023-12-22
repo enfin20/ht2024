@@ -424,7 +424,7 @@
     {/each}
   </div>
   <div class="grid grid-cols-1 place-content-center mt-5 md:mt-10 ">
-    <div class="border-solid hover:border-dotted border-2 rounded mr-1">
+    <div class="border-solid hover:border-dotted border-2 rounded">
       <canvas bind:this={chartPayer} height="20px" />
     </div>
   </div>
