@@ -2,7 +2,6 @@
 </script>
 
 <script>
-  import { YYYYMMDD } from "$lib/date_functions.js";
   import { onMount } from "svelte";
   import chartjs from "chart.js/auto";
 
@@ -12,6 +11,7 @@
   let totalExpenses = 0;
   let categoryTypes = [];
   let categories = [];
+  let payerExpenses = []
 
   let showMonth = [
     true,
@@ -135,6 +135,7 @@
     categoryTypes = [];
     categories = [];
     expenses = [];
+    payerExpenses = [0,0];
 
     // récupération des expenses et types
 
@@ -171,6 +172,11 @@
       }
       pivot.push(obj);
       totalExpenses = totalExpenses + Math.trunc(expenses[i].amount);
+      if (expenses[i].payer === "Anne"){
+          payerExpenses[0]=payerExpenses[0]+ Math.trunc(expenses[i].amount);
+      }else{
+        payerExpenses[1]=payerExpenses[1]+ Math.trunc(expenses[i].amount);
+      }
     }
 
     ///////////////////////////////////////////
@@ -225,7 +231,6 @@
       type: "bar",
       data: {
         labels: months,
-
         datasets: datasetExpensesType,
       },
       options: {
@@ -331,14 +336,14 @@
     let datasetPayer = [];
           datasetPayer.push({
             label: "Anne",
-            backgroundColor: categoryTypesColor[1],
-            borderColor: categoryTypesColor[1],
-            data: [38],
+            backgroundColor: categoryTypesColor[4],
+            borderColor: categoryTypesColor[4],
+            data: [Math.trunc(payerExpenses[0]/totalExpenses*100)],
           });
           datasetPayer.push({
             label: "Olivier",
-            backgroundColor: categoryTypesColor[4],
-            borderColor: categoryTypesColor[4],
+            backgroundColor: categoryTypesColor[1],
+            borderColor: categoryTypesColor[1],
             data: [100],
           });
  
