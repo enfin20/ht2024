@@ -8,7 +8,7 @@
         href="/"
         class=" px-3 py-2 flex items-center uppercase font-bold leading-snug text-white hover:opacity-75"
       >
-        RANDO 2024</a
+        RD24</a
       >
     </div>
     <div>
