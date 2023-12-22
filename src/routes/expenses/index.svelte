@@ -111,6 +111,7 @@
             <th>Catégorie</th>
             <th>Qui</th>
             <th></th>
+            <th></th>
           </tr>
         </thead>
         <tbody class="">
@@ -167,7 +168,7 @@
                 {/each}
               </select>
             </td>
-            <td class="align-middle py-1 px-1 w-1/6">
+            <td class="align-middle py-1 px-1 w-1/12">
               <button
                 class="text-xs bg-green-600 hover:bg-green-800 text-white py-1 px-1 rounded"
                 on:click={insertExpense(
@@ -179,7 +180,7 @@
                 )}
                 >Add
               </button>
-            </td>
+            </td><td class="align-middle py-1 px-1 w-1/12"></td>
           </tr>
           {#each expenses as e}
             <tr
@@ -236,7 +237,7 @@
                 </select>
               </td>
 
-              <td class="align-middle py-1 px-1 w-1/6">
+              <td class="align-middle py-1 px-1 w-1/12">
                 <button
                   class="text-xs bg-green-400 hover:bg-green-600 text-gray-500 py-1 px-1 rounded"
                   id={e.key}
@@ -248,7 +249,7 @@
                     e.category,
                     e.payer
                   )}>Update</button
-                >
+                ></td><td class="align-middle py-1 px-1 w-1/12">
                 <button
                   class="text-xs bg-red-400 hover:bg-red-600 text-gray-500 py-1 px-1 rounded"
                   id={e.key}
