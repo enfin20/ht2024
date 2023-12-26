@@ -202,9 +202,9 @@
     for (var i = 0; i < categoryTypes.length; i++) {
       // affichage des icones type si activé ou non
       if (showType[i]) {
-        classImgType[i] = "w-1/4 md:w-1/2 inline";
+        classImgType[i] = "w-1/2 md:w-1/2 inline";
       } else {
-        classImgType[i] = "w-1/4 md:w-1/2 inline grayscale brightness-200";
+        classImgType[i] = "w-1/2 md:w-1/2 inline grayscale brightness-200";
       }
 
       expensesTypeMonth.push([0, 0, 0, 0, 0, 0]);
@@ -388,7 +388,7 @@
     {erreurMessage}
   </div>
 
-  <div class="grid grid-cols-6 md:grid-cols-8 place-content-center">
+  <div class="grid grid-cols-6 md:grid-cols-8 place-content-center text-2xl">
     <div class="hidden md:grid" />
     <div>
       <input id="type-me" class="peer hidden" type="checkbox" />
@@ -401,7 +401,7 @@
           class="w-1/4 md:w-1/2 inline"
           src="/images/Total.png"
           alt="Total"
-        />$ {totalExpenses}
+        />   {totalExpenses} €
       </label>
     </div>
 
@@ -423,14 +423,14 @@
             class={classImgType[i]}
             src="/images/{e.type}.png"
             alt={e.type}
-          />$ {e.amount}
+          />   {e.amount} €
         </label>
       </div>
     {/each}
   </div>
   <div class="grid grid-cols-1 place-content-center mt-5 md:mt-10 ">
     <div class="border-solid hover:border-dotted border-2 rounded">
-      <canvas bind:this={chartPayer} height="20px" />
+      <canvas bind:this={chartPayer} height="20px"/>
     </div>
   </div>
 
