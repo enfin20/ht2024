@@ -139,6 +139,13 @@
     edit_Day.mood = -1;
     edit_Day.detail = "";
     edit_Day.summary = "";
+    for (var i = 0; i < roadbook.length; i++) {
+      if(edit_Day.dayCounter < roadbook[i].dayCounter){
+        edit_Day.dayCounter = roadbook[i].dayCounter;
+        edit_Day.start = roadbook[i].end
+      }
+  }
+  edit_Day.dayCounter = edit_Day.dayCounter + 1;
 
     buttonLabel = "Add";
     updateIcons();
@@ -223,6 +230,7 @@
           roadbook[i].summary = edit_Day.summary;
           roadbook[i].start = edit_Day.start;
           roadbook[i].end = edit_Day.end;
+          roadbook[i].dayCounter = Number(edit_Day.dayCounter);
         }
       }
     }
