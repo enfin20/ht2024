@@ -465,30 +465,30 @@
     </form>
   </div>
   <div class="overflow-x-auto">
-    <table id="rdb" class="w-full text-sm text-gray-500 bg-white">
+    <table id="rdb" class="w-full text-xs text-gray-500 bg-white">
       <tbody class="">
         {#each roadbook as r}
           <tr
             class="align-middle text-center border-collapse border-t-[1px] border-slate-200"
           >
-            <td class="text-left align-middle py-1 px-1 ">
+            <td class="text-left align-middle py-1 ">
               {r.day.substring(6, 8).concat("/").concat(r.day.substring(4, 6))}
             </td>
-            <td class="text-left align-middle py-1 px-1 ">
+            <td class="text-left align-middle py-1 px-px ">
               <img
                 src="/images/{moodIcon[r.mood]}.png"
                 alt=""
                 class="w-[25px] md:w-[30px] inline"
               />
             </td>
-            <td class="text-left align-middle py-1 px-1 ">
+            <td class="text-left align-middle py-1 px-px ">
               <img
                 src="/images/{weatherIcon[r.weather]}.png"
                 alt=""
                 class="w-[25px] md:w-[30px] inline"
               />
             </td>
-            <td class="text-left align-middle py-1 px-1 ">
+            <td class="text-left align-middle py-1 px-px ">
               {#each difficultyIcon as di, i}
                 {#if i === 0}
                   {#if r.difficulty === 0}
@@ -519,14 +519,14 @@
                 {/if}
               {/each}
             </td>
-            <td class="text-left align-middle py-1 px-1 ">
+            <td class="text-left align-middle py-1  px-px ">
               <img
                 src="/images/{nightIcon[r.night]}.png"
                 alt=""
                 class="w-[25px] md:w-[30px] inline"
               />
             </td>
-            <td class="text-left align-middle py-1 px-1 ">
+            <td class="text-left align-middle py-1 px-px ">
               {#each starsIcon as si, i}
               {#if i === 0}
                   {#if r.landscape === 0}
@@ -577,7 +577,7 @@
             </td>
             <td class="align-middle py-1 px-1 ">
               <button
-                class="bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 px-2 rounded focus:outline-none focus:shadow-outline text-xs"
+                class="bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 px-2 rounded focus:outline-none focus:shadow-outline"
                 id={r.key}
                 on:click={editDay(r.key)}>Edit</button
               >
