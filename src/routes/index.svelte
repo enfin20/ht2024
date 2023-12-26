@@ -202,9 +202,9 @@
     for (var i = 0; i < categoryTypes.length; i++) {
       // affichage des icones type si activé ou non
       if (showType[i]) {
-        classImgType[i] = "w-1/2 md:w-1/2 inline";
+        classImgType[i] = "w-1/3 md:w-1/2 inline";
       } else {
-        classImgType[i] = "w-1/2 md:w-1/2 inline grayscale brightness-200";
+        classImgType[i] = "w-1/3 md:w-1/2 inline grayscale brightness-200";
       }
 
       expensesTypeMonth.push([0, 0, 0, 0, 0, 0]);
@@ -398,7 +398,7 @@
         py-1 px-1 font-bold text-ht transition-colors duration-200 ease-in-out  peer-checked:text-ht "
       >
         <img
-          class="w-1/4 md:w-1/2 inline"
+          class="w-1/3 md:w-1/2 inline"
           src="/images/Total.png"
           alt="Total"
         />   {totalExpenses} €
