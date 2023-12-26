@@ -202,9 +202,9 @@
     for (var i = 0; i < categoryTypes.length; i++) {
       // affichage des icones type si activé ou non
       if (showType[i]) {
-        classImgType[i] = "w-1/2 md:w-1/2 inline";
+        classImgType[i] = "w-1/2 inline";
       } else {
-        classImgType[i] = "w-1/2 md:w-1/2 inline grayscale brightness-200";
+        classImgType[i] = "w-1/2 inline grayscale brightness-200";
       }
 
       expensesTypeMonth.push([0, 0, 0, 0, 0, 0]);
@@ -259,7 +259,7 @@
       expensesCategoryType = [];
       for (var j = 0; j < categories.length; j++) {
         if (categories[j].type === categoryTypes[i].type) {
-          categoriesPerType.push(categories[j].category.substr(0,5));
+          categoriesPerType.push(categories[j].category);
           expensesCategoryType.push(0);
           for (var k = 0; k < pivot.length; k++) {
             for (var l = 0; l < months.length; l++) {
@@ -298,7 +298,8 @@
             text: categoryTypes[i].type,
           },
         },
-        plugins: { legend: { labels: { boxWidth: 15 } } },
+        plugins: { legend: { display:false,
+          labels: { boxWidth: 15 } } },
       });
     }
 
@@ -344,7 +345,7 @@
             label: "Olivier",
             backgroundColor: categoryTypesColor[1],
             borderColor: categoryTypesColor[1],
-            data: [100],
+            data: [100-Math.trunc(payerExpenses[0]/totalExpenses*100)],
           });
  
         chartPayerData.destroy();
@@ -359,14 +360,9 @@
             indexAxis: "y",
             scales: {
               x: {
-                stacked: false,
+                stacked: true,
                 display: false,
 
-                ticks: {
-                  min: 0,
-                  max: 100,
-                  stepSize: 10,
-                },
               },
               y: {
                 stacked: true,
@@ -398,7 +394,7 @@
         py-1 font-bold text-ht transition-colors duration-200 ease-in-out  peer-checked:text-ht "
       >
         <img
-          class="w-1/2 md:w-1/2 inline"
+          class="w-1/2 inline"
           src="/images/Total.png"
           alt="Total"
         /><br/>{totalExpenses} €
@@ -429,7 +425,7 @@
     {/each}
   </div>
   <div class="grid grid-cols-1 place-content-center mt-5 md:mt-10 ">
-    <div class="border-solid hover:border-dotted border-2 rounded">
+    <div>
       <canvas bind:this={chartPayer} height="20px"/>
     </div>
   </div>
