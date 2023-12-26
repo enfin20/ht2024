@@ -71,6 +71,7 @@ export async function put(request) {
           mood: roadbook.mood,
           detail: roadbook.detail,
           summary: roadbook.summary,
+          dayCounter:roadbook.dayCounter,
         },
       }
     );

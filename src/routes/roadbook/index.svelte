@@ -15,6 +15,7 @@
   edit_Day.mood = -1;
   edit_Day.detail = "";
   edit_Day.summary = "";
+  edit_Day.dayCounter = 0;
 
   let weatherIcon = [
     "Snow",
@@ -51,7 +52,14 @@
     res = await fetch("/MDB/roadbook");
     const roa = await res.json();
     roadbook = await roa.roadbook;
-  });
+    for (var i = 0; i < roadbook.length; i++) {
+      if(edit_Day.dayCounter < roadbook[i].dayCounter){
+        edit_Day.dayCounter = roadbook[i].dayCounter;
+        edit_Day.start = roadbook[i].end
+      }
+  }
+  edit_Day.dayCounter = edit_Day.dayCounter + 1;
+});
 
   function updateIcons() {
     //mise à jour des icones
@@ -167,6 +175,7 @@
     edit_Day.night = Number(edit_Day.night);
     edit_Day.landscape = Number(edit_Day.landscape);
     edit_Day.mood = Number(edit_Day.mood);
+    edit_Day.dayCounter = Number(edit_Day.dayCounter);
 
     if (edit_Day.key === "") {
       // Insert new day
@@ -191,6 +200,7 @@
         mood: edit_Day.mood,
         detail: edit_Day.detail,
         summary: edit_Day.summary,
+        dayCounter: edit_Day.dayCounter,
       });
       roadbook = roadbook;
     } else {
@@ -224,7 +234,20 @@
   <div class="grid grid-cols-1 place-content-center w-full">
     <form class="w-full " on:submit|preventDefault={insertRoadbook}>
       <div class=" w-full  flex flex-wrap -mx-3 mb-6">
-        <div class="w-1/3 px-3 mb-6 md:mb-0">
+        <div class="w-1/4 md:w-1/4 px-3 mb-6 md:mb-0">
+          <label
+            class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+            for="grid-first-name"
+          >
+            Jour
+          </label>
+          <input
+            type="text"
+            bind:value={edit_Day.dayCounter}
+            class=" appearance-none block w-full bg-gray-100 text-gray-600 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+          />
+        </div>
+        <div class="w-3/4 md:w-1/4 px-3 mb-6 md:mb-0">
           <label
             class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
             for="grid-first-name"
@@ -238,7 +261,7 @@
             on:click={updateIcons}
           />
         </div>
-        <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+        <div class="w-full md:w-1/4 px-3 mb-6 md:mb-0">
           <label
             class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
             for="grid-first-name"
@@ -251,7 +274,7 @@
             class=" appearance-none block w-full bg-gray-100 text-gray-600 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
           />
         </div>
-        <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+        <div class="w-full md:w-1/4 px-3 mb-6 md:mb-0">
           <label
             class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
             for="grid-first-name"
