@@ -388,7 +388,7 @@
     {erreurMessage}
   </div>
 
-  <div class="grid grid-cols-6 md:grid-cols-8 place-content-center md:text-2xl">
+  <div class="grid grid-cols-6 md:grid-cols-8 place-content-center text-sm md:text-2xl">
     <div class="hidden md:grid" />
     <div>
       <input id="type-me" class="peer hidden" type="checkbox" />
@@ -401,7 +401,7 @@
           class="w-1/3 md:w-1/2 inline"
           src="/images/Total.png"
           alt="Total"
-        />   {totalExpenses} €
+        />   {totalExpenses}
       </label>
     </div>
 
@@ -423,7 +423,7 @@
             class={classImgType[i]}
             src="/images/{e.type}.png"
             alt={e.type}
-          />   {e.amount} €
+          />   {e.amount}
         </label>
       </div>
     {/each}
