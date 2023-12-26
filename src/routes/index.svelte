@@ -202,9 +202,9 @@
     for (var i = 0; i < categoryTypes.length; i++) {
       // affichage des icones type si activé ou non
       if (showType[i]) {
-        classImgType[i] = "w-1/3 md:w-1/2 inline";
+        classImgType[i] = "w-1/2 md:w-1/2 inline";
       } else {
-        classImgType[i] = "w-1/3 md:w-1/2 inline grayscale brightness-200";
+        classImgType[i] = "w-1/2 md:w-1/2 inline grayscale brightness-200";
       }
 
       expensesTypeMonth.push([0, 0, 0, 0, 0, 0]);
@@ -390,23 +390,23 @@
 
   <div class="grid grid-cols-6 md:grid-cols-8 place-content-center text-sm md:text-2xl">
     <div class="hidden md:grid" />
-    <div>
+    <div class="text-center">
       <input id="type-me" class="peer hidden" type="checkbox" />
       <label
         for="type-me"
         class="select-none cursor-pointer 
-        py-1 px-1 font-bold text-ht transition-colors duration-200 ease-in-out  peer-checked:text-ht "
+        py-1 font-bold text-ht transition-colors duration-200 ease-in-out  peer-checked:text-ht "
       >
         <img
-          class="w-1/3 md:w-1/2 inline"
+          class="w-1/2 md:w-1/2 inline"
           src="/images/Total.png"
           alt="Total"
-        />   {totalExpenses}
+        /><br/>{totalExpenses} €
       </label>
     </div>
 
     {#each expensesType as e, i}
-      <div>
+      <div class="text-center">
         <input
           id="type-me{i}"
           class="peer hidden"
@@ -417,13 +417,13 @@
         <label
           for="type-me{i}"
           class="select-none cursor-pointer 
-          py-1 px-1 font-bold text-slate-400 transition-colors duration-200 ease-in-out  peer-checked:text-ht "
+          py-1 font-bold text-slate-400 transition-colors duration-200 ease-in-out  peer-checked:text-ht "
         >
           <img
             class={classImgType[i]}
             src="/images/{e.type}.png"
             alt={e.type}
-          />   {e.amount}
+          /><br/>{e.amount} €
         </label>
       </div>
     {/each}
