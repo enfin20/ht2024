@@ -135,7 +135,7 @@
     categoryTypes = [];
     categories = [];
     expenses = [];
-    payerExpenses = [0,0];
+    
 
     // récupération des expenses et types
 
@@ -159,6 +159,7 @@
     let pivot = [];
     let obj = new Object();
     totalExpenses = 0;
+    payerExpenses = [0,0];
     for (var i = 0; i < expenses.length; i++) {
       obj = [];
       obj.amount = expenses[i].amount;
