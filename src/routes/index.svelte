@@ -388,7 +388,7 @@
     {erreurMessage}
   </div>
 
-  <div class="grid grid-cols-6 md:grid-cols-8 place-content-center text-2xl">
+  <div class="grid grid-cols-6 md:grid-cols-8 place-content-center md:text-2xl">
     <div class="hidden md:grid" />
     <div>
       <input id="type-me" class="peer hidden" type="checkbox" />
