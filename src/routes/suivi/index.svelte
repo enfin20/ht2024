@@ -12,6 +12,7 @@
   edit_Day.night = -1;
   edit_Day.landscape = -1;
   edit_Day.summary = "";
+  edit_Day.dayCounter = "";
 
   let weatherIcon = [
     "Snow",
@@ -35,10 +36,10 @@
     "_in",
   ];
   let difficultyIcon = ["ZeroDay", "Star", "Star", "Star"];
-  let starsIcon = ["Star", "Star", "Star"];
+  let starsIcon = ["Ugly", "Soso","Star", "Star", "Star"];
   let imgNewDifficultyActivate = ["_in", "_in", "_in", "_in"];
   let imgNewNightActivate = ["_in", "_in", "_in", "_in", "_in"];
-  let imgNewLandscapeActivate = ["_in", "_in", "_in"];
+  let imgNewLandscapeActivate = ["_in", "_in", "_in", "_in", "_in"];
   // _in rgb(200,225,200)
 
   onMount(async (promise) => {
@@ -79,10 +80,36 @@
     }
 
     for (var i = 0; i < starsIcon.length; i++) {
-      if (edit_Day.landscape >= i) {
-        imgNewLandscapeActivate[i] = "";
-      } else {
+      if (edit_Day.landscape === 0) {
+        imgNewLandscapeActivate[0] = "";
         imgNewLandscapeActivate[i] = "_in";
+      } else if 
+      (edit_Day.landscape === 1) {
+        imgNewLandscapeActivate[1] = "";
+        imgNewLandscapeActivate[i] = "_in";
+      } else if 
+      (edit_Day.landscape === 2) {
+        imgNewLandscapeActivate[2] = "";
+        imgNewLandscapeActivate[i] = "_in";
+      } else if 
+      (edit_Day.landscape === 3) {
+        imgNewLandscapeActivate[2] = "";
+        imgNewLandscapeActivate[3] = "";
+        imgNewLandscapeActivate[i] = "_in";
+    } else if 
+      (edit_Day.landscape === 4) {
+        imgNewLandscapeActivate[2] = "";
+        imgNewLandscapeActivate[3] = "";        
+        imgNewLandscapeActivate[4] = "";
+        imgNewLandscapeActivate[0] = "_in";        
+        imgNewLandscapeActivate[1] = "_in";
+      }   }
+
+    for (var i = 0; i < moodIcon.length; i++) {
+      if (edit_Day.mood === i) {
+        imgNewMoodActivate[i] = "";
+      } else {
+        imgNewMoodActivate[i] = "_in";
       }
     }
   }
@@ -119,8 +146,8 @@
   }
 </script>
 
-<div class="py-2 grid gap-1">
-  <div class="grid grid-cols-1 w-full">
+<div class="py-2 grid gap-1 md:w-2/3">
+  <div class="grid grid-cols-1 w-full md:w-2/3">
     <table id="rdb" class="text-sm text-gray-500 w-full relative">
       <tbody class="">
         {#each roadbook as r}
@@ -177,20 +204,52 @@
             </td>
             <td class="text-left align-middle py-1 px-1 ">
               {#each starsIcon as si, i}
-                {#if r.landscape >= i}
-                  <img
-                    src="/images/{starsIcon[0]}.png"
-                    alt=""
-                    class="w-[20px] md:w-[30px] inline"
-                  />
-                {:else}
-                  <img
-                    src="/images/{starsIcon[0]}_in.png"
-                    alt=""
-                    class="w-[20px] md:w-[30px] inline"
-                  />
+              {#if i === 0}
+                  {#if r.landscape === 0}
+                    <img
+                      src="/images/{starsIcon[0]}.png"
+                      alt=""
+                      class="w-[20px] md:w-[30px] inline"
+                    />
+                  {:else}
+                    <img
+                      src="/images/{starsIcon[0]}_in.png"
+                      alt=""
+                      class="w-[20px] md:w-[30px] inline"
+                    />
+                  {/if}
                 {/if}
-              {/each}
+                {#if i === 1}
+                  {#if r.landscape === 1}
+                    <img
+                      src="/images/{starsIcon[1]}.png"
+                      alt=""
+                      class="w-[20px] md:w-[30px] inline"
+                    />
+                  {:else}
+                    <img
+                      src="/images/{starsIcon[1]}_in.png"
+                      alt=""
+                      class="w-[20px] md:w-[30px] inline"
+                    />
+                  {/if}
+                {/if}
+                {#if i >= 2}                 
+                  {#if r.landscape >= i}
+                    <img
+                      src="/images/{starsIcon[i]}.png"
+                      alt=""
+                      class="w-[20px] md:w-[30px] inline"
+                    />
+                  {:else}
+                    <img
+                      src="/images/{starsIcon[i]}_in.png"
+                      alt=""
+                      class="w-[20px] md:w-[30px] inline"
+                    />
+                  {/if}
+                {/if}
+             {/each}
             </td>
             <td class="align-middle py-1 px-1 w-[5%]">
               <button
@@ -204,10 +263,18 @@
       </tbody>
     </table>
   </div>
-  <h1>détail de la journée</h1>
-  <div class="grid grid-cols-1 w-full">
-    <div class=" w-full  flex flex-wrap -mx-3 mb-6">
-      <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+  <h1 class="mt-4">détail de la journée</h1>
+  <div class="grid grid-cols-1 w-full mt-4">
+    <div class=" w-full  flex flex-wrap -mx-3 md:mb-6">
+      <div class="w-1/2 md:w-1/4 px-3 mb-3 md:mb-0">
+        <label
+          class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+          for="grid-first-name"
+        >
+          Jour: {edit_Day.dayCounter}
+        </label>
+      </div>
+      <div class="w-1/2 md:w-1/4 px-3 mb-6 md:mb-0">
         <label
           class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
           for="grid-first-name"
@@ -215,7 +282,7 @@
           Date: {edit_Day.day}
         </label>
       </div>
-      <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+      <div class="w-full md:w-1/4 px-3 mb-6 md:mb-0">
         <label
           class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
           for="grid-first-name"
@@ -223,7 +290,7 @@
           Départ: {edit_Day.start}
         </label>
       </div>
-      <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+      <div class="w-full md:w-1/4 px-3 mb-6 md:mb-0">
         <label
           class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
           for="grid-first-name"
@@ -232,8 +299,8 @@
         </label>
       </div>
     </div>
-    <div class=" w-full  flex flex-wrap -mx-3 mb-6">
-      <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+    <div class=" w-full  flex flex-wrap -mx-3 md:mb-6">
+      <div class="w-full md:w-1/3 px-3 mb-3 md:mb-0">
         <label
           class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
           for="grid-first-name"
@@ -245,7 +312,7 @@
           />
         </label>
       </div>
-      <div class="w-full md:w-2/3 px-3 mb-6 md:mb-0">
+      <div class="w-full md:w-2/3 px-3 mb-3 md:mb-0">
         <label
           class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
           for="grid-first-name"
@@ -283,8 +350,8 @@
       </div>
     </div>
   </div>
-  <div class=" w-full  flex flex-wrap -mx-3 mb-6">
-    <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+  <div class=" w-full  flex flex-wrap -mx-3  mb-0 md:mb-3">
+    <div class="w-full md:w-1/3 px-3 mb-3 md:mb-0">
       <label
         class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
         for="grid-first-name"
@@ -296,31 +363,37 @@
         />
       </label>
     </div>
-    <div class="w-full md:w-2/3 px-3 mb-6 md:mb-0">
+    <div class="w-full md:w-2/3 px-3 mb-3 md:mb-0">
       <label
         class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
         for="grid-first-name"
       >
         Paysage: {#each starsIcon as si, i}
-          {#if edit_Day.landscape >= i}
-            <img
-              src="/images/{starsIcon[0]}.png"
-              alt=""
-              class="w-[20px] md:w-[30px] inline"
-            />
-          {:else}
-            <img
-              src="/images/{starsIcon[0]}_in.png"
-              alt=""
-              class="w-[20px] md:w-[30px] inline"
-            />
-          {/if}
-        {/each}
+        <input
+          type="radio"
+          bind:group={edit_Day.landscape}
+          name="r_landscape"
+          value={i}
+          id="r_landscape{i}"
+          class="peer hidden"
+          on:change={updateIcons}
+        />
+        <label
+          for="r_landscape{i}"
+          class="select-none cursor-pointer py-1 px-1 font-bold text-slate-400 transition-colors duration-200 ease-in-out "
+        >
+          <img
+            src="/images/{si}{imgNewLandscapeActivate[i]}.png"
+            alt=""
+            class="w-[30px] inline"
+          /></label
+        >
+      {/each}
       </label>
     </div>
   </div>
   <div class=" w-full  flex flex-wrap -mx-3 mb-6">
-    <div class="w-full px-3 mb-6 md:mb-0">
+    <div class="w-full px-3 mb-0">
       <label
         class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
         for="grid-first-name"

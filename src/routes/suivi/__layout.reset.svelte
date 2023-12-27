@@ -3,9 +3,9 @@
 
 <nav>
   <div
-    class="grid grid-cols-5 text-xs md:text-xl font-bold bg-ht px-2 py-2  text-white"
+    class="grid grid-cols-5 text-xs md:text-xl font-bold bg-pct px-2 py-2  text-white"
   >
-    <div>Suivi HT 2024</div>
+    <div>Suivi RD 2024</div>
   </div>
 </nav>
 <div class="px-2 py-2 w-full">

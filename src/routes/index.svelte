@@ -131,6 +131,7 @@
     );
 
   });
+
   async function loadData() {
     categoryTypes = [];
     categories = [];
@@ -172,11 +173,12 @@
         }
       }
       pivot.push(obj);
-      totalExpenses = totalExpenses + Math.trunc(expenses[i].amount);
+
+      totalExpenses += Math.trunc(expenses[i].amount);
       if (expenses[i].payer === "Anne"){
-          payerExpenses[0]=payerExpenses[0]+ Math.trunc(expenses[i].amount);
+        payerExpenses[0] += Math.trunc(expenses[i].amount);
       }else{
-        payerExpenses[1]=payerExpenses[1]+ Math.trunc(expenses[i].amount);
+        payerExpenses[1] += Math.trunc(expenses[i].amount);
       }
     }
 
@@ -255,6 +257,7 @@
     let optionsCategoryType = [];
     let expensesCategoryType = [];
     let categoriesPerType = [];
+
     for (var i = 0; i < categoryTypes.length; i++) {
       categoriesPerType = [];
       expensesCategoryType = [];
@@ -282,25 +285,13 @@
         labels: categoriesPerType,
         datasets: [
           {
-            label: categoryTypes[i].type,
             data: expensesCategoryType,
           },
         ],
       });
-
       optionsCategoryType.push({
         responsive: true,
-        plugins: {
-          legend: {
-            position: "bottom",
-          },
-          title: {
-            display: true,
-            text: categoryTypes[i].type,
-          },
-        },
-        plugins: { legend: { display:false,
-          labels: { boxWidth: 15 } } },
+        plugins: { legend: { display:false, } },
       });
     }
 
@@ -336,47 +327,46 @@
     });
 
     let datasetPayer = [];
-          datasetPayer.push({
-            label: "Anne",
-            backgroundColor: categoryTypesColor[4],
-            borderColor: categoryTypesColor[4],
-            data: [Math.trunc(payerExpenses[0]/totalExpenses*100)],
-          });
-          datasetPayer.push({
-            label: "Olivier",
-            backgroundColor: categoryTypesColor[1],
-            borderColor: categoryTypesColor[1],
-            data: [100-Math.trunc(payerExpenses[0]/totalExpenses*100)],
-          });
- 
-        chartPayerData.destroy();
-        chartPayerData = new chartjs(ctxPayer, {
-          type: "bar",
-          data: {
-            labels: ["Répartition"],
-            datasets: datasetPayer,
-          },
-          options: {
-            responsive: true,
-            indexAxis: "y",
-            scales: {
-              x: {
-                stacked: true,
-                display: false,
+    datasetPayer.push({
+      label: "Anne",
+      backgroundColor: categoryTypesColor[4],
+      borderColor: categoryTypesColor[4],
+      data: [Math.trunc(payerExpenses[0]/totalExpenses*100)],
+    });
+    datasetPayer.push({
+      label: "Olivier",
+      backgroundColor: categoryTypesColor[1],
+      borderColor: categoryTypesColor[1],
+      data: [100-Math.trunc(payerExpenses[0]/totalExpenses*100)],
+    });
+    chartPayerData.destroy();
+    chartPayerData = new chartjs(ctxPayer, {
+      type: "bar",
+      data: {
+        labels: ["Répartition"],
+        datasets: datasetPayer,
+      },
+      options: {
+        responsive: true,
+        indexAxis: "y",
+        scales: {
+          x: {
+            stacked: true,
+            display: false,
 
-              },
-              y: {
-                stacked: true,
-                display: false,
-              },
-            },
-            plugins: {
-              legend: {
-                display: false,
-              },
-            },
           },
-        });
+          y: {
+            stacked: true,
+            display: false,
+          },
+        },
+        plugins: {
+          legend: {
+            display: false,
+          },
+        },
+      },
+    });
   }
 </script>
 
