@@ -171,13 +171,13 @@
                     <img
                       src="/images/{difficultyIcon[i]}.png"
                       alt=""
-                      class="w-[20px] md:w-[30px] inline"
+                      class="w-[15px] md:w-[30px] inline"
                     />
                   {:else}
                     <img
                       src="/images/{difficultyIcon[i]}_in.png"
                       alt=""
-                      class="w-[20px] md:w-[30px] inline"
+                      class="w-[15px] md:w-[30px] inline"
                     />
                   {/if}
                 {:else if r.difficulty >= i}
@@ -209,13 +209,13 @@
                     <img
                       src="/images/{starsIcon[0]}.png"
                       alt=""
-                      class="w-[20px] md:w-[30px] inline"
+                      class="w-[15px] md:w-[30px] inline"
                     />
                   {:else}
                     <img
                       src="/images/{starsIcon[0]}_in.png"
                       alt=""
-                      class="w-[20px] md:w-[30px] inline"
+                      class="w-[15px] md:w-[30px] inline"
                     />
                   {/if}
                 {/if}
@@ -253,7 +253,7 @@
             </td>
             <td class="align-middle py-1 px-1">
               <button
-                class="bg-teal-500 hover:bg-teal-700 text-white py-2 px-1 rounded focus:outline-none focus:shadow-outline"
+                class="bg-teal-500 hover:bg-teal-700 text-white py-2 px-2 rounded focus:outline-none focus:shadow-outline"
                 id={r.key}
                 on:click={editDay(r.key)}>Détail</button
               >
