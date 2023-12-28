@@ -154,17 +154,17 @@
           <tr
             class="align-middle text-center border-collapse border-t-[1px] border-slate-200"
           >
-            <td class="text-left align-middle py-1 px-1 ">
+            <td class="text-left align-middle py-1 md:px-1 ">
               {r.day.substring(6, 8).concat("/").concat(r.day.substring(4, 6))}
             </td>
-            <td class="text-left align-middle py-1 px-1 ">
+            <td class="text-left align-middle py-1 md:px-1 ">
               <img
                 src="/images/{weatherIcon[r.weather]}.png"
                 alt=""
                 class="w-[30px] inline"
               />
             </td>
-            <td class="text-left align-middle py-1 px-1 ">
+            <td class="text-left align-middle py-1 md:px-1 ">
               {#each difficultyIcon as di, i}
                 {#if i === 0}
                   {#if r.difficulty === 0}
@@ -195,14 +195,14 @@
                 {/if}
               {/each}
             </td>
-            <td class="text-left align-middle py-1 px-1 ">
+            <td class="text-left align-middle py-1 md:px-1 ">
               <img
                 src="/images/{nightIcon[r.night]}.png"
                 alt=""
                 class="w-[30px] inline"
               />
             </td>
-            <td class="text-left align-middle py-1 px-1 ">
+            <td class="text-left align-middle py-1 md:px-1 ">
               {#each starsIcon as si, i}
               {#if i === 0}
                   {#if r.landscape === 0}
