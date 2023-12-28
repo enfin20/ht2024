@@ -58,7 +58,13 @@
     CHART_COLORS.ht,
     "rgb(255, 99, 132)",
   ];
-
+  let categoriesColor = [
+    ["rgb(255, 99, 132)","rgb(225, 69, 102)","rgb(195, 39, 72)"],
+    ["rgb(255, 159, 64)","rgb(225, 129, 34)","rgb(195, 99, 4)"],
+    ["rgb(153, 192, 192)","rgb(123, 162, 162)","rgb(93, 132, 132)"],
+    ["rgb(75, 230, 192)","rgb(45, 200, 162)","rgb(15, 170, 132)"],
+    ["rgb(54, 162, 235)","rgb(24, 132, 205)","rgb(0, 102, 175)"],
+   ];
   let months = [
     "MAY",
     "JUN",
@@ -286,12 +292,17 @@
         datasets: [
           {
             data: expensesCategoryType,
+            backgroundColor: categoriesColor[i],
           },
         ],
       });
       optionsCategoryType.push({
         responsive: true,
-        plugins: { legend: { display:false, } },
+        plugins: { legend: { display:false} ,
+        title: {
+                display: true,
+                text: categoryTypes[i].type,
+              },},
       });
     }
 
