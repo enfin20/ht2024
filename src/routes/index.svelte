@@ -342,13 +342,13 @@
       label: "Anne",
       backgroundColor: categoryTypesColor[4],
       borderColor: categoryTypesColor[4],
-      data: [Math.trunc(payerExpenses[0]/totalExpenses*100)],
+      data: [Math.trunc(payerExpenses[0])],
     });
     datasetPayer.push({
       label: "Olivier",
       backgroundColor: categoryTypesColor[1],
       borderColor: categoryTypesColor[1],
-      data: [100-Math.trunc(payerExpenses[0]/totalExpenses*100)],
+      data: [Math.trunc(payerExpenses[1])],
     });
     chartPayerData.destroy();
     chartPayerData = new chartjs(ctxPayer, {
@@ -364,6 +364,7 @@
           x: {
             stacked: true,
             display: false,
+            max:totalExpenses
 
           },
           y: {
@@ -429,7 +430,7 @@
   <div class="grid grid-cols-1 place-content-center mt-5 md:mt-10 text-center">
     <div>
       <canvas bind:this={chartPayer} height="20px"/>
-      Anne: {Number(payerExpenses[0]).toLocaleString("fr")} € - Olivier: {Number(payerExpenses[1]).toLocaleString("fr")} €
+      <!--Anne: {Number(payerExpenses[0]).toLocaleString("fr")} € - Olivier: {Number(payerExpenses[1]).toLocaleString("fr")} €-->
     </div>
   </div>
 
