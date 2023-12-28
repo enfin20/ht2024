@@ -354,7 +354,7 @@
     chartPayerData = new chartjs(ctxPayer, {
       type: "bar",
       data: {
-        labels: ["Répartition"],
+        labels: [""],
         datasets: datasetPayer,
       },
       options: {
@@ -374,7 +374,7 @@
         plugins: {
           legend: {
             display: false,
-          },
+          }
         },
       },
     });
@@ -399,7 +399,7 @@
           class="w-1/2 inline"
           src="/images/Total.png"
           alt="Total"
-        /><br/>{totalExpenses} €
+        /><br/>{Number(totalExpenses).toLocaleString("fr")} €
       </label>
     </div>
 
@@ -421,14 +421,15 @@
             class={classImgType[i]}
             src="/images/{e.type}.png"
             alt={e.type}
-          /><br/>{e.amount} €
+          /><br/>{Number(e.amount).toLocaleString("fr")} €
         </label>
       </div>
     {/each}
   </div>
-  <div class="grid grid-cols-1 place-content-center mt-5 md:mt-10 ">
+  <div class="grid grid-cols-1 place-content-center mt-5 md:mt-10 text-center">
     <div>
       <canvas bind:this={chartPayer} height="20px"/>
+      Anne: {Number(payerExpenses[0]).toLocaleString("fr")} € - Olivier: {Number(payerExpenses[1]).toLocaleString("fr")} €
     </div>
   </div>
 
