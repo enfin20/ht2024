@@ -323,26 +323,26 @@
                 <img
                   src="/images/{difficultyIcon[i]}.png"
                   alt=""
-                  class="w-[20px] md:w-[30px] inline"
+                  class="w-[30px] inline"
                 />
               {:else}
                 <img
                   src="/images/{difficultyIcon[i]}_in.png"
                   alt=""
-                  class="w-[20px] md:w-[30px] inline"
+                  class="w-[30px] inline"
                 />
               {/if}
             {:else if edit_Day.difficulty >= i}
               <img
                 src="/images/{difficultyIcon[i]}.png"
                 alt=""
-                class="w-[20px] md:w-[30px] inline"
+                class="w-[30px] inline"
               />
             {:else}
               <img
                 src="/images/{difficultyIcon[i]}_in.png"
                 alt=""
-                class="w-[20px] md:w-[30px] inline"
+                class="w-[30px] inline"
               />
             {/if}
           {/each}
@@ -363,31 +363,17 @@
         />
       </label>
     </div>
-    <div class="w-full md:w-2/3 px-3 mb-3 md:mb-0">
+    <div class="w-full md:w-2/3 px-3 mb-3 md:mb-0">        
       <label
-        class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-        for="grid-first-name"
-      >
+      class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+      for="grid-first-name"
+    >
         Paysage: {#each starsIcon as si, i}
-        <input
-          type="radio"
-          bind:group={edit_Day.landscape}
-          name="r_landscape"
-          value={i}
-          id="r_landscape{i}"
-          class="peer hidden"
-          on:change={updateIcons}
-        />
-        <label
-          for="r_landscape{i}"
-          class="select-none cursor-pointer py-1 px-1 font-bold text-slate-400 transition-colors duration-200 ease-in-out "
-        >
           <img
             src="/images/{si}{imgNewLandscapeActivate[i]}.png"
             alt=""
             class="w-[30px] inline"
-          /></label
-        >
+          />
       {/each}
       </label>
     </div>
