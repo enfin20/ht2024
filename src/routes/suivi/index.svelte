@@ -251,9 +251,9 @@
                 {/if}
              {/each}
             </td>
-            <td class="align-middle py-1 px-1 w-[5%]">
+            <td class="align-middle py-1 px-1">
               <button
-                class="bg-teal-500 hover:bg-teal-700 text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                class="bg-teal-500 hover:bg-teal-700 text-white py-2 px-1 rounded focus:outline-none focus:shadow-outline"
                 id={r.key}
                 on:click={editDay(r.key)}>Détail</button
               >
