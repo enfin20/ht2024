@@ -239,30 +239,11 @@
     cleanForm();
   }
 </script>
-<Geolocation getPosition let:coords
-let:loading
-let:success
-let:error
-let:notSupported
->
-{#if notSupported}
-  Your browser does not support the Geolocation API.
-{:else}
-  {#if loading}
-    Loading...
-  {/if}
-  {#if success}
-    {JSON.stringify(coords)}
-  {/if}
-  {#if error}
-    An error occurred. {error.code} {error.message}
-  {/if}
-{/if}
-</Geolocation>
+<Geolocation getPosition bind:coords /> 
 <div class="py-2 grid gap-1">
   <div class="grid grid-cols-1 place-content-center w-full">
     <form class="w-full " on:submit|preventDefault={insertRoadbook}>
-      <div class=" w-full  flex flex-wrap -mx-3 mb-6">
+      <div class=" w-full md:w-1/2 flex flex-wrap -mx-3 mb-6">
         <div class="w-1/4 md:w-1/4 px-3 mb-6 md:mb-0">
           <label
             class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -317,7 +298,36 @@ let:notSupported
           />
         </div>
       </div>
-      <div class="flex flex-wrap -mx-3 mb-2">
+      <div class=" w-full md:w-1/2 flex flex-wrap -mx-3 mb-6">
+        <div class="w-1/2 md:w-1/2 px-3 mb-6 md:mb-0">
+          <label
+            class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+            for="grid-first-name"
+          >
+            Lat
+          </label>
+          <input
+            type="text"
+            bind:value={coords[1]}
+            class=" appearance-none block w-full bg-gray-100 text-gray-600 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+          />
+        </div>
+        <div class="w-1/2 md:w-1/2 px-3 mb-6 md:mb-0">
+          <label
+            class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+            for="grid-first-name"
+          >
+            lng
+          </label>
+          <input
+            type="text"
+            bind:value={coords[0]}
+            class=" appearance-none block w-full bg-gray-100 text-gray-600 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+            on:click={updateIcons}
+          />
+        </div>
+      </div>
+      <div class=" w-full md:w-1/2 flex flex-wrap -mx-3 mb-6">
         <div class="w-full px-3 mb-6 md:mb-0">
           <label
             class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -347,9 +357,7 @@ let:notSupported
             >
           {/each}
         </div>
-      </div>
-      <div class="flex flex-wrap -mx-3 mb-2">
-        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+        <div class="w-full px-3 mb-6 md:mb-0">
           <label
             class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
             for="grid-first-name"
@@ -407,9 +415,7 @@ let:notSupported
             >
           {/each}
         </div>
-      </div>
-      <div class="flex flex-wrap -mx-3 mb-2">
-        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+        <div class="w-full px-3 mb-6 md:mb-0">
           <label
             class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
             for="grid-first-name"
@@ -438,7 +444,6 @@ let:notSupported
             >
           {/each}
         </div>
-
         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
           <label
             class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -468,8 +473,6 @@ let:notSupported
             >
           {/each}
         </div>
-      </div>
-      <div class="flex flex-wrap -mx-3 mb-2">
         <div class="w-full px-3 mb-6 md:mb-0">
           <label
             class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -496,9 +499,7 @@ let:notSupported
             rows="20"
           />
         </div>
-      </div>
-      <div class="flex flex-wrap -mx-3 mb-2">
-        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+        <div class="w-1/2 px-3 mb-6 md:mb-0">
           <button
             class="bg-red-300 hover:bg-red-400 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             on:click={cleanForm}
@@ -506,7 +507,7 @@ let:notSupported
             Clear
           </button>
         </div>
-        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+        <div class="w-1/2 px-3 mb-6 md:mb-0">
           <button
             class="bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           >
