@@ -165,7 +165,8 @@
       edit_Day.day.substring(4, 6),
       edit_Day.day.substring(6, 8),
     ].join("-");
-
+    coords[1] = edit_Day.lat;
+    coords[0] = edit_Day.lng;
     buttonLabel = "Update";
 
     //mise à jour des icones
@@ -185,6 +186,8 @@
     edit_Day.landscape = Number(edit_Day.landscape);
     edit_Day.mood = Number(edit_Day.mood);
     edit_Day.dayCounter = Number(edit_Day.dayCounter);
+    edit_Day.lat = Number(coords[1]);
+    edit_Day.lng = Number(coords[0]);
 
     if (edit_Day.key === "") {
       // Insert new day
