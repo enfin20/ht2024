@@ -243,7 +243,7 @@
 <div class="py-2 grid gap-1">
   <div class="grid grid-cols-1 place-content-center w-full">
     <form class="w-full " on:submit|preventDefault={insertRoadbook}>
-      <div class=" w-full md:w-1/2 flex flex-wrap -mx-3 mb-6">
+      <div class=" w-full md:w-1/2 flex flex-wrap -mx-3">
         <div class="w-1/4 md:w-1/4 px-3 mb-6 md:mb-0">
           <label
             class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -352,7 +352,7 @@
               <img
                 src="/images/{wi}{imgNewWeatherActivate[i]}.png"
                 alt=""
-                class="w-[35px] inline"
+                class="w-[30px] inline"
               /></label
             >
           {/each}
