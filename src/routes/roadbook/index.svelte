@@ -239,9 +239,26 @@
     cleanForm();
   }
 </script>
-<Geolocation getPosition bind:coords />
-
-<pre>{JSON.stringify(coords)}</pre>
+<Geolocation getPosition let:coords
+let:loading
+let:success
+let:error
+let:notSupported
+>
+{#if notSupported}
+  Your browser does not support the Geolocation API.
+{:else}
+  {#if loading}
+    Loading...
+  {/if}
+  {#if success}
+    {JSON.stringify(coords)}
+  {/if}
+  {#if error}
+    An error occurred. {error.code} {error.message}
+  {/if}
+{/if}
+</Geolocation>
 <div class="py-2 grid gap-1">
   <div class="grid grid-cols-1 place-content-center w-full">
     <form class="w-full " on:submit|preventDefault={insertRoadbook}>
