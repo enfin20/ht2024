@@ -1,6 +1,8 @@
 <script>
-  import { onMount } from "svelte";
+  import { onMount } from "svelte";  
+  import Geolocation from "svelte-geolocation";
 
+  let coords = [];
   let roadbook = [];
   var buttonLabel = "Add";
   var edit_Day = Object();
@@ -237,7 +239,9 @@
     cleanForm();
   }
 </script>
+<Geolocation getPosition bind:coords />
 
+<pre>{JSON.stringify(coords)}</pre>
 <div class="py-2 grid gap-1">
   <div class="grid grid-cols-1 place-content-center w-full">
     <form class="w-full " on:submit|preventDefault={insertRoadbook}>

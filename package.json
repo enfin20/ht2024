@@ -28,6 +28,7 @@
     "dotenv": "^10.0.0",
     "minimist": ">=1.2.6",
     "mongodb": "^4.2.2",
-    "svelte-chartjs": "^3.0.0"
+    "svelte-chartjs": "^3.0.0",
+    "svelte-geolocation": "^0.3.0"
   }
 }
