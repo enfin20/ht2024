@@ -87,10 +87,11 @@
   }
 
 </script>
-  <div class="w-full md:w-1/2 flex flex-wrap">
+<div class="w-full">
+  <div class="w-full grid grid-cols-1 mt-5 md:mt-10">
     <canvas bind:this={chartParcours} />
   </div>
-  <div class="w-full md:w-1/2 flex flex-wrap">
+  <div class="w-full grid grid-cols-1 mt-5 md:mt-10">
     <table id="rdb" class="w-full text-xs text-gray-500 bg-white">
       <tbody class="">
         {#each roadbook as r}
@@ -222,3 +223,4 @@
       </tbody>
     </table>
   </div>
+</div>
