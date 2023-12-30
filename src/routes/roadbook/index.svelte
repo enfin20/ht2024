@@ -2,7 +2,9 @@
   import { onMount } from "svelte";  
   import Geolocation from "svelte-geolocation";
 
-  let coords = [];
+  let getPositionAgain = false;
+  let detail = {};
+
   let roadbook = [];
   var buttonLabel = "Add";
   var edit_Day = Object();
@@ -18,6 +20,8 @@
   edit_Day.detail = "";
   edit_Day.summary = "";
   edit_Day.dayCounter = 0;
+  edit_Day.lat = "";
+  edit_Day.lng = "";
 
   let weatherIcon = [
     "Snow",
@@ -141,6 +145,8 @@
     edit_Day.mood = -1;
     edit_Day.detail = "";
     edit_Day.summary = "";
+    edit_Day.lat = "";
+    edit_Day.lng = "";
     for (var i = 0; i < roadbook.length; i++) {
       if(edit_Day.dayCounter < roadbook[i].dayCounter){
         edit_Day.dayCounter = roadbook[i].dayCounter;
@@ -165,8 +171,6 @@
       edit_Day.day.substring(4, 6),
       edit_Day.day.substring(6, 8),
     ].join("-");
-    coords[1] = edit_Day.lat;
-    coords[0] = edit_Day.lng;
     buttonLabel = "Update";
 
     //mise à jour des icones
@@ -186,8 +190,29 @@
     edit_Day.landscape = Number(edit_Day.landscape);
     edit_Day.mood = Number(edit_Day.mood);
     edit_Day.dayCounter = Number(edit_Day.dayCounter);
-    edit_Day.lat = Number(coords[1]);
-    edit_Day.lng = Number(coords[0]);
+    edit_Day.lat = Number(edit_Day.lat);
+    edit_Day.lng = Number(edit_Day.lng);
+
+    // find gps closest point
+    res = await fetch("/MDB/parcours");
+    const par = await res.json();
+    let parcours = await par.parcours;
+    let minDist=99999;
+    let dist = 99999;
+    let parcours_pos = ""
+    for (var i=0; i < parcours.length; i++){
+      dist=Math.abs((Number(parcours[i].lng) - Number(edit_Day.lng))**2 + ((Number(parcours[i].lat) - Number(edit_Day.lat))**2));
+      if (dist < minDist ){
+        minDist = dist;
+        parcours_pos = parcours[i].pos;
+      }
+      if (dist === 0 ){
+        i = parcours.length;
+      }
+    }
+    edit_Day.parcours_pos = parcours_pos;
+    console.info("minDist",minDist)
+    console.info("parcours_pos",parcours_pos)
 
     if (edit_Day.key === "") {
       // Insert new day
@@ -240,11 +265,61 @@
       }
     }
     cleanForm();
-  }
+  }/**/
 </script>
-<Geolocation getPosition bind:coords /> 
+
+<Geolocation
+  getPosition="{getPositionAgain}"
+  watch="{true}"
+  on:position="{(e) => {
+    detail = e.detail;
+    edit_Day.lat = detail.coords.latitude;
+    edit_Day.lng = detail.coords.longitude;   
+    console.info("detail", detail.coords );
+  }}"
+/>
 <div class="py-2 grid gap-1">
   <div class="grid grid-cols-1 place-content-center w-full">
+    <div class=" w-full md:w-1/2 flex flex-wrap -mx-3">
+      <div class="w-1/3 px-3 mb-6 md:mb-0">
+        <label
+          class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+          for="grid-first-name"
+        >
+          Lat
+        </label>
+        <input
+          type="text"
+          bind:value={edit_Day.lat}
+          class=" appearance-none block w-full bg-gray-100 text-gray-600 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+        />
+      </div>
+      <div class="w-1/3 px-3 mb-6 md:mb-0">
+        <label
+          class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+          for="grid-first-name"
+        >
+          lng
+        </label>
+        <input
+          type="text"
+          bind:value={edit_Day.lng}
+          class=" appearance-none block w-full bg-gray-100 text-gray-600 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+          on:click={updateIcons}
+        />
+      </div>
+      <div class="w-1/3 px-3 mb-6 md:mb-0">
+        <label
+        class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+        for="grid-first-name"
+      >
+        &nbsp;
+      </label>
+        <button on:click="{() => (getPositionAgain = !getPositionAgain)}" class="bg-teal-500 hover:bg-teal-700 text-white font-bold py-3 px-4 mb-3 rounded focus:outline-none focus:shadow-outline">
+          Get Position
+        </button>
+      </div>
+    </div>
     <form class="w-full " on:submit|preventDefault={insertRoadbook}>
       <div class=" w-full md:w-1/2 flex flex-wrap -mx-3">
         <div class="w-1/4 md:w-1/4 px-3 mb-6 md:mb-0">
@@ -298,35 +373,6 @@
             type="text"
             bind:value={edit_Day.end}
             class=" appearance-none block w-full bg-gray-100 text-gray-600 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-          />
-        </div>
-      </div>
-      <div class=" w-full md:w-1/2 flex flex-wrap -mx-3 mb-6">
-        <div class="w-1/2 md:w-1/2 px-3 mb-6 md:mb-0">
-          <label
-            class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-            for="grid-first-name"
-          >
-            Lat
-          </label>
-          <input
-            type="text"
-            bind:value={coords[1]}
-            class=" appearance-none block w-full bg-gray-100 text-gray-600 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-          />
-        </div>
-        <div class="w-1/2 md:w-1/2 px-3 mb-6 md:mb-0">
-          <label
-            class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-            for="grid-first-name"
-          >
-            lng
-          </label>
-          <input
-            type="text"
-            bind:value={coords[0]}
-            class=" appearance-none block w-full bg-gray-100 text-gray-600 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-            on:click={updateIcons}
           />
         </div>
       </div>
