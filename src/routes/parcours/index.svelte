@@ -67,8 +67,6 @@
         }
       }
     }
-    console.info("distance",distance);
-    console.info("elevation",elevation);
     chartParcoursData.destroy();
     chartParcoursData = new chartjs(ctxParcours, {
       type: "line",
@@ -80,7 +78,19 @@
             data: elevation,
           },
         ],
-      },
+       },       
+       options: {
+          borderWidth: 2,
+            cubicInterpolationMode: "monotone",
+            pointStyle: false,
+            plugins: {
+              legend: {
+                display: false,
+              },
+            },
+          },
+
+
     });
   };
   export async function editDay(day) {
