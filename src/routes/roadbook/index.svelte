@@ -643,7 +643,7 @@
       </div>
     </form>
   </div>
-  <div class="overflow-x-auto">
+  <div class="w-full md:w-1/2 flex flex-wrap">
     <table id="rdb" class="w-full text-xs text-gray-500 bg-white">
       <tbody class="">
         {#each roadbook as r}
