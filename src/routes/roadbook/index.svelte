@@ -270,7 +270,7 @@
 
 <Geolocation
   getPosition="{getPositionAgain}"
-  watch="{true}"
+  watch="{!getPositionAgain}"
   on:position="{(e) => {
     detail = e.detail;
     edit_Day.lat = detail.coords.latitude;
@@ -316,7 +316,7 @@
         &nbsp;
       </label>
         <button on:click="{() => (getPositionAgain = !getPositionAgain)}" class="bg-teal-500 hover:bg-teal-700 text-white font-bold py-3 px-4 mb-3 rounded focus:outline-none focus:shadow-outline">
-          Get Position
+          Go
         </button>
       </div>
     </div>
