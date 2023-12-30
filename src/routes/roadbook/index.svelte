@@ -23,6 +23,7 @@
   edit_Day.lat = "";
   edit_Day.lng = "";
   edit_Day.debutParcours = 0;
+  edit_Day.finParcours = 0;
   edit_Day.dist = 0;
   edit_Day.elePos = 0;
   edit_Day.eleNeg = 0;
@@ -293,7 +294,11 @@
           roadbook[i].start = edit_Day.start;
           roadbook[i].end = edit_Day.end;
           roadbook[i].dayCounter = Number(edit_Day.dayCounter);
-        }
+          roadbook[i].dist = Number(edit_Day.dist);
+          roadbook[i].elePos = Number(edit_Day.elePos);
+          roadbook[i].eleNeg = Number(edit_Day.eleNeg); 
+          roadbook[i].finParcours = Number(edit_Day.finParcours);
+          roadbook[i].debutParcours = Number(edit_Day.debutParcours);      }
       }
     }
     cleanForm();

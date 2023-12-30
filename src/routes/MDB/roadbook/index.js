@@ -76,6 +76,9 @@ export async function put(request) {
           lng: roadbook.lng,
           debutParcours: roadbook.debutParcours,
           finParcours: roadbook.finParcours,
+          dist: roadbook.dist,
+          eleNeg:roadbook.eleNeg,
+          elePos:roadbook.elePos,
         },
       }
     );
