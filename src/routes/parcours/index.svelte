@@ -1,5 +1,6 @@
 <script>
   import { onMount } from "svelte";  
+  import chartjs from "chart.js/auto";
 
   let roadbook = [];
 
@@ -32,20 +33,64 @@
   let moodIcon = ["Sad", "Neutral", "Happy"];
   let imgNewMoodActivate = ["_in", "_in", "_in"];
   // _in rgb(200,225,200)
+  let chartParcours;
+  let ctxParcours;
+  var chartParcoursData = [];
 
   onMount(async (promise) => {
+    loadTables();
+    ctxParcours = chartParcours.getContext("2d");
+    chartParcoursData = new chartjs(ctxParcours, {});
+  });
+
+    export async function loadTables()  {
+    let distance =[];
+    let elevation =[];
     let res = [];
-    res = await fetch("/MDB/roadbook");
+    let par =[];
+    let parc =[];
+    let distCumul = 0;
+
+    res = await fetch("/MDB/roadbook?sort=1");
     const roa = await res.json();
     roadbook = await roa.roadbook;
-   });
-
+    for (var i = 0; i < roadbook.length; i++){
+      if (roadbook[i].debutParcours > 0 && roadbook[i].finParcours > 0){
+        let res = await fetch("/MDB/parcours?debutParcours=" + roadbook[i].debutParcours + "&finParcours=" + roadbook[i].finParcours);
+        let par = await res.json();
+        let parc = await par.parcours;
+        for (var j = 0; j < parc.length; j++){
+          distCumul += parc[j].dist;
+          if (j % 100 === 0 ) {
+          distance.push(Math.round((distCumul/1000 + Number.EPSILON)));
+          elevation.push(parc[j].ele);}
+        }
+      }
+    }
+    console.info("distance",distance);
+    console.info("elevation",elevation);
+    chartParcoursData.destroy();
+    chartParcoursData = new chartjs(ctxParcours, {
+      type: "line",
+      data: {
+        labels: distance,
+        datasets: [
+          {
+            label: "Parcours",
+            data: elevation,
+          },
+        ],
+      },
+    });
+  };
   export async function editDay(day) {
   }
 
 </script>
-
-  <div class=" w-full md:w-1/2 flex flex-wrap">
+  <div class="w-full md:w-1/2 flex flex-wrap">
+    <canvas bind:this={chartParcours} />
+  </div>
+  <div class="w-full md:w-1/2 flex flex-wrap">
     <table id="rdb" class="w-full text-xs text-gray-500 bg-white">
       <tbody class="">
         {#each roadbook as r}

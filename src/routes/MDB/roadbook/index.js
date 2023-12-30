@@ -3,10 +3,14 @@ import { ObjectId } from "mongodb";
 
 export async function get(request) {
   try {
+    const s = request.query.get("sort") || -1;
+    var sort = new Object();
+    sort = {day: Number(s)};
+
     const dbConnection = await connectToDatabase();
     const db = dbConnection.db;
     const collection = db.collection("Roadbook");
-    const roadbook = await collection.find().sort({ day: -1 }).toArray();
+    const roadbook = await collection.find().sort(sort).toArray();
     for (var i = 0; i < roadbook.length; i++) {
       roadbook[i].key = roadbook[i].day;
     }
