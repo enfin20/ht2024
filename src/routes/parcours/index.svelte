@@ -54,6 +54,8 @@
     res = await fetch("/MDB/roadbook?sort=1");
     const roa = await res.json();
     roadbook = await roa.roadbook;
+    var freq = Math.round(roadbook.length / 4000) + 1
+    console.info("freq",freq)
     for (var i = 0; i < roadbook.length; i++){
       if (roadbook[i].debutParcours > 0 && roadbook[i].finParcours > 0){
         let res = await fetch("/MDB/parcours?debutParcours=" + roadbook[i].debutParcours + "&finParcours=" + roadbook[i].finParcours);
@@ -61,7 +63,7 @@
         let parc = await par.parcours;
         for (var j = 0; j < parc.length; j++){
           distCumul += parc[j].dist;
-          if (j % 100 === 0 ) {
+          if (j % freq === 0 ) {
           distance.push(Math.round((distCumul/1000 + Number.EPSILON)));
           elevation.push(parc[j].ele);}
         }
