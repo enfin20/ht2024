@@ -22,6 +22,10 @@
   edit_Day.dayCounter = 0;
   edit_Day.lat = "";
   edit_Day.lng = "";
+  edit_Day.debutParcours = 0;
+  edit_Day.dist = 0;
+  edit_Day.elePos = 0;
+  edit_Day.eleNeg = 0;
 
   let weatherIcon = [
     "Snow",
@@ -58,14 +62,18 @@
     res = await fetch("/MDB/roadbook");
     const roa = await res.json();
     roadbook = await roa.roadbook;
+    let lastDay = 0;
+    let dayId = 0;
     for (var i = 0; i < roadbook.length; i++) {
-      if(edit_Day.dayCounter < roadbook[i].dayCounter){
-        edit_Day.dayCounter = roadbook[i].dayCounter;
-        edit_Day.start = roadbook[i].end
+      if(lastDay < roadbook[i].dayCounter){
+        lastDay = roadbook[i].dayCounter;
+        dayId = i;
       }
-  }
-  edit_Day.dayCounter = edit_Day.dayCounter + 1;
-});
+    }
+    edit_Day.start = roadbook[dayId].end
+    edit_Day.debutParcours = roadbook[dayId].finParcours
+    edit_Day.dayCounter = roadbook[dayId].dayCounter + 1;
+  });
 
   function updateIcons() {
     //mise à jour des icones
@@ -132,6 +140,24 @@
     }
   }
 
+  export async function calcDist(){
+    let res = await fetch("/MDB/parcours?debutParcours=" + edit_Day.debutParcours + "&finParcours=" + edit_Day.finParcours);
+    const par = await res.json();
+    let parcours = await par.parcours;
+    edit_Day.dist = 0;
+    edit_Day.elePos = 0;
+    edit_Day.eleNeg = 0;
+    console.info("edit_Day", edit_Day);
+    for (var i = 0; i < parcours.length; i++){
+      edit_Day.dist += (parcours[i].dist/1000);
+      edit_Day.elePos += parcours[i].elepos;
+      edit_Day.eleNeg += parcours[i].eleneg;
+    }
+    edit_Day.dist = Math.round((edit_Day.dist + Number.EPSILON) * 10) / 10
+
+    console.info("edit_Day", edit_Day);
+  }
+
   function cleanForm() {
     edit_Day.key = "";
     buttonLabel = "Add";
@@ -147,14 +173,21 @@
     edit_Day.summary = "";
     edit_Day.lat = "";
     edit_Day.lng = "";
-    for (var i = 0; i < roadbook.length; i++) {
-      if(edit_Day.dayCounter < roadbook[i].dayCounter){
-        edit_Day.dayCounter = roadbook[i].dayCounter;
-        edit_Day.start = roadbook[i].end
-      }
-  }
-  edit_Day.dayCounter = edit_Day.dayCounter + 1;
+    edit_Day.dist = 0;
+    edit_Day.elePos = 0;
+    edit_Day.eleNeg = 0;
 
+    let lastDay = 0;
+    let dayId = 0;
+    for (var i = 0; i < roadbook.length; i++) {
+      if(lastDay < roadbook[i].dayCounter){
+        lastDay = roadbook[i].dayCounter;
+        dayId = i;
+      }
+    } 
+    edit_Day.start = roadbook[dayId].end
+    edit_Day.debutParcours = roadbook[dayId].finParcours
+    edit_Day.dayCounter = roadbook[dayId].dayCounter + 1;
     buttonLabel = "Add";
     updateIcons();
   }
@@ -172,7 +205,7 @@
       edit_Day.day.substring(6, 8),
     ].join("-");
     buttonLabel = "Update";
-
+    calcDist();
     //mise à jour des icones
     updateIcons();
   }
@@ -210,9 +243,8 @@
         i = parcours.length;
       }
     }
-    edit_Day.parcours_pos = parcours_pos;
-    console.info("minDist",minDist)
-    console.info("parcours_pos",parcours_pos)
+    edit_Day.finParcours = parcours_pos;
+    calcDist();
 
     if (edit_Day.key === "") {
       // Insert new day
@@ -315,9 +347,49 @@
       >
         &nbsp;
       </label>
-        <button on:click="{() => (getPositionAgain = !getPositionAgain)}" class="bg-teal-500 hover:bg-teal-700 text-white font-bold py-3 px-4 mb-3 rounded focus:outline-none focus:shadow-outline">
+        <button on:click="{() => (getPositionAgain = !getPositionAgain)}" class=" text-white border bg-teal-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-teal-700">
           Go
         </button>
+      </div>
+    </div>
+    <div class=" w-full md:w-1/2 flex flex-wrap -mx-3">
+      <div class="w-1/3 px-3 mb-6 md:mb-0">
+        <label
+          class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+          for="grid-first-name"
+        >
+          distance
+        </label>
+        <input
+          type="text"
+          bind:value={edit_Day.dist}
+          class=" appearance-none block w-full bg-gray-100 text-gray-600 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+        />
+      </div>
+      <div class="w-1/3 px-3 mb-6 md:mb-0">
+        <label
+          class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+          for="grid-first-name"
+        >
+          Positif
+        </label>
+        <input
+          type="text"
+          bind:value={edit_Day.elePos}
+          class=" appearance-none block w-full bg-gray-100 text-gray-600 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+        />
+      </div>
+      <div class="w-1/3 px-3 mb-6 md:mb-0">
+        <label
+        class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+        for="grid-first-name"
+      >
+        Negatif</label>
+        <input
+          type="text"
+          bind:value={edit_Day.eleNeg}
+          class=" appearance-none block w-full bg-gray-100 text-gray-600 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+        />
       </div>
     </div>
     <form class="w-full " on:submit|preventDefault={insertRoadbook}>

@@ -74,7 +74,8 @@ export async function put(request) {
           dayCounter:roadbook.dayCounter,
           lat: roadbook.lat,
           lng: roadbook.lng,
-          parcoursPos: roadbook.parcoursPos,
+          debutParcours: roadbook.debutParcours,
+          finParcours: roadbook.finParcours,
         },
       }
     );
