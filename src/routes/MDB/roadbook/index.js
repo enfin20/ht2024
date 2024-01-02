@@ -6,7 +6,7 @@ export async function get(request) {
     const s = request.query.get("sort") || -1;
     var sort = new Object();
     sort = {day: Number(s)};
-
+    console.info("Qu'est ?")
     const dbConnection = await connectToDatabase();
     const db = dbConnection.db;
     const collection = db.collection("Roadbook");

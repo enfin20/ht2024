@@ -39,6 +39,7 @@
 
   onMount(async (promise) => {
     loadTables();
+    console.info("ok")
     ctxParcours = chartParcours.getContext("2d");
     chartParcoursData = new chartjs(ctxParcours, {});
   });
@@ -46,35 +47,37 @@
     export async function loadTables()  {
     let distance =[];
     let elevation =[];
+    let roadbook = [];
     let dist =[];
     let ele =[];
     let res = [];
-    let par =[];
-    let parc =[];
-    let distCumul = 0;
-
+    let variante = 1;
+    let debutParcours = 100000000;
+    let finParcours = 0;
+    let freq = 1;
     res = await fetch("/MDB/roadbook?sort=1");
     const roa = await res.json();
-    roadbook = await roa.roadbook;
- 
+    roadbook = await roa.roadbook
+
     for (var i = 0; i < roadbook.length; i++){
-      if (roadbook[i].debutParcours > 0 && roadbook[i].finParcours > 0){
-        let res = await fetch("/MDB/parcours?debutParcours=" + roadbook[i].debutParcours + "&finParcours=" + roadbook[i].finParcours);
-        let par = await res.json();
-        let parc = await par.parcours;
-        for (var j = 0; j < parc.length; j++){
-          distCumul += parc[j].dist;
-          dist.push(Math.round((distCumul/1000 + Number.EPSILON)));
-          ele.push(parc[j].ele);
-        }
+      if (roadbook[i].debutParcours <= debutParcours ){
+        debutParcours = roadbook[i].debutParcours
+      }
+      if (roadbook[i].finParcours >= finParcours ){
+        finParcours = roadbook[i].finParcours
       }
     }
-    var freq = Math.max(Math.round(dist.length / 4000), 1)
-    console.info("freq", freq);
-    for (var i = 0; i < dist.length; i+= freq){
-          distance.push(dist[i]);
-          elevation.push(ele[i]);
-        }   
+    freq = Math.round(Math.max((finParcours - debutParcours) / 4000 , 1), 0);
+    res = await fetch("/MDB/distance?variante=" + variante + "&freq="+ freq + "&debutParcours=" + debutParcours + "&finParcours=" + finParcours);
+    const dis = await res.json();
+    dist = await dis.distance;
+    console.info("dist",dist.length)
+    for (var i = 0; i < dist.length; i++){
+      console.info("dist[i].cumul", dist[i].cumul)
+      distance.push(Math.round(dist[i].cumul / 1000, 0)),
+      elevation.push(dist[i].ele)
+    }
+
     chartParcoursData.destroy();
     chartParcoursData = new chartjs(ctxParcours, {
       type: "line",
@@ -89,18 +92,23 @@
        },       
        options: {
           borderWidth: 2,
-            cubicInterpolationMode: "monotone",
-            pointStyle: false,
-            plugins: {
-              legend: {
-                display: false,
-              },
+          cubicInterpolationMode: "monotone",
+          pointStyle: false,
+          plugins: {
+            legend: {
+              display: false,
             },
           },
-
-
+          xaxes: [{
+            type: 'linear', /* <--- this */
+            scalelabel: {
+              display: true,
+            },
+          }]
+          },
     });
   };
+
   export async function editDay(day) {
   }
 
