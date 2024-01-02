@@ -47,7 +47,6 @@
     export async function loadTables()  {
     let distance =[];
     let elevation =[];
-    let roadbook = [];
     let dist =[];
     let ele =[];
     let res = [];
@@ -67,7 +66,7 @@
         finParcours = roadbook[i].finParcours
       }
     }
-    freq = Math.round(Math.max((finParcours - debutParcours) / 4000 , 1), 0);
+    freq = Math.round(Math.max((finParcours - debutParcours) / 2000 , 1), 0);
     res = await fetch("/MDB/distance?variante=" + variante + "&freq="+ freq + "&debutParcours=" + debutParcours + "&finParcours=" + finParcours);
     const dis = await res.json();
     dist = await dis.distance;
