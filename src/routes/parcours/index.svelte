@@ -36,6 +36,9 @@
   let chartParcours;
   let ctxParcours;
   var chartParcoursData = [];
+  let debutParcours = 100000000;
+  let finParcours = 0;
+  let variante = 1;
 
   onMount(async (promise) => {
     loadTables();
@@ -45,16 +48,7 @@
   });
 
     export async function loadTables()  {
-    let distance =[];
-    let elevation =[];
-    let dist =[];
-    let ele =[];
-    let res = [];
-    let variante = 1;
-    let debutParcours = 100000000;
-    let finParcours = 0;
-    let freq = 1;
-    res = await fetch("/MDB/roadbook?sort=1");
+    let res = await fetch("/MDB/roadbook?sort=1");
     const roa = await res.json();
     roadbook = await roa.roadbook
 
@@ -66,8 +60,18 @@
         finParcours = roadbook[i].finParcours
       }
     }
+    loadParcours(); 
+  };
+
+
+  export async function loadParcours()  {
+    let distance =[];
+    let elevation =[];
+    let dist =[];
+    let freq = 1;
+
     freq = Math.round(Math.max((finParcours - debutParcours) / 2000 , 1), 0);
-    res = await fetch("/MDB/distance?variante=" + variante + "&freq="+ freq + "&debutParcours=" + debutParcours + "&finParcours=" + finParcours);
+    let res = await fetch("/MDB/distance?variante=" + variante + "&freq="+ freq + "&debutParcours=" + debutParcours + "&finParcours=" + finParcours);
     const dis = await res.json();
     dist = await dis.distance;
     console.info("dist",dist.length)
@@ -108,12 +112,49 @@
     });
   };
 
+
   export async function editDay(day) {
   }
 
 </script>
 <div class="w-full">
-  <div class="w-full grid grid-cols-1 mt-5 md:mt-10">
+  <div class="w-full grid grid-cols-1 md:grid-cols-6 mt-5 md:mt-10">
+    <select
+    bind:value={variante}
+    on:change={loadParcours}
+    class="text-xs appearance-none border-2 border-gray-200 rounded w-1/2 py-1 px-1 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-pink-400"
+  >
+      <option value=1>
+        Variante 1
+      </option>
+      <option value=2>
+        Variante 2
+      </option>
+  </select>
+    <select
+    bind:value={debutParcours}
+    on:change={loadParcours}
+    class="text-xs appearance-none border-2 border-gray-200 rounded w-full py-1 px-1 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-pink-400"
+  >
+    {#each roadbook as r}
+      <option value={r.debutParcours}>
+        Jour {r.dayCounter} : {r.start}
+      </option>
+    {/each}
+  </select>
+  <select
+  bind:value={finParcours}
+  on:change={loadParcours}
+  class="text-xs appearance-none border-2 border-gray-200 rounded  w-full py-1 px-1 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-pink-400"
+>
+  {#each roadbook as r}
+    <option value={r.finParcours}>
+     Jour {r.dayCounter} : {r.end}
+    </option>
+  {/each}
+</select>
+  </div>
+<div class="w-full grid grid-cols-1 mt-0 md:mt-5">
     <canvas bind:this={chartParcours} />
   </div>
   <div class="w-full grid grid-cols-1 mt-5 md:mt-10">
