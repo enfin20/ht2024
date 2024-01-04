@@ -1,5 +1,5 @@
 <script>
-  import { onMount } from "svelte";  
+  import { onMount } from "svelte";
   import chartjs from "chart.js/auto";
 
   let roadbook = [];
@@ -28,7 +28,7 @@
   let imgNewNightActivate = ["_in", "_in", "_in", "_in", "_in"];
   let difficultyIcon = ["ZeroDay", "Star", "Star", "Star"];
   let imgNewDifficultyActivate = ["_in", "_in", "_in", "_in"];
-  let starsIcon = ["Ugly", "Soso","Star", "Star", "Star"];
+  let starsIcon = ["Ugly", "Soso", "Star", "Star", "Star"];
   let imgNewLandscapeActivate = ["_in", "_in", "_in", "_in", "_in"];
   let moodIcon = ["Sad", "Neutral", "Happy"];
   let imgNewMoodActivate = ["_in", "_in", "_in"];
@@ -42,44 +42,82 @@
 
   onMount(async (promise) => {
     loadTables();
-    console.info("ok")
     ctxParcours = chartParcours.getContext("2d");
     chartParcoursData = new chartjs(ctxParcours, {});
   });
 
-    export async function loadTables()  {
+  export async function loadTables() {
     let res = await fetch("/MDB/roadbook?sort=1");
     const roa = await res.json();
-    roadbook = await roa.roadbook
+    roadbook = await roa.roadbook;
 
-    for (var i = 0; i < roadbook.length; i++){
-      if (roadbook[i].debutParcours <= debutParcours ){
-        debutParcours = roadbook[i].debutParcours
+    for (var i = 0; i < roadbook.length; i++) {
+      if (roadbook[i].debutParcours <= debutParcours) {
+        debutParcours = roadbook[i].debutParcours;
       }
-      if (roadbook[i].finParcours >= finParcours ){
-        finParcours = roadbook[i].finParcours
+      if (roadbook[i].finParcours >= finParcours) {
+        finParcours = roadbook[i].finParcours;
       }
     }
-    loadParcours(); 
-  };
+    loadParcours();
+  }
 
-
-  export async function loadParcours()  {
-    let distance =[];
-    let elevation =[];
-    let dist =[];
+  export async function loadParcours() {
+    let distance = [];
+    let elevation = [];
+    let daysFinParcours = [];
+    let dist = [];
     let freq = 1;
 
-    freq = Math.round(Math.max((finParcours - debutParcours) / 2000 , 1), 0);
-    let res = await fetch("/MDB/distance?variante=" + variante + "&freq="+ freq + "&debutParcours=" + debutParcours + "&finParcours=" + finParcours);
+    freq = Math.round(Math.max((finParcours - debutParcours) / 2000, 1), 0);
+    let res = await fetch(
+      "/MDB/distance?variante=" +
+        variante +
+        "&freq=" +
+        freq +
+        "&debutParcours=" +
+        debutParcours +
+        "&finParcours=" +
+        finParcours
+    );
     const dis = await res.json();
     dist = await dis.distance;
-    console.info("dist",dist.length)
-    for (var i = 0; i < dist.length; i++){
-      console.info("dist[i].cumul", dist[i].cumul)
+    console.info("dist", dist.length);
+    for (var i = 0; i < dist.length; i++) {
       distance.push(Math.round(dist[i].cumul / 1000, 0)),
-      elevation.push(dist[i].ele)
+        elevation.push(dist[i].ele);
+      for (var j = 0; j < roadbook.length; j++) {
+        if (dist[i].pos === roadbook[j].finParcours) {
+          daysFinParcours.push(i);
+        }
+      }
     }
+    console.info("daysFinParcours", daysFinParcours);
+    const lineMarkerText = {
+      id: "lineMarkerText",
+      beforeDatasetDraw: (chart, args, plugins) => {
+        const {
+          ctx,
+          chartArea: { top, bottom, height },
+          scales: { x },
+        } = chart;
+        ctx.beginPath();
+        ctx.strokeStyle = "rgb(195, 39, 72)";
+        ctx.lineWidth = 3;
+
+        ctx.moveTo(x.getPixelForValue(daysFinParcours[0]), top);
+        ctx.lineTo(x.getPixelForValue(daysFinParcours[0]), bottom);
+        ctx.stroke();
+
+        ctx.moveTo(x.getPixelForValue(daysFinParcours[1]), top);
+        ctx.lineTo(x.getPixelForValue(daysFinParcours[1]), bottom);
+        ctx.stroke();
+
+        ctx.moveTo(x.getPixelForValue(daysFinParcours[2]), top);
+        ctx.lineTo(x.getPixelForValue(daysFinParcours[2]), bottom);
+        ctx.stroke();
+      },
+    };
 
     chartParcoursData.destroy();
     chartParcoursData = new chartjs(ctxParcours, {
@@ -92,69 +130,66 @@
             data: elevation,
           },
         ],
-       },       
-       options: {
-          borderWidth: 2,
-          cubicInterpolationMode: "monotone",
-          pointStyle: false,
-          plugins: {
-            legend: {
-              display: false,
-            },
+      },
+      options: {
+        borderWidth: 2,
+        cubicInterpolationMode: "monotone",
+        pointStyle: false,
+        plugins: {
+          legend: {
+            display: false,
           },
-          xaxes: [{
-            type: 'linear', /* <--- this */
+        },
+        xaxes: [
+          {
+            type: "linear" /* <--- this */,
             scalelabel: {
               display: true,
             },
-          }]
           },
+        ],
+      },
+      plugins: [lineMarkerText],
     });
-  };
-
-
-  export async function editDay(day) {
   }
 
+  export async function editDay(day) {}
 </script>
+
 <div class="w-full">
   <div class="w-full grid grid-cols-1 md:grid-cols-6 mt-5 md:mt-10">
     <select
-    bind:value={variante}
-    on:change={loadParcours}
-    class="text-xs appearance-none border-2 border-gray-200 rounded w-1/2 py-1 px-1 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-pink-400"
-  >
-      <option value=1>
-        Variante 1
-      </option>
-      <option value=2>
-        Variante 2
-      </option>
-  </select>
+      bind:value={variante}
+      on:change={loadParcours}
+      class="text-xs appearance-none border-2 border-gray-200 rounded w-1/2 py-1 px-1 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-pink-400"
+    >
+      <option value="1"> Variante 1 </option>
+      <option value="2"> Variante 2 </option>
+    </select>
     <select
-    bind:value={debutParcours}
-    on:change={loadParcours}
-    class="text-xs appearance-none border-2 border-gray-200 rounded w-full py-1 px-1 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-pink-400"
-  >
-    {#each roadbook as r}
-      <option value={r.debutParcours}>
-        Jour {r.dayCounter} : {r.start}
-      </option>
-    {/each}
-  </select>
-  <select
-  bind:value={finParcours}
-  on:change={loadParcours}
-  class="text-xs appearance-none border-2 border-gray-200 rounded  w-full py-1 px-1 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-pink-400"
->
-  {#each roadbook as r}
-    <option value={r.finParcours}>
-     Jour {r.dayCounter} : {r.end}
-    </option>
-  {/each}
-</select>
+      bind:value={debutParcours}
+      on:change={loadParcours}
+      class="text-xs appearance-none border-2 border-gray-200 rounded w-full py-1 px-1 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-pink-400"
+    >
+      {#each roadbook as r}
+        <option value={r.debutParcours}>
+          Jour {r.dayCounter} : {r.start}
+        </option>
+      {/each}
+    </select>
+    <select
+      bind:value={finParcours}
+      on:change={loadParcours}
+      class="text-xs appearance-none border-2 border-gray-200 rounded  w-full py-1 px-1 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-pink-400"
+    >
+      {#each roadbook as r}
+        <option value={r.finParcours}>
+          Jour {r.dayCounter} : {r.end}
+        </option>
+      {/each}
+    </select>
   </div>
-<div class="w-full grid grid-cols-1 mt-0 md:mt-5">
+  <div class="w-full grid grid-cols-1 mt-0 md:mt-5">
     <canvas bind:this={chartParcours} />
   </div>
   <div class="w-full grid grid-cols-1 mt-5 md:mt-10">
@@ -221,7 +256,7 @@
             </td>
             <td class="text-left align-middle py-1 px-px ">
               {#each starsIcon as si, i}
-              {#if i === 0}
+                {#if i === 0}
                   {#if r.landscape === 0}
                     <img
                       src="/images/{starsIcon[0]}.png"
@@ -251,7 +286,7 @@
                     />
                   {/if}
                 {/if}
-                {#if i >= 2}                 
+                {#if i >= 2}
                   {#if r.landscape >= i}
                     <img
                       src="/images/{starsIcon[i]}.png"
@@ -266,7 +301,7 @@
                     />
                   {/if}
                 {/if}
-             {/each}
+              {/each}
             </td>
             <td class="text-left align-middle py-1 px-px ">
               {r.dist || 0}
