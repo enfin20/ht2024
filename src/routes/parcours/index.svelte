@@ -97,25 +97,21 @@
       id: "lineMarkerText",
       beforeDatasetDraw: (chart, args, plugins) => {
         const {
+          data,
           ctx,
           chartArea: { top, bottom, height },
           scales: { x },
         } = chart;
-        ctx.beginPath();
-        ctx.strokeStyle = "rgb(195, 39, 72)";
-        ctx.lineWidth = 3;
+        ctx.save();
+        data.datasets[0].data.forEach((dfp, index) => {
+          ctx.beginPath();
+          ctx.strokeStyle = "rgb(195, 39, 72)";
+          ctx.lineWidth = 3;
 
-        ctx.moveTo(x.getPixelForValue(daysFinParcours[0]), top);
-        ctx.lineTo(x.getPixelForValue(daysFinParcours[0]), bottom);
-        ctx.stroke();
-
-        ctx.moveTo(x.getPixelForValue(daysFinParcours[1]), top);
-        ctx.lineTo(x.getPixelForValue(daysFinParcours[1]), bottom);
-        ctx.stroke();
-
-        ctx.moveTo(x.getPixelForValue(daysFinParcours[2]), top);
-        ctx.lineTo(x.getPixelForValue(daysFinParcours[2]), bottom);
-        ctx.stroke();
+          ctx.moveTo(x.getPixelForValue(daysFinParcours[index]), top);
+          ctx.lineTo(x.getPixelForValue(daysFinParcours[index]), bottom);
+          ctx.stroke();
+        });
       },
     };
 
