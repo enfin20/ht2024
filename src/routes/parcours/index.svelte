@@ -113,7 +113,7 @@
         data.datasets[0].data.forEach((dfp, index) => {
           ctx.beginPath();
           ctx.strokeStyle = "rgb(195, 39, 72)";
-          ctx.lineWidth = 3;
+          ctx.lineWidth = 2;
 
           ctx.moveTo(x.getPixelForValue(daysFinParcours[index]), top);
           ctx.lineTo(x.getPixelForValue(daysFinParcours[index]), bottom);
