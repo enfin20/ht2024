@@ -278,6 +278,11 @@
           {
             data: expensesCategoryType,
             backgroundColor: categoriesColor[i],
+            image: [
+              "images/equipementBivouac.png",
+              "images/equipementChaussure.png",
+              "images/equipementVetement.png",
+            ],
           },
         ],
       });
@@ -295,7 +300,8 @@
     const segmentImage = {
       id: "segmentImage",
       afterDatasetDraw(chart, args, plugins) {
-        const { ctx } = chart;
+        const { ctx, data } = chart;
+        /*
         var images = [];
         images[0] = new Image();
         images[0].src = "images/equipementBivouac.png";
@@ -303,18 +309,15 @@
         images[1].src = "images/equipementChaussure.png";
         images[2] = new Image();
         images[2].src = "images/equipementVetement.png";
+        */
         ctx.save();
-        const width = 30;
+        const width = 25;
         chart.getDatasetMeta(0).data.forEach((datapoint, index) => {
           const x = chart.getDatasetMeta(0).data[index].tooltipPosition().x;
           const y = chart.getDatasetMeta(0).data[index].tooltipPosition().y;
-          ctx.drawImage(
-            images[index],
-            x - width / 2,
-            y - width / 2,
-            width,
-            width
-          );
+          const image = new Image();
+          image.src = data.datasets[0].image[index];
+          ctx.drawImage(image, x - width / 2, y - width / 2, width, width);
         });
       },
     };
