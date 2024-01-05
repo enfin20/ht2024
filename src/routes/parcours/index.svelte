@@ -92,7 +92,7 @@
         }
       }
     }
-    console.info("daysFinParcours", daysFinParcours);
+
     const lineMarkerText = {
       id: "lineMarkerText",
       beforeDatasetDraw: (chart, args, plugins) => {
