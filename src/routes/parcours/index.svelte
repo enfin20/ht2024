@@ -315,13 +315,7 @@
             <td class="text-left align-middle py-1 px-2 ">
               {r.eleNeg || 0}
             </td>
-            <td class="align-middle py-1 px-1 ">
-              <button
-                class="bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 px-2 rounded focus:outline-none focus:shadow-outline"
-                id={r.key}
-                on:click={editDay(r.key)}>Edit</button
-              >
-            </td>
+            <td class="align-middle py-1 px-1 " />
           </tr>
         {/each}
       </tbody>
