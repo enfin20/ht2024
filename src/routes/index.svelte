@@ -320,7 +320,7 @@
       afterDatasetDraw(chart, args, plugins) {
         const { ctx, data } = chart;
         ctx.save();
-        const width = 27;
+        const width = 25;
         chart.getDatasetMeta(0).data.forEach((datapoint, index) => {
           const x = chart.getDatasetMeta(0).data[index].tooltipPosition().x;
           const y = chart.getDatasetMeta(0).data[index].tooltipPosition().y;
