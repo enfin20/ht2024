@@ -312,7 +312,7 @@
             text: categoryTypes[i].type,
           },
         },
-        cutout: "50%",
+        cutout: "40%",
       });
     }
     const segmentImage = {
