@@ -87,7 +87,14 @@
       distance.push(Math.round(dist[i].cumul / 1000, 0)),
         elevation.push(dist[i].ele);
       for (var j = 0; j < roadbook.length; j++) {
-        if (dist[i].pos === roadbook[j].finParcours) {
+        if (i < dist.length - 1) {
+          if (
+            dist[i].pos <= roadbook[j].finParcours &&
+            dist[i + 1].pos >= roadbook[j].finParcours
+          ) {
+            daysFinParcours.push(i);
+          }
+        } else {
           daysFinParcours.push(i);
         }
       }
