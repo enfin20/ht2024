@@ -353,7 +353,7 @@
             Math.trunc(payerExpenses[0]).toLocaleString("fr") +
             " €",
           data0[0].x - data0[0].width / 2,
-          data0[0].y + 2
+          data0[0].y + 5
         );
         ctx.fillText(
           datasetPayer[1].label +
@@ -361,7 +361,7 @@
             Math.trunc(payerExpenses[1]).toLocaleString("fr") +
             " €",
           data1[0].x - data1[0].width / 2,
-          data1[0].y + 2
+          data1[0].y + 5
         );
       },
     };
