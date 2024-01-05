@@ -292,12 +292,38 @@
         },
       });
     }
-
+    const segmentImage = {
+      id: "segmentImage",
+      afterDatasetDraw(chart, args, plugins) {
+        const { ctx } = chart;
+        var images = [];
+        images[0] = new Image();
+        images[0].src = "images/equipementBivouac.png";
+        images[1] = new Image();
+        images[1].src = "images/equipementChaussure.png";
+        images[2] = new Image();
+        images[2].src = "images/equipementVetement.png";
+        ctx.save();
+        const width = 30;
+        chart.getDatasetMeta(0).data.forEach((datapoint, index) => {
+          const x = chart.getDatasetMeta(0).data[index].tooltipPosition().x;
+          const y = chart.getDatasetMeta(0).data[index].tooltipPosition().y;
+          ctx.drawImage(
+            images[index],
+            x - width / 2,
+            y - width / 2,
+            width,
+            width
+          );
+        });
+      },
+    };
     chartExpensesCategoryTypeData_0.destroy();
     chartExpensesCategoryTypeData_0 = new chartjs(ctxExpensesCategoryType_0, {
       type: "doughnut",
       data: datasetExpensesCategoryType[0],
       options: optionsCategoryType[0],
+      plugins: [segmentImage],
     });
     chartExpensesCategoryTypeData_1.destroy();
     chartExpensesCategoryTypeData_1 = new chartjs(ctxExpensesCategoryType_1, {
