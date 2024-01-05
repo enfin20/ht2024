@@ -324,6 +324,29 @@
       options: optionsCategoryType[4],
     });
 
+    const payerLabel = {
+      id: "payerLabel",
+      afterDatasetsDraw(chart, args, plugins) {
+        const {
+          ctx,
+          data,
+          chartArea: { top, bottom },
+        } = chart;
+        ctx.save();
+        chart.getDatasetMeta(0).data.forEach((datapoint, index) => {
+          ctx.font = "bold 24px sans-serif";
+          ctx.fillStyle = "white";
+          ctx.fillText(
+            datasetPayer[index].label +
+              ": " +
+              Math.trunc(payerExpenses[index]).toLocaleString("fr") +
+              " €",
+            datapoint.x / 2,
+            datapoint.y + 10
+          );
+        });
+      },
+    };
     let datasetPayer = [];
     datasetPayer.push({
       label: "Anne",
@@ -364,6 +387,7 @@
           },
         },
       },
+      plugins: [payerLabel],
     });
   }
 </script>

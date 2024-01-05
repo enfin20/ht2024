@@ -99,7 +99,7 @@
         const {
           data,
           ctx,
-          chartArea: { top, bottom, height },
+          chartArea: { top, bottom },
           scales: { x },
         } = chart;
         ctx.save();
