@@ -11,17 +11,9 @@
   let totalExpenses = 0;
   let categoryTypes = [];
   let categories = [];
-  let payerExpenses = []
+  let payerExpenses = [];
 
-  let showMonth = [
-    true,
-    true,
-    true,
-    true,
-    true,
-    true,
-
-  ];
+  let showMonth = [true, true, true, true, true, true];
   let showType = [true, true, true, true, true, true, true];
 
   let classImgType = [
@@ -44,6 +36,8 @@
     grey2: "rgb(153, 192, 192)",
     pct: "rgb(0, 110, 118)",
     ht: "rgb(72, 125, 221)",
+    anne: "rgb(68, 138, 160)",
+    olivier: "rgb(128, 201, 224)",
   };
   let categoryTypesColor = [
     CHART_COLORS.red,
@@ -56,23 +50,18 @@
     CHART_COLORS.grey,
     CHART_COLORS.pct,
     CHART_COLORS.ht,
+    CHART_COLORS.anne,
+    CHART_COLORS.olivier,
     "rgb(255, 99, 132)",
   ];
   let categoriesColor = [
-    ["rgb(255, 99, 132)","rgb(225, 69, 102)","rgb(195, 39, 72)"],
-    ["rgb(255, 159, 64)","rgb(225, 129, 34)","rgb(195, 99, 4)"],
-    ["rgb(153, 192, 192)","rgb(123, 162, 162)","rgb(93, 132, 132)"],
-    ["rgb(75, 230, 192)","rgb(45, 200, 162)","rgb(15, 170, 132)"],
-    ["rgb(54, 162, 235)","rgb(24, 132, 205)","rgb(0, 102, 175)"],
-   ];
-  let months = [
-    "MAY",
-    "JUN",
-    "JUL",
-    "AUG",
-    "SEP",    
-    "OCT",
+    ["rgb(255, 99, 132)", "rgb(225, 69, 102)", "rgb(195, 39, 72)"],
+    ["rgb(255, 159, 64)", "rgb(225, 129, 34)", "rgb(195, 99, 4)"],
+    ["rgb(153, 192, 192)", "rgb(123, 162, 162)", "rgb(93, 132, 132)"],
+    ["rgb(75, 230, 192)", "rgb(45, 200, 162)", "rgb(15, 170, 132)"],
+    ["rgb(54, 162, 235)", "rgb(24, 132, 205)", "rgb(0, 102, 175)"],
   ];
+  let months = ["MAY", "JUN", "JUL", "AUG", "SEP", "OCT"];
   let erreurMessage = "";
 
   let chartPayer;
@@ -91,7 +80,6 @@
   let ctxExpensesCategoryType_3;
   let ctxExpensesCategoryType_4;
 
- 
   var chartPayerData = [];
   var chartExpensesTypeData = [];
   var chartExpensesCategoryTypeData_0 = [];
@@ -99,7 +87,6 @@
   var chartExpensesCategoryTypeData_2 = [];
   var chartExpensesCategoryTypeData_3 = [];
   var chartExpensesCategoryTypeData_4 = [];
-
 
   onMount(async (promise) => {
     loadData();
@@ -135,14 +122,12 @@
       ctxExpensesCategoryType_4,
       {}
     );
-
   });
 
   async function loadData() {
     categoryTypes = [];
     categories = [];
     expenses = [];
-    
 
     // récupération des expenses et types
 
@@ -166,7 +151,7 @@
     let pivot = [];
     let obj = new Object();
     totalExpenses = 0;
-    payerExpenses = [0,0];
+    payerExpenses = [0, 0];
     for (var i = 0; i < expenses.length; i++) {
       obj = [];
       obj.amount = expenses[i].amount;
@@ -181,9 +166,9 @@
       pivot.push(obj);
 
       totalExpenses += Math.trunc(expenses[i].amount);
-      if (expenses[i].payer === "Anne"){
+      if (expenses[i].payer === "Anne") {
         payerExpenses[0] += Math.trunc(expenses[i].amount);
-      }else{
+      } else {
         payerExpenses[1] += Math.trunc(expenses[i].amount);
       }
     }
@@ -298,11 +283,13 @@
       });
       optionsCategoryType.push({
         responsive: true,
-        plugins: { legend: { display:false} ,
-        title: {
-                display: true,
-                text: categoryTypes[i].type,
-              },},
+        plugins: {
+          legend: { display: false },
+          title: {
+            display: true,
+            text: categoryTypes[i].type,
+          },
+        },
       });
     }
 
@@ -340,14 +327,14 @@
     let datasetPayer = [];
     datasetPayer.push({
       label: "Anne",
-      backgroundColor: categoryTypesColor[4],
-      borderColor: categoryTypesColor[4],
+      backgroundColor: CHART_COLORS.anne,
+      borderColor: CHART_COLORS.anne,
       data: [Math.trunc(payerExpenses[0])],
     });
     datasetPayer.push({
       label: "Olivier",
-      backgroundColor: categoryTypesColor[1],
-      borderColor: categoryTypesColor[1],
+      backgroundColor: CHART_COLORS.olivier,
+      borderColor: CHART_COLORS.olivier,
       data: [Math.trunc(payerExpenses[1])],
     });
     chartPayerData.destroy();
@@ -364,8 +351,7 @@
           x: {
             stacked: true,
             display: false,
-            max:totalExpenses
-
+            max: totalExpenses,
           },
           y: {
             stacked: true,
@@ -375,7 +361,7 @@
         plugins: {
           legend: {
             display: false,
-          }
+          },
         },
       },
     });
@@ -387,7 +373,9 @@
     {erreurMessage}
   </div>
 
-  <div class="grid grid-cols-6 md:grid-cols-8 place-content-center text-sm md:text-2xl">
+  <div
+    class="grid grid-cols-6 md:grid-cols-8 place-content-center text-sm md:text-2xl"
+  >
     <div class="hidden md:grid" />
     <div class="text-center">
       <input id="type-me" class="peer hidden" type="checkbox" />
@@ -396,11 +384,8 @@
         class="select-none cursor-pointer 
         py-1 font-bold text-ht transition-colors duration-200 ease-in-out  peer-checked:text-ht "
       >
-        <img
-          class="w-1/2 inline"
-          src="/images/Total.png"
-          alt="Total"
-        /><br/>{Number(totalExpenses).toLocaleString("fr")} €
+        <img class="w-1/2 inline" src="/images/Total.png" alt="Total" /><br
+        />{Number(totalExpenses).toLocaleString("fr")} €
       </label>
     </div>
 
@@ -422,14 +407,14 @@
             class={classImgType[i]}
             src="/images/{e.type}.png"
             alt={e.type}
-          /><br/>{Number(e.amount).toLocaleString("fr")} €
+          /><br />{Number(e.amount).toLocaleString("fr")} €
         </label>
       </div>
     {/each}
   </div>
   <div class="grid grid-cols-1 place-content-center mt-5 md:mt-10 text-center">
     <div>
-      <canvas bind:this={chartPayer} height="20px"/>
+      <canvas bind:this={chartPayer} height="20px" />
     </div>
   </div>
 
@@ -438,7 +423,9 @@
       <canvas bind:this={chartExpensesType} id="ExpensesType" />
     </div>
   </div>
-  <div class="grid grid-cols-6 md:grid-cols-12 place-content-center mt-5 md:mt-10">
+  <div
+    class="grid grid-cols-6 md:grid-cols-12 place-content-center mt-5 md:mt-10"
+  >
     {#each months as m, i}
       <div>
         <input

@@ -2,7 +2,7 @@
 </script>
 
 <nav>
-  <div class="grid grid-cols-4 text-xs md:text-base bg-pct px-2 py-2 ">
+  <div class="grid grid-cols-4 text-xs md:text-base bg-ht px-2 py-2 ">
     <div>
       <a
         href="/"
@@ -13,18 +13,26 @@
     </div>
     <div>
       <a
-        href="/roadbook"
+        href="/expenses"
         class=" px-3 py-2 flex items-center uppercase font-bold leading-snug text-white hover:opacity-75"
       >
-        Roadbook
+        Dépenses
       </a>
     </div>
     <div>
       <a
-        href="/parcours"
+        href="/categories"
         class=" px-3 py-2 flex items-center uppercase font-bold leading-snug text-white hover:opacity-75"
       >
-        Parcours
+        Cat.
+      </a>
+    </div>
+    <div>
+      <a
+        href="/categoryTypes"
+        class=" px-3 py-2 flex items-center uppercase font-bold leading-snug text-white hover:opacity-75"
+      >
+        Types
       </a>
     </div>
   </div>
