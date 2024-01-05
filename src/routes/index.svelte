@@ -342,12 +342,10 @@
       afterDatasetsDraw(chart, args, plugins) {
         const { ctx, data } = chart;
         ctx.save();
-        ctx.font = "bold 24px sans-serif";
+        ctx.font = "bold 1em sans-serif";
         ctx.fillStyle = "white";
         const data0 = chart.getDatasetMeta(0).data;
         const data1 = chart.getDatasetMeta(1).data;
-        console.info("data0", data0[0].x);
-        console.info("data1", data1[0]);
         ctx.fillText(
           datasetPayer[0].label +
             ": " +
