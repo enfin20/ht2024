@@ -342,7 +342,7 @@
       afterDatasetsDraw(chart, args, plugins) {
         const { ctx, data } = chart;
         ctx.save();
-        ctx.font = "bold 1em sans-serif";
+        ctx.font = "bold 0.875em md:1em sans-serif";
         ctx.fillStyle = "white";
         ctx.textAlign = "center";
         const data0 = chart.getDatasetMeta(0).data;
@@ -353,7 +353,7 @@
             Math.trunc(payerExpenses[0]).toLocaleString("fr") +
             " €",
           data0[0].x - data0[0].width / 2,
-          data0[0].y
+          data0[0].y + 2
         );
         ctx.fillText(
           datasetPayer[1].label +
@@ -361,7 +361,7 @@
             Math.trunc(payerExpenses[1]).toLocaleString("fr") +
             " €",
           data1[0].x - data1[0].width / 2,
-          data1[0].y
+          data1[0].y + 2
         );
       },
     };
