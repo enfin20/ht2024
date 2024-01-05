@@ -80,11 +80,7 @@
       "images/santeSoin.png",
     ],
 
-    [
-      "images/hebergementCamping.png",
-      "images/hebergementHotel.png",
-      "images/hebergementRefuge.png",
-    ],
+    ["images/transportBus.png", "images/transportTrain.png"],
   ];
   let months = ["MAY", "JUN", "JUL", "AUG", "SEP", "OCT"];
   let erreurMessage = "";
