@@ -324,29 +324,6 @@
       options: optionsCategoryType[4],
     });
 
-    const payerLabel = {
-      id: "payerLabel",
-      afterDatasetsDraw(chart, args, plugins) {
-        const {
-          ctx,
-          data,
-          chartArea: { top, bottom },
-        } = chart;
-        ctx.save();
-        chart.getDatasetMeta(0).data.forEach((datapoint, index) => {
-          ctx.font = "bold 24px sans-serif";
-          ctx.fillStyle = "white";
-          ctx.fillText(
-            datasetPayer[index].label +
-              ": " +
-              Math.trunc(payerExpenses[index]).toLocaleString("fr") +
-              " €",
-            datapoint.x / 2,
-            datapoint.y + 10
-          );
-        });
-      },
-    };
     let datasetPayer = [];
     datasetPayer.push({
       label: "Anne",
@@ -360,6 +337,36 @@
       borderColor: CHART_COLORS.olivier,
       data: [Math.trunc(payerExpenses[1])],
     });
+    const payerLabel = {
+      id: "payerLabel",
+      afterDatasetsDraw(chart, args, plugins) {
+        const { ctx, data } = chart;
+        ctx.save();
+        ctx.font = "bold 24px sans-serif";
+        ctx.fillStyle = "white";
+        const data0 = chart.getDatasetMeta(0).data;
+        const data1 = chart.getDatasetMeta(1).data;
+        console.info("data0", data0[0].x);
+        console.info("data1", data1[0]);
+        ctx.fillText(
+          datasetPayer[0].label +
+            ": " +
+            Math.trunc(payerExpenses[0]).toLocaleString("fr") +
+            " €",
+          data0[0].x - data0[0].width / 2,
+          data0[0].y + 10
+        );
+        ctx.fillText(
+          datasetPayer[1].label +
+            ": " +
+            Math.trunc(payerExpenses[1]).toLocaleString("fr") +
+            " €",
+          data1[0].x - data1[0].width / 2,
+          data1[0].y + 10
+        );
+      },
+    };
+
     chartPayerData.destroy();
     chartPayerData = new chartjs(ctxPayer, {
       type: "bar",
