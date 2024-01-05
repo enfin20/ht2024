@@ -61,6 +61,31 @@
     ["rgb(75, 230, 192)", "rgb(45, 200, 162)", "rgb(15, 170, 132)"],
     ["rgb(54, 162, 235)", "rgb(24, 132, 205)", "rgb(0, 102, 175)"],
   ];
+
+  let categoriesImage = [
+    [
+      "images/equipementBivouac.png",
+      "images/equipementChaussure.png",
+      "images/equipementVetement.png",
+    ],
+    [
+      "images/hebergementCamping.png",
+      "images/hebergementHotel.png",
+      "images/hebergementRefuge.png",
+    ],
+    ["images/nourritureCourses.png", "images/nourritureRestaurant.png"],
+    [
+      "images/santeHygiene.png",
+      "images/santeMedicaments.png",
+      "images/santeSoin.png",
+    ],
+
+    [
+      "images/hebergementCamping.png",
+      "images/hebergementHotel.png",
+      "images/hebergementRefuge.png",
+    ],
+  ];
   let months = ["MAY", "JUN", "JUL", "AUG", "SEP", "OCT"];
   let erreurMessage = "";
 
@@ -278,11 +303,7 @@
           {
             data: expensesCategoryType,
             backgroundColor: categoriesColor[i],
-            image: [
-              "images/equipementBivouac.png",
-              "images/equipementChaussure.png",
-              "images/equipementVetement.png",
-            ],
+            image: categoriesImage[i],
           },
         ],
       });
@@ -295,23 +316,15 @@
             text: categoryTypes[i].type,
           },
         },
+        cutout: "50%",
       });
     }
     const segmentImage = {
       id: "segmentImage",
       afterDatasetDraw(chart, args, plugins) {
         const { ctx, data } = chart;
-        /*
-        var images = [];
-        images[0] = new Image();
-        images[0].src = "images/equipementBivouac.png";
-        images[1] = new Image();
-        images[1].src = "images/equipementChaussure.png";
-        images[2] = new Image();
-        images[2].src = "images/equipementVetement.png";
-        */
         ctx.save();
-        const width = 25;
+        const width = 30;
         chart.getDatasetMeta(0).data.forEach((datapoint, index) => {
           const x = chart.getDatasetMeta(0).data[index].tooltipPosition().x;
           const y = chart.getDatasetMeta(0).data[index].tooltipPosition().y;
@@ -321,6 +334,7 @@
         });
       },
     };
+
     chartExpensesCategoryTypeData_0.destroy();
     chartExpensesCategoryTypeData_0 = new chartjs(ctxExpensesCategoryType_0, {
       type: "doughnut",
@@ -333,24 +347,28 @@
       type: "doughnut",
       data: datasetExpensesCategoryType[1],
       options: optionsCategoryType[1],
+      plugins: [segmentImage],
     });
     chartExpensesCategoryTypeData_2.destroy();
     chartExpensesCategoryTypeData_2 = new chartjs(ctxExpensesCategoryType_2, {
       type: "doughnut",
       data: datasetExpensesCategoryType[2],
       options: optionsCategoryType[2],
+      plugins: [segmentImage],
     });
     chartExpensesCategoryTypeData_3.destroy();
     chartExpensesCategoryTypeData_3 = new chartjs(ctxExpensesCategoryType_3, {
       type: "doughnut",
       data: datasetExpensesCategoryType[3],
       options: optionsCategoryType[3],
+      plugins: [segmentImage],
     });
     chartExpensesCategoryTypeData_4.destroy();
     chartExpensesCategoryTypeData_4 = new chartjs(ctxExpensesCategoryType_4, {
       type: "doughnut",
       data: datasetExpensesCategoryType[4],
       options: optionsCategoryType[4],
+      plugins: [segmentImage],
     });
 
     let datasetPayer = [];
