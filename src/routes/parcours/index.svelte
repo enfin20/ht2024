@@ -200,7 +200,7 @@
   <div class="w-full grid grid-cols-1 mt-0 md:mt-5">
     <canvas bind:this={chartParcours} />
   </div>
-  <div class="w-full grid grid-cols-1 mt-0 md:mt-5">
+  <div class="w-full grid grid-cols-1 mt-0 md:mt-5 text-xs md:text-base">
     {#each roadbook as r}
       <div
         class="w-full md:w-2/3 grid grid-cols-5 md:grid-cols-5 align-middle text-left border-collapse border-t-[1px] border-slate-200"
