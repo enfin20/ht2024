@@ -447,41 +447,20 @@
   </div>
 
   <div
-    class="grid grid-cols-6 md:grid-cols-8 place-content-center text-sm md:text-2xl"
+    class="grid grid-cols-6 md:grid-cols-8 place-content-center text-sm md:text-2xl text-ht"
   >
     <div class="hidden md:grid" />
     <div class="text-center">
-      <input id="type-me" class="peer hidden" type="checkbox" />
-      <label
-        for="type-me"
-        class="select-none cursor-pointer 
-        py-1 font-bold text-ht transition-colors duration-200 ease-in-out  peer-checked:text-ht "
-      >
-        <img class="w-1/2 inline" src="/images/Total.png" alt="Total" /><br
-        />{Number(totalExpenses).toLocaleString("fr")} €
-      </label>
+      <img class="w-1/2 inline" src="/images/Total.png" alt="Total" />
+      <br />
+      {Number(totalExpenses).toLocaleString("fr")} €
     </div>
 
     {#each expensesType as e, i}
       <div class="text-center">
-        <input
-          id="type-me{i}"
-          class="peer hidden"
-          type="checkbox"
-          bind:checked={showType[i]}
-          on:change={showDashboard}
-        />
-        <label
-          for="type-me{i}"
-          class="select-none cursor-pointer 
-          py-1 font-bold text-slate-400 transition-colors duration-200 ease-in-out  peer-checked:text-ht "
-        >
-          <img
-            class={classImgType[i]}
-            src="/images/{e.type}.png"
-            alt={e.type}
-          /><br />{Number(e.amount).toLocaleString("fr")} €
-        </label>
+        <img class={classImgType[i]} src="/images/{e.type}.png" alt={e.type} />
+        <br />
+        {Number(e.amount).toLocaleString("fr")} €
       </div>
     {/each}
   </div>

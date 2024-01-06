@@ -195,130 +195,132 @@
   <div class="w-full grid grid-cols-1 mt-0 md:mt-5">
     <canvas bind:this={chartParcours} />
   </div>
-  <div class="w-full grid grid-cols-1 mt-5 md:mt-10">
-    <table id="rdb" class="w-full text-xs text-gray-500 bg-white">
-      <tbody class="">
-        {#each roadbook as r}
-          <tr
-            class="align-middle text-center border-collapse border-t-[1px] border-slate-200"
-          >
-            <td class="text-left align-middle py-1 ">
-              {r.day.substring(6, 8).concat("/").concat(r.day.substring(4, 6))}
-            </td>
-            <td class="text-left align-middle py-1 px-px ">
+  <div class="w-full grid grid-cols-1 mt-0 md:mt-5">
+    {#each roadbook as r}
+      <div
+        class="w-full md:w-2/3 grid grid-cols-5 md:grid-cols-5 align-middle text-left border-collapse border-t-[1px] border-slate-200"
+      >
+        <div class="">
+          Jour {r.dayCounter}: {r.day
+            .substring(6, 8)
+            .concat("/")
+            .concat(r.day.substring(4, 6))}
+        </div>
+        <div class="">
+          {r.start}
+        </div>
+        <div class="">
+          {r.end}
+        </div>
+        <div class="">
+          {r.dist || 0} kms
+        </div>
+        <div class="">
+          + {r.elePos || 0} / {r.eleNeg || 0} m
+        </div>
+        <div class="px-5">
+          <img
+            src="/images/{moodIcon[r.mood]}.png"
+            alt=""
+            class="w-[25px] md:w-[30px] inline"
+          />
+        </div>
+        <div class="px-5">
+          <img
+            src="/images/{weatherIcon[r.weather]}.png"
+            alt=""
+            class="w-[25px] md:w-[30px] inline"
+          />
+        </div>
+        <div class="px-5">
+          <img
+            src="/images/{nightIcon[r.night]}.png"
+            alt=""
+            class="w-[25px] md:w-[30px] inline"
+          />
+        </div>
+        <div class="">
+          {#each difficultyIcon as di, i}
+            {#if i === 0}
+              {#if r.difficulty === 0}
+                <img
+                  src="/images/{difficultyIcon[i]}.png"
+                  alt=""
+                  class="w-[20px] md:w-[30px] inline"
+                />
+              {:else}
+                <img
+                  src="/images/{difficultyIcon[i]}_in.png"
+                  alt=""
+                  class="w-[20px] md:w-[30px] inline"
+                />
+              {/if}
+            {:else if r.difficulty >= i}
               <img
-                src="/images/{moodIcon[r.mood]}.png"
+                src="/images/{difficultyIcon[i]}.png"
                 alt=""
-                class="w-[25px] md:w-[30px] inline"
+                class="w-[20px] md:w-[30px] inline"
               />
-            </td>
-            <td class="text-left align-middle py-1 px-px ">
+            {:else}
               <img
-                src="/images/{weatherIcon[r.weather]}.png"
+                src="/images/{difficultyIcon[i]}_in.png"
                 alt=""
-                class="w-[25px] md:w-[30px] inline"
+                class="w-[20px] md:w-[30px] inline"
               />
-            </td>
-            <td class="text-left align-middle py-1 px-px ">
-              {#each difficultyIcon as di, i}
-                {#if i === 0}
-                  {#if r.difficulty === 0}
-                    <img
-                      src="/images/{difficultyIcon[i]}.png"
-                      alt=""
-                      class="w-[20px] md:w-[30px] inline"
-                    />
-                  {:else}
-                    <img
-                      src="/images/{difficultyIcon[i]}_in.png"
-                      alt=""
-                      class="w-[20px] md:w-[30px] inline"
-                    />
-                  {/if}
-                {:else if r.difficulty >= i}
-                  <img
-                    src="/images/{difficultyIcon[i]}.png"
-                    alt=""
-                    class="w-[20px] md:w-[30px] inline"
-                  />
-                {:else}
-                  <img
-                    src="/images/{difficultyIcon[i]}_in.png"
-                    alt=""
-                    class="w-[20px] md:w-[30px] inline"
-                  />
-                {/if}
-              {/each}
-            </td>
-            <td class="text-left align-middle py-1  px-px ">
-              <img
-                src="/images/{nightIcon[r.night]}.png"
-                alt=""
-                class="w-[25px] md:w-[30px] inline"
-              />
-            </td>
-            <td class="text-left align-middle py-1 px-px ">
-              {#each starsIcon as si, i}
-                {#if i === 0}
-                  {#if r.landscape === 0}
-                    <img
-                      src="/images/{starsIcon[0]}.png"
-                      alt=""
-                      class="w-[20px] md:w-[30px] inline"
-                    />
-                  {:else}
-                    <img
-                      src="/images/{starsIcon[0]}_in.png"
-                      alt=""
-                      class="w-[20px] md:w-[30px] inline"
-                    />
-                  {/if}
-                {/if}
-                {#if i === 1}
-                  {#if r.landscape === 1}
-                    <img
-                      src="/images/{starsIcon[1]}.png"
-                      alt=""
-                      class="w-[20px] md:w-[30px] inline"
-                    />
-                  {:else}
-                    <img
-                      src="/images/{starsIcon[1]}_in.png"
-                      alt=""
-                      class="w-[20px] md:w-[30px] inline"
-                    />
-                  {/if}
-                {/if}
-                {#if i >= 2}
-                  {#if r.landscape >= i}
-                    <img
-                      src="/images/{starsIcon[i]}.png"
-                      alt=""
-                      class="w-[20px] md:w-[30px] inline"
-                    />
-                  {:else}
-                    <img
-                      src="/images/{starsIcon[i]}_in.png"
-                      alt=""
-                      class="w-[20px] md:w-[30px] inline"
-                    />
-                  {/if}
-                {/if}
-              {/each}
-            </td>
-            <td class="text-left align-middle py-1 px-px ">
-              {r.dist || 0}
-            </td>
-            <td class="text-left align-middle py-1 px-2 ">
-              {r.elePos || 0}
-            </td>
-            <td class="text-left align-middle py-1 px-2 ">
-              {r.eleNeg || 0}
-            </td>
-            <td class="align-middle py-1 px-1 " />
-          </tr>
-        {/each}
-      </tbody>
-    </table>
+            {/if}
+          {/each}
+        </div>
+
+        <div class="">
+          {#each starsIcon as si, i}
+            {#if i === 0}
+              {#if r.landscape === 0}
+                <img
+                  src="/images/{starsIcon[0]}.png"
+                  alt=""
+                  class="w-[20px] md:w-[30px] inline"
+                />
+              {:else}
+                <img
+                  src="/images/{starsIcon[0]}_in.png"
+                  alt=""
+                  class="w-[20px] md:w-[30px] inline"
+                />
+              {/if}
+            {/if}
+            {#if i === 1}
+              {#if r.landscape === 1}
+                <img
+                  src="/images/{starsIcon[1]}.png"
+                  alt=""
+                  class="w-[20px] md:w-[30px] inline"
+                />
+              {:else}
+                <img
+                  src="/images/{starsIcon[1]}_in.png"
+                  alt=""
+                  class="w-[20px] md:w-[30px] inline"
+                />
+              {/if}
+            {/if}
+            {#if i >= 2}
+              {#if r.landscape >= i}
+                <img
+                  src="/images/{starsIcon[i]}.png"
+                  alt=""
+                  class="w-[20px] md:w-[30px] inline"
+                />
+              {:else}
+                <img
+                  src="/images/{starsIcon[i]}_in.png"
+                  alt=""
+                  class="w-[20px] md:w-[30px] inline"
+                />
+              {/if}
+            {/if}
+          {/each}
+        </div>
+      </div>
+    {/each}
   </div>
 </div>

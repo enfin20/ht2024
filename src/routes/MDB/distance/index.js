@@ -7,10 +7,6 @@ export async function get(request) {
     const end = request.query.get("finParcours");
     const freq = request.query.get("freq");
     const variante = request.query.get("variante");
-console.info("start",start)
-console.info("end",end)
-console.info("freq",freq)
-console.info("variante",variante)
 
     var filter = new Object();
     if (start != null) {
@@ -28,10 +24,6 @@ console.info("variante",variante)
     const db = dbConnection.db;
     const collection = db.collection("Distance");
     const distance = await collection.find(filter).toArray();
-    console.info("distance.length", distance.length)
-    for (var i = 0; i < distance.length; i++) {
-        distance[i].key = distance[i]._id;
-    }
 
     return {
       status: 200,
