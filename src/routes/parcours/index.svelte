@@ -224,6 +224,7 @@
         <div class="">
           + {r.elePos || 0} / {r.eleNeg || 0} m
         </div>
+        <div />
         <div class="px-2">
           <img
             src="/images/{moodIcon[r.mood]}.png"
