@@ -58,6 +58,12 @@
       if (roadbook[i].finParcours >= finParcours) {
         finParcours = roadbook[i].finParcours;
       }
+      if (i > 0) {
+        roadbook[i].distCumul =
+          roadbook[i - 1].distCumul + Number(roadbook[i].dist || 0);
+      } else {
+        roadbook[0].distCumul = Number(roadbook[0].dist || 0);
+      }
     }
     loadParcours();
   }
@@ -82,7 +88,6 @@
     );
     const dis = await res.json();
     dist = await dis.distance;
-    console.info("dist", dist.length);
     for (var i = 0; i < dist.length; i++) {
       distance.push(Math.round(dist[i].cumul / 1000, 0)),
         elevation.push(dist[i].ele);
@@ -213,7 +218,8 @@
           {r.end}
         </div>
         <div class="">
-          {r.dist || 0} kms
+          {r.dist || 0} / {Math.round(Number(r.distCumul)).toLocaleString("fr")}
+          kms
         </div>
         <div class="">
           + {r.elePos || 0} / {r.eleNeg || 0} m
