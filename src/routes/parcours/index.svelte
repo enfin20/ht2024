@@ -285,13 +285,13 @@
                 <img
                   src="/images/{starsIcon[0]}.png"
                   alt=""
-                  class="w-[15px] md:w-[30px] inline"
+                  class="w-[20px] md:w-[30px] inline"
                 />
               {:else}
                 <img
                   src="/images/{starsIcon[0]}_in.png"
                   alt=""
-                  class="w-[15px] md:w-[30px] inline"
+                  class="w-[20px] md:w-[30px] inline"
                 />
               {/if}
             {/if}
@@ -300,13 +300,13 @@
                 <img
                   src="/images/{starsIcon[1]}.png"
                   alt=""
-                  class="w-[15px] md:w-[30px] inline"
+                  class="w-[20px] md:w-[30px] inline"
                 />
               {:else}
                 <img
                   src="/images/{starsIcon[1]}_in.png"
                   alt=""
-                  class="w-[15px] md:w-[30px] inline"
+                  class="w-[20px] md:w-[30px] inline"
                 />
               {/if}
             {/if}
@@ -315,13 +315,13 @@
                 <img
                   src="/images/{starsIcon[i]}.png"
                   alt=""
-                  class="w-[15px] md:w-[30px] inline"
+                  class="w-[20px] md:w-[30px] inline"
                 />
               {:else}
                 <img
                   src="/images/{starsIcon[i]}_in.png"
                   alt=""
-                  class="w-[15px] md:w-[30px] inline"
+                  class="w-[20px] md:w-[30px] inline"
                 />
               {/if}
             {/if}
