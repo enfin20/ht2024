@@ -224,21 +224,21 @@
         <div class="">
           + {r.elePos || 0} / {r.eleNeg || 0} m
         </div>
-        <div class="px-5">
+        <div class="px-2">
           <img
             src="/images/{moodIcon[r.mood]}.png"
             alt=""
             class="w-[25px] md:w-[30px] inline"
           />
         </div>
-        <div class="px-5">
+        <div class="px-2">
           <img
             src="/images/{weatherIcon[r.weather]}.png"
             alt=""
             class="w-[25px] md:w-[30px] inline"
           />
         </div>
-        <div class="px-5">
+        <div class="px-2">
           <img
             src="/images/{nightIcon[r.night]}.png"
             alt=""
@@ -252,7 +252,7 @@
                 <img
                   src="/images/{difficultyIcon[i]}.png"
                   alt=""
-                  class="w-[20px] md:w-[30px] inline"
+                  class="w-[15px] md:w-[30px] inline"
                 />
               {:else}
                 <img
@@ -284,13 +284,13 @@
                 <img
                   src="/images/{starsIcon[0]}.png"
                   alt=""
-                  class="w-[20px] md:w-[30px] inline"
+                  class="w-[15px] md:w-[30px] inline"
                 />
               {:else}
                 <img
                   src="/images/{starsIcon[0]}_in.png"
                   alt=""
-                  class="w-[20px] md:w-[30px] inline"
+                  class="w-[15px] md:w-[30px] inline"
                 />
               {/if}
             {/if}
@@ -299,13 +299,13 @@
                 <img
                   src="/images/{starsIcon[1]}.png"
                   alt=""
-                  class="w-[20px] md:w-[30px] inline"
+                  class="w-[15px] md:w-[30px] inline"
                 />
               {:else}
                 <img
                   src="/images/{starsIcon[1]}_in.png"
                   alt=""
-                  class="w-[20px] md:w-[30px] inline"
+                  class="w-[15px] md:w-[30px] inline"
                 />
               {/if}
             {/if}
@@ -314,13 +314,13 @@
                 <img
                   src="/images/{starsIcon[i]}.png"
                   alt=""
-                  class="w-[20px] md:w-[30px] inline"
+                  class="w-[15px] md:w-[30px] inline"
                 />
               {:else}
                 <img
                   src="/images/{starsIcon[i]}_in.png"
                   alt=""
-                  class="w-[20px] md:w-[30px] inline"
+                  class="w-[15px] md:w-[30px] inline"
                 />
               {/if}
             {/if}
