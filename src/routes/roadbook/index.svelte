@@ -9,7 +9,8 @@
   var buttonLabel = "Add";
   var edit_Day = Object();
   edit_Day.key = "";
-  edit_Day.day = "";
+  edit_Day.day = new Date().toJSON().slice(0, 10);
+
   edit_Day.start = "";
   edit_Day.end = "";
   edit_Day.weather = -1;
@@ -165,7 +166,7 @@
   function cleanForm() {
     edit_Day.key = "";
     buttonLabel = "Add";
-    edit_Day.day = "";
+    edit_Day.day = new Date().toJSON().slice(0, 10);
     edit_Day.start = "";
     edit_Day.end = "";
     edit_Day.weather = -1;
@@ -311,10 +312,11 @@
     }
     cleanForm();
   }
+
   export async function getFinParcours() {
     var res = new Object();
     console.info("getFinParcours");
-    if (Number(edit_Day.lng) > 0) {
+    if (Number(edit_Day.lat) > 0) {
       // find gps closest point
       res = await fetch(
         "/MDB/parcours?variante=1&debutParcours=" +
@@ -369,7 +371,7 @@
         <input
           type="text"
           bind:value={edit_Day.lat}
-          on:change={getFinParcours()}
+          on:change={getFinParcours}
           class=" appearance-none block w-full bg-gray-100 text-gray-600 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
         />
       </div>
@@ -383,7 +385,7 @@
         <input
           type="text"
           bind:value={edit_Day.lng}
-          on:change={getFinParcours()}
+          on:change={getFinParcours}
           class=" appearance-none block w-full bg-gray-100 text-gray-600 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
         />
       </div>
@@ -469,7 +471,6 @@
             type="date"
             bind:value={edit_Day.day}
             class=" appearance-none block w-full bg-gray-100 text-gray-600 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-            on:click={updateIcons}
           />
         </div>
         <div class="w-full md:w-1/4 px-3 mb-6 md:mb-0">
