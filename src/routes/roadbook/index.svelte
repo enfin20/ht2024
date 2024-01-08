@@ -1,5 +1,5 @@
 <script>
-  import { onMount } from "svelte";  
+  import { onMount } from "svelte";
   import Geolocation from "svelte-geolocation";
 
   let getPositionAgain = false;
@@ -20,8 +20,8 @@
   edit_Day.detail = "";
   edit_Day.summary = "";
   edit_Day.dayCounter = 0;
-  edit_Day.lat = "";
-  edit_Day.lng = "";
+  edit_Day.lat = 0;
+  edit_Day.lng = 0;
   edit_Day.debutParcours = 0;
   edit_Day.finParcours = 0;
   edit_Day.dist = 0;
@@ -52,7 +52,7 @@
   let imgNewNightActivate = ["_in", "_in", "_in", "_in", "_in"];
   let difficultyIcon = ["ZeroDay", "Star", "Star", "Star"];
   let imgNewDifficultyActivate = ["_in", "_in", "_in", "_in"];
-  let starsIcon = ["Ugly", "Soso","Star", "Star", "Star"];
+  let starsIcon = ["Ugly", "Soso", "Star", "Star", "Star"];
   let imgNewLandscapeActivate = ["_in", "_in", "_in", "_in", "_in"];
   let moodIcon = ["Sad", "Neutral", "Happy"];
   let imgNewMoodActivate = ["_in", "_in", "_in"];
@@ -66,13 +66,13 @@
     let lastDay = 0;
     let dayId = 0;
     for (var i = 0; i < roadbook.length; i++) {
-      if(lastDay < roadbook[i].dayCounter){
+      if (lastDay < roadbook[i].dayCounter) {
         lastDay = roadbook[i].dayCounter;
         dayId = i;
       }
     }
-    edit_Day.start = roadbook[dayId].end
-    edit_Day.debutParcours = roadbook[dayId].finParcours
+    edit_Day.start = roadbook[dayId].end;
+    edit_Day.debutParcours = roadbook[dayId].finParcours;
     edit_Day.dayCounter = roadbook[dayId].dayCounter + 1;
   });
 
@@ -110,27 +110,24 @@
       if (edit_Day.landscape === 0) {
         imgNewLandscapeActivate[0] = "";
         imgNewLandscapeActivate[i] = "_in";
-      } else if 
-      (edit_Day.landscape === 1) {
+      } else if (edit_Day.landscape === 1) {
         imgNewLandscapeActivate[1] = "";
         imgNewLandscapeActivate[i] = "_in";
-      } else if 
-      (edit_Day.landscape === 2) {
+      } else if (edit_Day.landscape === 2) {
         imgNewLandscapeActivate[2] = "";
         imgNewLandscapeActivate[i] = "_in";
-      } else if 
-      (edit_Day.landscape === 3) {
+      } else if (edit_Day.landscape === 3) {
         imgNewLandscapeActivate[2] = "";
         imgNewLandscapeActivate[3] = "";
         imgNewLandscapeActivate[i] = "_in";
-    } else if 
-      (edit_Day.landscape === 4) {
+      } else if (edit_Day.landscape === 4) {
         imgNewLandscapeActivate[2] = "";
-        imgNewLandscapeActivate[3] = "";        
+        imgNewLandscapeActivate[3] = "";
         imgNewLandscapeActivate[4] = "";
-        imgNewLandscapeActivate[0] = "_in";        
+        imgNewLandscapeActivate[0] = "_in";
         imgNewLandscapeActivate[1] = "_in";
-      }   }
+      }
+    }
 
     for (var i = 0; i < moodIcon.length; i++) {
       if (edit_Day.mood === i) {
@@ -141,22 +138,28 @@
     }
   }
 
-  export async function calcDist(){
-    let res = await fetch("/MDB/parcours?debutParcours=" + edit_Day.debutParcours + "&finParcours=" + edit_Day.finParcours);
+  export async function calcDist() {
+    let res = await fetch(
+      "/MDB/parcours?variante=1&debutParcours=" +
+        edit_Day.debutParcours +
+        "&finParcours=" +
+        edit_Day.finParcours
+    );
     const par = await res.json();
     let parcours = await par.parcours;
+    console.info("parcours length", parcours.length);
     edit_Day.dist = 0;
     edit_Day.elePos = 0;
     edit_Day.eleNeg = 0;
     console.info("edit_Day", edit_Day);
-    for (var i = 0; i < parcours.length; i++){
-      edit_Day.dist += (parcours[i].dist/1000);
+    for (var i = 0; i < parcours.length; i++) {
+      edit_Day.dist += parcours[i].dist / 1000;
       edit_Day.elePos += parcours[i].elepos;
       edit_Day.eleNeg += parcours[i].eleneg;
     }
-    edit_Day.dist = Math.round((edit_Day.dist + Number.EPSILON) * 10) / 10
+    edit_Day.dist = Math.round((edit_Day.dist + Number.EPSILON) * 10) / 10;
 
-    console.info("edit_Day", edit_Day);
+    console.info("calcDist", edit_Day);
   }
 
   function cleanForm() {
@@ -172,8 +175,8 @@
     edit_Day.mood = -1;
     edit_Day.detail = "";
     edit_Day.summary = "";
-    edit_Day.lat = "";
-    edit_Day.lng = "";
+    edit_Day.lat = 0;
+    edit_Day.lng = 0;
     edit_Day.dist = 0;
     edit_Day.elePos = 0;
     edit_Day.eleNeg = 0;
@@ -181,13 +184,13 @@
     let lastDay = 0;
     let dayId = 0;
     for (var i = 0; i < roadbook.length; i++) {
-      if(lastDay < roadbook[i].dayCounter){
+      if (lastDay < roadbook[i].dayCounter) {
         lastDay = roadbook[i].dayCounter;
         dayId = i;
       }
-    } 
-    edit_Day.start = roadbook[dayId].end
-    edit_Day.debutParcours = roadbook[dayId].finParcours
+    }
+    edit_Day.start = roadbook[dayId].end;
+    edit_Day.debutParcours = roadbook[dayId].finParcours;
     edit_Day.dayCounter = roadbook[dayId].dayCounter + 1;
     buttonLabel = "Add";
     updateIcons();
@@ -206,7 +209,7 @@
       edit_Day.day.substring(6, 8),
     ].join("-");
     buttonLabel = "Update";
-    calcDist();
+    // calcDist();
     //mise à jour des icones
     updateIcons();
   }
@@ -229,18 +232,22 @@
 
     // find gps closest point
     res = await fetch("/MDB/parcours");
+    console.info("finParcours calc");
     const par = await res.json();
     let parcours = await par.parcours;
-    let minDist=99999;
+    let minDist = 99999;
     let dist = 99999;
-    let parcours_pos = ""
-    for (var i=0; i < parcours.length; i++){
-      dist=Math.abs((Number(parcours[i].lng) - Number(edit_Day.lng))**2 + ((Number(parcours[i].lat) - Number(edit_Day.lat))**2));
-      if (dist < minDist ){
+    let parcours_pos = "";
+    for (var i = 0; i < parcours.length; i++) {
+      dist = Math.abs(
+        (Number(parcours[i].lng) - Number(edit_Day.lng)) ** 2 +
+          (Number(parcours[i].lat) - Number(edit_Day.lat)) ** 2
+      );
+      if (dist < minDist) {
         minDist = dist;
         parcours_pos = parcours[i].pos;
       }
-      if (dist === 0 ){
+      if (dist === 0) {
         i = parcours.length;
       }
     }
@@ -296,24 +303,58 @@
           roadbook[i].dayCounter = Number(edit_Day.dayCounter);
           roadbook[i].dist = Number(edit_Day.dist);
           roadbook[i].elePos = Number(edit_Day.elePos);
-          roadbook[i].eleNeg = Number(edit_Day.eleNeg); 
+          roadbook[i].eleNeg = Number(edit_Day.eleNeg);
           roadbook[i].finParcours = Number(edit_Day.finParcours);
-          roadbook[i].debutParcours = Number(edit_Day.debutParcours);      }
+          roadbook[i].debutParcours = Number(edit_Day.debutParcours);
+        }
       }
     }
     cleanForm();
-  }/**/
+  }
+  export async function getFinParcours() {
+    var res = new Object();
+    console.info("getFinParcours");
+    if (Number(edit_Day.lng) > 0) {
+      // find gps closest point
+      res = await fetch(
+        "/MDB/parcours?variante=1&debutParcours=" +
+          Number(edit_Day.debutParcours)
+      );
+
+      const par = await res.json();
+      let parcours = await par.parcours;
+      let minDist = 99999;
+      let dist = 99999;
+      let parcours_pos = "";
+      for (var i = 0; i < parcours.length; i++) {
+        dist = Math.abs(
+          (Number(parcours[i].lng) - Number(edit_Day.lng)) ** 2 +
+            (Number(parcours[i].lat) - Number(edit_Day.lat)) ** 2
+        );
+        if (dist < minDist) {
+          minDist = dist;
+          parcours_pos = parcours[i].pos;
+        }
+        if (dist === 0) {
+          i = parcours.length;
+        }
+      }
+      edit_Day.finParcours = parcours_pos;
+      console.info("getFinParcours", edit_Day.finParcours);
+      calcDist();
+    }
+  }
 </script>
 
 <Geolocation
-  getPosition="{getPositionAgain}"
-  watch="{!getPositionAgain}"
-  on:position="{(e) => {
+  getPosition={getPositionAgain}
+  watch={!getPositionAgain}
+  on:position={(e) => {
     detail = e.detail;
     edit_Day.lat = detail.coords.latitude;
-    edit_Day.lng = detail.coords.longitude;   
-    console.info("detail", detail.coords );
-  }}"
+    edit_Day.lng = detail.coords.longitude;
+    getFinParcours();
+  }}
 />
 <div class="py-2 grid gap-1">
   <div class="grid grid-cols-1 place-content-center w-full">
@@ -328,6 +369,7 @@
         <input
           type="text"
           bind:value={edit_Day.lat}
+          on:change={getFinParcours()}
           class=" appearance-none block w-full bg-gray-100 text-gray-600 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
         />
       </div>
@@ -341,18 +383,21 @@
         <input
           type="text"
           bind:value={edit_Day.lng}
+          on:change={getFinParcours()}
           class=" appearance-none block w-full bg-gray-100 text-gray-600 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-          on:click={updateIcons}
         />
       </div>
       <div class="w-1/3 px-3 mb-6 md:mb-0">
         <label
-        class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-        for="grid-first-name"
-      >
-        &nbsp;
-      </label>
-        <button on:click="{() => (getPositionAgain = !getPositionAgain)}" class=" text-white border bg-teal-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-teal-700">
+          class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+          for="grid-first-name"
+        >
+          &nbsp;
+        </label>
+        <button
+          on:click={() => (getPositionAgain = !getPositionAgain)}
+          class=" text-white border bg-teal-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-teal-700"
+        >
           Go
         </button>
       </div>
@@ -386,10 +431,11 @@
       </div>
       <div class="w-1/3 px-3 mb-6 md:mb-0">
         <label
-        class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-        for="grid-first-name"
-      >
-        Negatif</label>
+          class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+          for="grid-first-name"
+        >
+          Negatif</label
+        >
         <input
           type="text"
           bind:value={edit_Day.eleNeg}
@@ -707,7 +753,7 @@
             </td>
             <td class="text-left align-middle py-1 px-px ">
               {#each starsIcon as si, i}
-              {#if i === 0}
+                {#if i === 0}
                   {#if r.landscape === 0}
                     <img
                       src="/images/{starsIcon[0]}.png"
@@ -737,7 +783,7 @@
                     />
                   {/if}
                 {/if}
-                {#if i >= 2}                 
+                {#if i >= 2}
                   {#if r.landscape >= i}
                     <img
                       src="/images/{starsIcon[i]}.png"
@@ -752,7 +798,7 @@
                     />
                   {/if}
                 {/if}
-             {/each}
+              {/each}
             </td>
             <td class="align-middle py-1 px-1 ">
               <button
