@@ -28,6 +28,7 @@
   edit_Day.dist = 0;
   edit_Day.elePos = 0;
   edit_Day.eleNeg = 0;
+  edit_Day.variante = 0;
 
   let weatherIcon = [
     "Snow",
@@ -75,6 +76,7 @@
     edit_Day.start = roadbook[dayId].end;
     edit_Day.debutParcours = roadbook[dayId].finParcours;
     edit_Day.dayCounter = roadbook[dayId].dayCounter + 1;
+    edit_Day.variante = roadbook[dayId].variante || 1;
   });
 
   function updateIcons() {
@@ -141,7 +143,9 @@
 
   export async function calcDist() {
     let res = await fetch(
-      "/MDB/parcours?variante=1&debutParcours=" +
+      "/MDB/parcours?variante=" +
+        edit_Day.variante +
+        "&debutParcours=" +
         edit_Day.debutParcours +
         "&finParcours=" +
         edit_Day.finParcours
@@ -193,6 +197,7 @@
     edit_Day.start = roadbook[dayId].end;
     edit_Day.debutParcours = roadbook[dayId].finParcours;
     edit_Day.dayCounter = roadbook[dayId].dayCounter + 1;
+    edit_Day.variante = roadbook[dayId].variante || 1;
     buttonLabel = "Add";
     updateIcons();
   }
@@ -230,30 +235,8 @@
     edit_Day.dayCounter = Number(edit_Day.dayCounter);
     edit_Day.lat = Number(edit_Day.lat);
     edit_Day.lng = Number(edit_Day.lng);
-
-    // find gps closest point
-    res = await fetch("/MDB/parcours");
-    console.info("finParcours calc");
-    const par = await res.json();
-    let parcours = await par.parcours;
-    let minDist = 99999;
-    let dist = 99999;
-    let parcours_pos = "";
-    for (var i = 0; i < parcours.length; i++) {
-      dist = Math.abs(
-        (Number(parcours[i].lng) - Number(edit_Day.lng)) ** 2 +
-          (Number(parcours[i].lat) - Number(edit_Day.lat)) ** 2
-      );
-      if (dist < minDist) {
-        minDist = dist;
-        parcours_pos = parcours[i].pos;
-      }
-      if (dist === 0) {
-        i = parcours.length;
-      }
-    }
-    edit_Day.finParcours = parcours_pos;
-    calcDist();
+    edit_Day.variante = Number(edit_Day.variante);
+    getFinParcours();
 
     if (edit_Day.key === "") {
       // Insert new day
@@ -307,6 +290,7 @@
           roadbook[i].eleNeg = Number(edit_Day.eleNeg);
           roadbook[i].finParcours = Number(edit_Day.finParcours);
           roadbook[i].debutParcours = Number(edit_Day.debutParcours);
+          roadbook[i].variante = Number(edit_Day.variante);
         }
       }
     }
@@ -315,12 +299,20 @@
 
   export async function getFinParcours() {
     var res = new Object();
-    console.info("getFinParcours");
+    console.log("**********************************");
+    console.info("début getFinParcours");
+    console.info("variante", edit_Day.variante);
+    console.info("start", edit_Day.debutParcours);
+    console.info("lat", edit_Day.lat);
+    console.info("lng", edit_Day.lng);
+
     if (Number(edit_Day.lat) > 0) {
       // find gps closest point
       res = await fetch(
-        "/MDB/parcours?variante=1&debutParcours=" +
-          Number(edit_Day.debutParcours)
+        "/MDB/parcours?variante=" +
+          edit_Day.variante +
+          "&debutParcours=" +
+          edit_Day.debutParcours
       );
 
       const par = await res.json();
@@ -342,7 +334,10 @@
         }
       }
       edit_Day.finParcours = parcours_pos;
-      console.info("getFinParcours", edit_Day.finParcours);
+      console.info("parcours.length", parcours.length);
+      console.info("pos max", parcours[parcours.length - 1].pos);
+      console.info("end", edit_Day.finParcours);
+      console.log("**********************************");
       calcDist();
     }
   }
@@ -361,6 +356,19 @@
 <div class="py-2 grid gap-1">
   <div class="grid grid-cols-1 place-content-center w-full">
     <div class=" w-full md:w-1/2 flex flex-wrap -mx-3">
+      <div class="w-1/6 px-3 mb-6 md:mb-0">
+        <label
+          class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+          for="grid-first-name"
+        >
+          Var
+        </label>
+        <input
+          type="text"
+          bind:value={edit_Day.variante}
+          class=" appearance-none block w-full bg-gray-100 text-gray-600 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+        />
+      </div>
       <div class="w-1/3 px-3 mb-6 md:mb-0">
         <label
           class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -389,7 +397,7 @@
           class=" appearance-none block w-full bg-gray-100 text-gray-600 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
         />
       </div>
-      <div class="w-1/3 px-3 mb-6 md:mb-0">
+      <div class="w-1/6 px-3 mb-6 md:mb-0">
         <label
           class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
           for="grid-first-name"

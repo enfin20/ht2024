@@ -81,7 +81,8 @@ export async function put(request) {
           finParcours: roadbook.finParcours,
           dist: roadbook.dist,
           eleNeg:roadbook.eleNeg,
-          elePos:roadbook.elePos,
+          elePos: roadbook.elePos,
+          variante: roadbook.variante,
         },
       }
     );

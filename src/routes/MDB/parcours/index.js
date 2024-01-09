@@ -4,7 +4,7 @@ import { Double, ObjectId } from "mongodb";
 export async function get(request) {
   try {
     const variante = request.query.get("variante") || 1;
-    const start = request.query.get("debutParcours")||1;
+    const start = request.query.get("debutParcours") || 1;
     const end = request.query.get("finParcours") || 5000000;
     const pipeline = 
 [
@@ -37,9 +37,8 @@ export async function get(request) {
         }
     }
       ];
-    console.info("start", start)
-    console.info("end",end)
-    const dbConnection = await connectToDatabase();
+
+     const dbConnection = await connectToDatabase();
     const db = dbConnection.db;
     const collection = db.collection("Distance");
     const parcours = await collection.aggregate(pipeline).limit(3000).toArray();
@@ -51,7 +50,14 @@ export async function get(request) {
       parcours[i].lat = parcours[i].distance_parcours.lat;
       parcours[i].lng = parcours[i].distance_parcours.lng;
     }
-console.info("parcours.length",parcours.length)
+    console.log("*************************************************************************")
+    console.info("variante", variante)
+    console.info("start", start)
+    console.info("end", end)
+    console.info("parcours.length", parcours.length)
+    console.info("pos max", parcours[parcours.length-1].pos)    
+    console.log("*************************************************************************")
+
 
     return {
       status: 200,
