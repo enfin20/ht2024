@@ -260,17 +260,17 @@
     let fl_files = evt.target.files; // JS FileList object
     var file = fl_files[0];
     let reader = new FileReader(); // built in API
-
+    console.info("editDay", editDay.init);
     reader.onload = function (progressEvent) {
       // Entire file
       const text = this.result;
-      console.info("text", text);
+
       var pos = 1;
       var element = "";
-      var prev_lat = 45.109514;
-      var prev_lng = 6.629992;
-      var prev_ele = 3092.9;
-      var prev_cumul = 0;
+      var prev_lat = 45;
+      var prev_lng = 6;
+      var prev_ele = 1500;
+      var prev_cumul = 5000;
       var data = [];
       var pi = Math.PI;
       var dayDist = 0;
@@ -280,6 +280,7 @@
 
       // By lines
       var lines = text.split("\n");
+      var counter = 0;
       for (var i = 0; i < lines.length; i++) {
         if (lines[i].trim().substring(0, 6) === "<trkpt") {
           var editParcours = Object();
@@ -287,7 +288,6 @@
               <trkpt lat="45.106969" lon="6.578321">
                 <ele>2720.8</ele>
           */
-
           element = lines[i]
             .trim()
             .replace("<trkpt ", "")
@@ -302,6 +302,12 @@
           editParcours.lat = Number(data[0]);
           editParcours.lng = Number(data[1]);
           editParcours.ele = Number(Math.round(data[2]));
+          if (counter === 0) {
+            // Premier point de la journéee, ne pas tenir compte du précédent point
+            prev_lat = editParcours.lat;
+            prev_lng = editParcours.lng;
+            prev_ele = editParcours.ele;
+          }
           editParcours.dist = Math.round(
             Math.acos(
               Math.sin((prev_lat * pi) / 180) *
@@ -325,6 +331,10 @@
           dayDist += editParcours.dist;
           dayElePos += editParcours.elePos;
           dayEleNeg += editParcours.eleNeg;
+          if (counter === 0) {
+            // pour ne pas tenir compte du précédent point
+            console.info("0", editParcours);
+          }
           parcours.push(editParcours);
 
           prev_lat = editParcours.lat;
@@ -332,9 +342,10 @@
           prev_ele = editParcours.ele;
           prev_cumul = editParcours.cumul;
           pos++;
+          counter++;
         }
       }
-      console.info("data", parcours);
+      //console.info("data", parcours);
       editDay.dist = Math.round(dayDist / 100) / 10;
       editDay.elePos = dayElePos;
       editDay.eleNeg = dayEleNeg;
@@ -359,6 +370,7 @@
           class=" appearance-none block w-full bg-gray-100 text-gray-600 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
         />
       </div>
+
       <div class="w-full md:w-2/3 px-3 mb-6 md:mb-0">
         <label
           class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"

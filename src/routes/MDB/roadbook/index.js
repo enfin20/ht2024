@@ -75,14 +75,11 @@ export async function put(request) {
           detail: roadbook.detail,
           summary: roadbook.summary,
           dayCounter:roadbook.dayCounter,
-          lat: roadbook.lat,
-          lng: roadbook.lng,
           debutParcours: roadbook.debutParcours,
           finParcours: roadbook.finParcours,
           dist: roadbook.dist,
           eleNeg:roadbook.eleNeg,
           elePos: roadbook.elePos,
-          variante: roadbook.variante,
         },
       }
     );
