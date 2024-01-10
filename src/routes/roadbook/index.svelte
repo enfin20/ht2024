@@ -1,34 +1,28 @@
 <script>
   import { onMount } from "svelte";
-  import Geolocation from "svelte-geolocation";
-
-  let getPositionAgain = false;
-  let detail = {};
 
   let roadbook = [];
+  let parcours = [];
   var buttonLabel = "Add";
-  var edit_Day = Object();
-  edit_Day.key = "";
-  edit_Day.day = new Date().toJSON().slice(0, 10);
+  var editDay = Object();
+  editDay.key = "";
+  editDay.day = new Date().toJSON().slice(0, 10);
 
-  edit_Day.start = "";
-  edit_Day.end = "";
-  edit_Day.weather = -1;
-  edit_Day.difficulty = -1;
-  edit_Day.night = -1;
-  edit_Day.landscape = -1;
-  edit_Day.mood = -1;
-  edit_Day.detail = "";
-  edit_Day.summary = "";
-  edit_Day.dayCounter = 0;
-  edit_Day.lat = 0;
-  edit_Day.lng = 0;
-  edit_Day.debutParcours = 0;
-  edit_Day.finParcours = 0;
-  edit_Day.dist = 0;
-  edit_Day.elePos = 0;
-  edit_Day.eleNeg = 0;
-  edit_Day.variante = 0;
+  editDay.start = "";
+  editDay.end = "";
+  editDay.weather = -1;
+  editDay.difficulty = -1;
+  editDay.night = -1;
+  editDay.landscape = -1;
+  editDay.mood = -1;
+  editDay.detail = "";
+  editDay.summary = "";
+  editDay.dayCounter = 0;
+  editDay.debutParcours = 0;
+  editDay.finParcours = 0;
+  editDay.dist = 0;
+  editDay.elePos = 0;
+  editDay.eleNeg = 0;
 
   let weatherIcon = [
     "Snow",
@@ -73,16 +67,15 @@
         dayId = i;
       }
     }
-    edit_Day.start = roadbook[dayId].end;
-    edit_Day.debutParcours = roadbook[dayId].finParcours;
-    edit_Day.dayCounter = roadbook[dayId].dayCounter + 1;
-    edit_Day.variante = roadbook[dayId].variante || 1;
+    editDay.start = roadbook[dayId].end;
+    editDay.debutParcours = roadbook[dayId].finParcours;
+    editDay.dayCounter = roadbook[dayId].dayCounter + 1;
   });
 
   function updateIcons() {
     //mise à jour des icones
     for (var i = 0; i < weatherIcon.length; i++) {
-      if (edit_Day.weather === i) {
+      if (editDay.weather === i) {
         imgNewWeatherActivate[i] = "";
       } else {
         imgNewWeatherActivate[i] = "_in";
@@ -90,11 +83,11 @@
     }
 
     for (var i = 0; i < difficultyIcon.length; i++) {
-      if (edit_Day.difficulty === 0) {
+      if (editDay.difficulty === 0) {
         // zero day
         imgNewDifficultyActivate[0] = "";
         imgNewDifficultyActivate[i] = "_in";
-      } else if (edit_Day.difficulty >= i) {
+      } else if (editDay.difficulty >= i) {
         imgNewDifficultyActivate[0] = "_in";
         imgNewDifficultyActivate[i] = "";
       } else {
@@ -102,7 +95,7 @@
       }
     }
     for (var i = 0; i < nightIcon.length; i++) {
-      if (edit_Day.night === i) {
+      if (editDay.night === i) {
         imgNewNightActivate[i] = "";
       } else {
         imgNewNightActivate[i] = "_in";
@@ -110,20 +103,20 @@
     }
 
     for (var i = 0; i < starsIcon.length; i++) {
-      if (edit_Day.landscape === 0) {
+      if (editDay.landscape === 0) {
         imgNewLandscapeActivate[0] = "";
         imgNewLandscapeActivate[i] = "_in";
-      } else if (edit_Day.landscape === 1) {
+      } else if (editDay.landscape === 1) {
         imgNewLandscapeActivate[1] = "";
         imgNewLandscapeActivate[i] = "_in";
-      } else if (edit_Day.landscape === 2) {
+      } else if (editDay.landscape === 2) {
         imgNewLandscapeActivate[2] = "";
         imgNewLandscapeActivate[i] = "_in";
-      } else if (edit_Day.landscape === 3) {
+      } else if (editDay.landscape === 3) {
         imgNewLandscapeActivate[2] = "";
         imgNewLandscapeActivate[3] = "";
         imgNewLandscapeActivate[i] = "_in";
-      } else if (edit_Day.landscape === 4) {
+      } else if (editDay.landscape === 4) {
         imgNewLandscapeActivate[2] = "";
         imgNewLandscapeActivate[3] = "";
         imgNewLandscapeActivate[4] = "";
@@ -133,7 +126,7 @@
     }
 
     for (var i = 0; i < moodIcon.length; i++) {
-      if (edit_Day.mood === i) {
+      if (editDay.mood === i) {
         imgNewMoodActivate[i] = "";
       } else {
         imgNewMoodActivate[i] = "_in";
@@ -141,50 +134,22 @@
     }
   }
 
-  export async function calcDist() {
-    let res = await fetch(
-      "/MDB/parcours?variante=" +
-        edit_Day.variante +
-        "&debutParcours=" +
-        edit_Day.debutParcours +
-        "&finParcours=" +
-        edit_Day.finParcours
-    );
-    const par = await res.json();
-    let parcours = await par.parcours;
-    console.info("parcours length", parcours.length);
-    edit_Day.dist = 0;
-    edit_Day.elePos = 0;
-    edit_Day.eleNeg = 0;
-    console.info("edit_Day", edit_Day);
-    for (var i = 0; i < parcours.length; i++) {
-      edit_Day.dist += parcours[i].dist / 1000;
-      edit_Day.elePos += parcours[i].elepos;
-      edit_Day.eleNeg += parcours[i].eleneg;
-    }
-    edit_Day.dist = Math.round((edit_Day.dist + Number.EPSILON) * 10) / 10;
-
-    console.info("calcDist", edit_Day);
-  }
-
   function cleanForm() {
-    edit_Day.key = "";
+    editDay.key = "";
     buttonLabel = "Add";
-    edit_Day.day = new Date().toJSON().slice(0, 10);
-    edit_Day.start = "";
-    edit_Day.end = "";
-    edit_Day.weather = -1;
-    edit_Day.difficulty = -1;
-    edit_Day.night = -1;
-    edit_Day.landscape = -1;
-    edit_Day.mood = -1;
-    edit_Day.detail = "";
-    edit_Day.summary = "";
-    edit_Day.lat = 0;
-    edit_Day.lng = 0;
-    edit_Day.dist = 0;
-    edit_Day.elePos = 0;
-    edit_Day.eleNeg = 0;
+    editDay.day = new Date().toJSON().slice(0, 10);
+    editDay.start = "";
+    editDay.end = "";
+    editDay.weather = -1;
+    editDay.difficulty = -1;
+    editDay.night = -1;
+    editDay.landscape = -1;
+    editDay.mood = -1;
+    editDay.detail = "";
+    editDay.summary = "";
+    editDay.dist = 0;
+    editDay.elePos = 0;
+    editDay.eleNeg = 0;
 
     let lastDay = 0;
     let dayId = 0;
@@ -194,25 +159,24 @@
         dayId = i;
       }
     }
-    edit_Day.start = roadbook[dayId].end;
-    edit_Day.debutParcours = roadbook[dayId].finParcours;
-    edit_Day.dayCounter = roadbook[dayId].dayCounter + 1;
-    edit_Day.variante = roadbook[dayId].variante || 1;
+    editDay.start = roadbook[dayId].end;
+    editDay.debutParcours = roadbook[dayId].finParcours;
+    editDay.dayCounter = roadbook[dayId].dayCounter + 1;
     buttonLabel = "Add";
     updateIcons();
   }
 
-  export async function editDay(day) {
+  export async function loadDay(day) {
     let res = await fetch("/MDB/roadbook/day?day=" + day);
     const rday = await res.json();
-    edit_Day = await rday.r_day;
-    edit_Day.key = edit_Day.day;
+    editDay = await rday.r_day;
+    editDay.key = editDay.day;
 
-    edit_Day.key = edit_Day.day;
-    edit_Day.day = [
-      edit_Day.day.substring(0, 4),
-      edit_Day.day.substring(4, 6),
-      edit_Day.day.substring(6, 8),
+    editDay.key = editDay.day;
+    editDay.day = [
+      editDay.day.substring(0, 4),
+      editDay.day.substring(4, 6),
+      editDay.day.substring(6, 8),
     ].join("-");
     buttonLabel = "Update";
     // calcDist();
@@ -223,45 +187,41 @@
   export async function insertRoadbook() {
     let new_id = "";
     var res = new Object();
-    edit_Day.day = edit_Day.day
+    editDay.day = editDay.day
       .substring(0, 4)
-      .concat(edit_Day.day.substring(5, 7))
-      .concat(edit_Day.day.substring(8, 10));
-    edit_Day.weather = Number(edit_Day.weather);
-    edit_Day.difficulty = Number(edit_Day.difficulty);
-    edit_Day.night = Number(edit_Day.night);
-    edit_Day.landscape = Number(edit_Day.landscape);
-    edit_Day.mood = Number(edit_Day.mood);
-    edit_Day.dayCounter = Number(edit_Day.dayCounter);
-    edit_Day.lat = Number(edit_Day.lat);
-    edit_Day.lng = Number(edit_Day.lng);
-    edit_Day.variante = Number(edit_Day.variante);
-    getFinParcours();
+      .concat(editDay.day.substring(5, 7))
+      .concat(editDay.day.substring(8, 10));
+    editDay.weather = Number(editDay.weather);
+    editDay.difficulty = Number(editDay.difficulty);
+    editDay.night = Number(editDay.night);
+    editDay.landscape = Number(editDay.landscape);
+    editDay.mood = Number(editDay.mood);
+    editDay.dayCounter = Number(editDay.dayCounter);
 
-    if (edit_Day.key === "") {
+    if (editDay.key === "") {
       // Insert new day
 
       res = await fetch("/MDB/roadbook", {
         method: "POST",
-        body: JSON.stringify(edit_Day),
+        body: JSON.stringify(editDay),
       });
       new_id = await res.json();
-      edit_Day.key = edit_Day.day;
+      editDay.key = editDay.day;
 
       // remise à jour du tableau
       roadbook.unshift({
-        day: edit_Day.day,
-        start: edit_Day.start,
-        end: edit_Day.end,
-        key: edit_Day.day,
-        weather: edit_Day.weather,
-        difficulty: edit_Day.difficulty,
-        night: edit_Day.night,
-        landscape: edit_Day.landscape,
-        mood: edit_Day.mood,
-        detail: edit_Day.detail,
-        summary: edit_Day.summary,
-        dayCounter: edit_Day.dayCounter,
+        day: editDay.day,
+        start: editDay.start,
+        end: editDay.end,
+        key: editDay.day,
+        weather: editDay.weather,
+        difficulty: editDay.difficulty,
+        night: editDay.night,
+        landscape: editDay.landscape,
+        mood: editDay.mood,
+        detail: editDay.detail,
+        summary: editDay.summary,
+        dayCounter: editDay.dayCounter,
       });
       roadbook = roadbook;
     } else {
@@ -269,90 +229,120 @@
 
       res = await fetch("/MDB/roadbook", {
         method: "PUT",
-        body: JSON.stringify(edit_Day),
+        body: JSON.stringify(editDay),
       });
 
       //mise à jour du tableau
       for (var i = 0; i < roadbook.length; i++) {
-        if (roadbook[i].day === edit_Day.day) {
-          roadbook[i].weather = Number(edit_Day.weather);
-          roadbook[i].difficulty = Number(edit_Day.difficulty);
-          roadbook[i].night = Number(edit_Day.night);
-          roadbook[i].landscape = Number(edit_Day.landscape);
-          roadbook[i].mood = Number(edit_Day.mood);
-          roadbook[i].detail = edit_Day.detail;
-          roadbook[i].summary = edit_Day.summary;
-          roadbook[i].start = edit_Day.start;
-          roadbook[i].end = edit_Day.end;
-          roadbook[i].dayCounter = Number(edit_Day.dayCounter);
-          roadbook[i].dist = Number(edit_Day.dist);
-          roadbook[i].elePos = Number(edit_Day.elePos);
-          roadbook[i].eleNeg = Number(edit_Day.eleNeg);
-          roadbook[i].finParcours = Number(edit_Day.finParcours);
-          roadbook[i].debutParcours = Number(edit_Day.debutParcours);
-          roadbook[i].variante = Number(edit_Day.variante);
+        if (roadbook[i].day === editDay.day) {
+          roadbook[i].weather = Number(editDay.weather);
+          roadbook[i].difficulty = Number(editDay.difficulty);
+          roadbook[i].night = Number(editDay.night);
+          roadbook[i].landscape = Number(editDay.landscape);
+          roadbook[i].mood = Number(editDay.mood);
+          roadbook[i].detail = editDay.detail;
+          roadbook[i].summary = editDay.summary;
+          roadbook[i].start = editDay.start;
+          roadbook[i].end = editDay.end;
+          roadbook[i].dayCounter = Number(editDay.dayCounter);
+          roadbook[i].dist = Number(editDay.dist);
+          roadbook[i].elePos = Number(editDay.elePos);
+          roadbook[i].eleNeg = Number(editDay.eleNeg);
+          roadbook[i].finParcours = Number(editDay.finParcours);
+          roadbook[i].debutParcours = Number(editDay.debutParcours);
         }
       }
     }
     cleanForm();
   }
 
-  export async function getFinParcours() {
-    var res = new Object();
-    console.log("**********************************");
-    console.info("début getFinParcours");
-    console.info("variante", edit_Day.variante);
-    console.info("start", edit_Day.debutParcours);
-    console.info("lat", edit_Day.lat);
-    console.info("lng", edit_Day.lng);
+  function parcoursUpload(evt) {
+    let fl_files = evt.target.files; // JS FileList object
+    var file = fl_files[0];
+    let reader = new FileReader(); // built in API
 
-    if (Number(edit_Day.lat) > 0) {
-      // find gps closest point
-      res = await fetch(
-        "/MDB/parcours?variante=" +
-          edit_Day.variante +
-          "&debutParcours=" +
-          edit_Day.debutParcours
-      );
+    reader.onload = function (progressEvent) {
+      // Entire file
+      const text = this.result;
+      console.info("text", text);
+      var pos = 1;
+      var element = "";
+      var prev_lat = 45.109514;
+      var prev_lng = 6.629992;
+      var prev_ele = 3092.9;
+      var prev_cumul = 0;
+      var data = [];
+      var pi = Math.PI;
+      var dayDist = 0;
+      var dayElePos = 0;
+      var dayEleNeg = 0;
+      parcours = [];
 
-      const par = await res.json();
-      let parcours = await par.parcours;
-      let minDist = 99999;
-      let dist = 99999;
-      let parcours_pos = "";
-      for (var i = 0; i < parcours.length; i++) {
-        dist = Math.abs(
-          (Number(parcours[i].lng) - Number(edit_Day.lng)) ** 2 +
-            (Number(parcours[i].lat) - Number(edit_Day.lat)) ** 2
-        );
-        if (dist < minDist) {
-          minDist = dist;
-          parcours_pos = parcours[i].pos;
-        }
-        if (dist === 0) {
-          i = parcours.length;
+      // By lines
+      var lines = text.split("\n");
+      for (var i = 0; i < lines.length; i++) {
+        if (lines[i].trim().substring(0, 6) === "<trkpt") {
+          var editParcours = Object();
+          /* 
+              <trkpt lat="45.106969" lon="6.578321">
+                <ele>2720.8</ele>
+          */
+
+          element = lines[i]
+            .trim()
+            .replace("<trkpt ", "")
+            .replace('lat="', "")
+            .replace('" lon="', "/")
+            .replace('">', "/")
+            .concat(
+              lines[i + 1].trim().replace("<ele>", "").replace("</ele>", "")
+            );
+          data = element.split("/");
+          editParcours.pos = pos;
+          editParcours.lat = Number(data[0]);
+          editParcours.lng = Number(data[1]);
+          editParcours.ele = Number(Math.round(data[2]));
+          editParcours.dist = Math.round(
+            Math.acos(
+              Math.sin((prev_lat * pi) / 180) *
+                Math.sin((editParcours.lat * pi) / 180) +
+                Math.cos((prev_lat * pi) / 180) *
+                  Math.cos((editParcours.lat * pi) / 180) *
+                  Math.cos(((prev_lng - editParcours.lng) * pi) / 180)
+            ) *
+              6371 *
+              1000
+          );
+
+          editParcours.cumul = prev_cumul + editParcours.dist;
+          if (editParcours.ele - prev_ele > 0) {
+            editParcours.elePos = Math.round(editParcours.ele - prev_ele);
+            editParcours.eleNeg = 0;
+          } else {
+            editParcours.eleNeg = Math.round(editParcours.ele - prev_ele);
+            editParcours.elePos = 0;
+          }
+          dayDist += editParcours.dist;
+          dayElePos += editParcours.elePos;
+          dayEleNeg += editParcours.eleNeg;
+          parcours.push(editParcours);
+
+          prev_lat = editParcours.lat;
+          prev_lng = editParcours.lng;
+          prev_ele = editParcours.ele;
+          prev_cumul = editParcours.cumul;
+          pos++;
         }
       }
-      edit_Day.finParcours = parcours_pos;
-      console.info("parcours.length", parcours.length);
-      console.info("pos max", parcours[parcours.length - 1].pos);
-      console.info("end", edit_Day.finParcours);
-      console.log("**********************************");
-      calcDist();
-    }
+      console.info("data", parcours);
+      editDay.dist = Math.round(dayDist / 100) / 10;
+      editDay.elePos = dayElePos;
+      editDay.eleNeg = dayEleNeg;
+    };
+    reader.readAsText(file);
   }
 </script>
 
-<Geolocation
-  getPosition={getPositionAgain}
-  watch={!getPositionAgain}
-  on:position={(e) => {
-    detail = e.detail;
-    edit_Day.lat = detail.coords.latitude;
-    edit_Day.lng = detail.coords.longitude;
-    getFinParcours();
-  }}
-/>
 <div class="py-2 grid gap-1">
   <div class="grid grid-cols-1 place-content-center w-full">
     <div class=" w-full md:w-1/2 flex flex-wrap -mx-3">
@@ -361,55 +351,30 @@
           class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
           for="grid-first-name"
         >
-          Var
+          Jour
         </label>
         <input
           type="text"
-          bind:value={edit_Day.variante}
+          bind:value={editDay.dayCounter}
           class=" appearance-none block w-full bg-gray-100 text-gray-600 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
         />
       </div>
-      <div class="w-1/3 px-3 mb-6 md:mb-0">
+      <div class="w-5/6 px-3 mb-6 md:mb-0">
         <label
           class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
           for="grid-first-name"
         >
-          Lat
+          trace
         </label>
         <input
-          type="text"
-          bind:value={edit_Day.lat}
-          on:change={getFinParcours}
-          class=" appearance-none block w-full bg-gray-100 text-gray-600 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-        />
-      </div>
-      <div class="w-1/3 px-3 mb-6 md:mb-0">
-        <label
-          class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-          for="grid-first-name"
-        >
-          lng
-        </label>
-        <input
-          type="text"
-          bind:value={edit_Day.lng}
-          on:change={getFinParcours}
-          class=" appearance-none block w-full bg-gray-100 text-gray-600 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-        />
-      </div>
-      <div class="w-1/6 px-3 mb-6 md:mb-0">
-        <label
-          class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-          for="grid-first-name"
-        >
-          &nbsp;
-        </label>
-        <button
-          on:click={() => (getPositionAgain = !getPositionAgain)}
+          id="upload"
+          type="file"
+          accept=".gpx"
+          name="files"
+          size="30"
+          on:change={parcoursUpload}
           class=" text-white border bg-teal-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-teal-700"
-        >
-          Go
-        </button>
+        />
       </div>
     </div>
     <div class=" w-full md:w-1/2 flex flex-wrap -mx-3">
@@ -422,7 +387,7 @@
         </label>
         <input
           type="text"
-          bind:value={edit_Day.dist}
+          bind:value={editDay.dist}
           class=" appearance-none block w-full bg-gray-100 text-gray-600 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
         />
       </div>
@@ -435,7 +400,7 @@
         </label>
         <input
           type="text"
-          bind:value={edit_Day.elePos}
+          bind:value={editDay.elePos}
           class=" appearance-none block w-full bg-gray-100 text-gray-600 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
         />
       </div>
@@ -448,27 +413,14 @@
         >
         <input
           type="text"
-          bind:value={edit_Day.eleNeg}
+          bind:value={editDay.eleNeg}
           class=" appearance-none block w-full bg-gray-100 text-gray-600 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
         />
       </div>
     </div>
     <form class="w-full " on:submit|preventDefault={insertRoadbook}>
       <div class=" w-full md:w-1/2 flex flex-wrap -mx-3">
-        <div class="w-1/4 md:w-1/4 px-3 mb-6 md:mb-0">
-          <label
-            class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-            for="grid-first-name"
-          >
-            Jour
-          </label>
-          <input
-            type="text"
-            bind:value={edit_Day.dayCounter}
-            class=" appearance-none block w-full bg-gray-100 text-gray-600 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-          />
-        </div>
-        <div class="w-3/4 md:w-1/4 px-3 mb-6 md:mb-0">
+        <div class="w-3/4 md:w-1/3 px-3 mb-6 md:mb-0">
           <label
             class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
             for="grid-first-name"
@@ -477,11 +429,11 @@
           </label>
           <input
             type="date"
-            bind:value={edit_Day.day}
+            bind:value={editDay.day}
             class=" appearance-none block w-full bg-gray-100 text-gray-600 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
           />
         </div>
-        <div class="w-full md:w-1/4 px-3 mb-6 md:mb-0">
+        <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
           <label
             class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
             for="grid-first-name"
@@ -490,11 +442,11 @@
           </label>
           <input
             type="text"
-            bind:value={edit_Day.start}
+            bind:value={editDay.start}
             class=" appearance-none block w-full bg-gray-100 text-gray-600 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
           />
         </div>
-        <div class="w-full md:w-1/4 px-3 mb-6 md:mb-0">
+        <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
           <label
             class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
             for="grid-first-name"
@@ -503,7 +455,7 @@
           </label>
           <input
             type="text"
-            bind:value={edit_Day.end}
+            bind:value={editDay.end}
             class=" appearance-none block w-full bg-gray-100 text-gray-600 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
           />
         </div>
@@ -519,7 +471,7 @@
           {#each weatherIcon as wi, i}
             <input
               type="radio"
-              bind:group={edit_Day.weather}
+              bind:group={editDay.weather}
               name="r_weather"
               value={i}
               id="r_weather{i}"
@@ -548,7 +500,7 @@
           {#each difficultyIcon as di, i}
             <input
               type="radio"
-              bind:group={edit_Day.difficulty}
+              bind:group={editDay.difficulty}
               name="r_difficulty"
               value={i}
               id="r_difficulty{i}"
@@ -577,7 +529,7 @@
           {#each nightIcon as ni, i}
             <input
               type="radio"
-              bind:group={edit_Day.night}
+              bind:group={editDay.night}
               name="r_night"
               value={i}
               id="r_night{i}"
@@ -606,7 +558,7 @@
           {#each starsIcon as si, i}
             <input
               type="radio"
-              bind:group={edit_Day.landscape}
+              bind:group={editDay.landscape}
               name="r_landscape"
               value={i}
               id="r_landscape{i}"
@@ -635,7 +587,7 @@
           {#each moodIcon as mi, i}
             <input
               type="radio"
-              bind:group={edit_Day.mood}
+              bind:group={editDay.mood}
               name="mood"
               value={i}
               id="r_mood{i}"
@@ -662,7 +614,7 @@
             Résumé
           </label>
           <textarea
-            bind:value={edit_Day.summary}
+            bind:value={editDay.summary}
             class=" w-full appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none"
             rows="5"
           />
@@ -675,7 +627,7 @@
             Détails
           </label>
           <textarea
-            bind:value={edit_Day.detail}
+            bind:value={editDay.detail}
             class=" w-full appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none"
             rows="20"
           />
@@ -813,7 +765,7 @@
               <button
                 class="bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 px-2 rounded focus:outline-none focus:shadow-outline"
                 id={r.key}
-                on:click={editDay(r.key)}>Edit</button
+                on:click={loadDay(r.key)}>Edit</button
               >
             </td>
           </tr>
