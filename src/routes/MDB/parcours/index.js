@@ -3,56 +3,23 @@ import { Double, ObjectId } from "mongodb";
 
 export async function get(request) {
   try {
-    const variante = request.query.get("variante") || 1;
     const start = request.query.get("debutParcours") || 1;
     const end = request.query.get("finParcours") || 5000000;
-    const pipeline = 
-[
-    {
-        '$match': {
-            '$and': [
-                {
-                    'variante': Number(variante)
-                }, {
-                    'pos': {
-                        '$gt': Number(start)
-                    }
-                }, {
-                    'pos': {
-                        '$lte': Number(end)
-                    }
-                }
-            ]
-        }
-    }, {
-        '$lookup': {
-            'from': 'Parcours', 
-            'localField': 'pos', 
-            'foreignField': 'pos', 
-            'as': 'distance_parcours'
-        }
-    }, {
-        '$unwind': {
-            'path': '$distance_parcours'
-        }
-    }
-      ];
+    const freq = request.query.get("freq")
 
      const dbConnection = await connectToDatabase();
     const db = dbConnection.db;
-    const collection = db.collection("Distance");
-    const parcours = await collection.aggregate(pipeline).limit(3000).toArray();
+    const collection = db.collection("Parcours");
+    const parcours = await collection.find({
+      $and: [{ pos: { $gt: Number(start) } },
+      { pos: { $lte: Number(end) } },
+      { pos: { $mod: [Number(freq), 0] } }]
+    }).toArray();
+
     for (var i = 0; i < parcours.length; i++) {
       parcours[i].key = parcours[i]._id;
-      parcours[i].dist = parcours[i].distance_parcours.dist;
-      parcours[i].elepos = parcours[i].distance_parcours.elepos;
-      parcours[i].eleneg = parcours[i].distance_parcours.eleneg;
-      parcours[i].lat = parcours[i].distance_parcours.lat;
-      parcours[i].lng = parcours[i].distance_parcours.lng;
     }
     console.log("*************************************************************************")
-    console.info("variante", variante)
-    console.info("start", start)
     console.info("end", end)
     console.info("parcours.length", parcours.length)
     console.info("pos max", parcours[parcours.length-1].pos)    
@@ -66,6 +33,33 @@ export async function get(request) {
       },
     };
   } catch (err) {
+    return {
+      status: 500,
+      body: {
+        erreur: err.message,
+      },
+    };
+  }
+}
+
+export async function post(request) {
+  // intégration d'un nouveau parcours du jour
+  try {
+    const dbConnection = await connectToDatabase();
+    const db = dbConnection.db;
+    const collection = db.collection("Parcours");
+    const parcours = JSON.parse(request.body);
+ 
+    let t = await collection.insertMany(parcours);
+
+    return {
+      status: 200,
+      body: {
+        insertedId: "OK",
+      },
+    };
+  } catch (err) {
+    console.info("err", err.message)
     return {
       status: 500,
       body: {

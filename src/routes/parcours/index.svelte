@@ -38,7 +38,6 @@
   var chartParcoursData = [];
   let debutParcours = 100000000;
   let finParcours = 0;
-  let variante = 1;
 
   onMount(async (promise) => {
     loadTables();
@@ -72,30 +71,28 @@
     let distance = [];
     let elevation = [];
     let daysFinParcours = [];
-    let dist = [];
+    let parcours = [];
     let freq = 1;
 
     freq = Math.round(Math.max((finParcours - debutParcours) / 2000, 1), 0);
     let res = await fetch(
-      "/MDB/distance?variante=" +
-        variante +
-        "&freq=" +
+      "/MDB/parcours?freq=" +
         freq +
         "&debutParcours=" +
         debutParcours +
         "&finParcours=" +
         finParcours
     );
-    const dis = await res.json();
-    dist = await dis.distance;
-    for (var i = 0; i < dist.length; i++) {
-      distance.push(Math.round(dist[i].cumul / 1000, 0)),
-        elevation.push(dist[i].ele);
+    const par = await res.json();
+    parcours = await par.parcours;
+    for (var i = 0; i < parcours.length; i++) {
+      distance.push(Math.round(parcours[i].cumul / 1000, 0)),
+        elevation.push(parcours[i].ele);
       for (var j = 0; j < roadbook.length; j++) {
-        if (i < dist.length - 1) {
+        if (i < parcours.length - 1) {
           if (
-            dist[i].pos <= roadbook[j].finParcours &&
-            dist[i + 1].pos >= roadbook[j].finParcours
+            parcours[i].pos <= roadbook[j].finParcours &&
+            parcours[i + 1].pos >= roadbook[j].finParcours
           ) {
             daysFinParcours.push(i);
           }
@@ -167,14 +164,6 @@
 <div class="w-full">
   <div class="w-full grid grid-cols-1 md:grid-cols-6 mt-5 md:mt-10">
     <select
-      bind:value={variante}
-      on:change={loadParcours}
-      class="text-xs appearance-none border-2 border-gray-200 rounded w-1/2 py-1 px-1 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-pink-400"
-    >
-      <option value="1"> Variante 1 </option>
-      <option value="2"> Variante 2 </option>
-    </select>
-    <select
       bind:value={debutParcours}
       on:change={loadParcours}
       class="text-xs appearance-none border-2 border-gray-200 rounded w-full py-1 px-1 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-pink-400"
@@ -203,7 +192,7 @@
   <div class="w-full grid grid-cols-1 mt-0 md:mt-5 text-xs md:text-base">
     {#each roadbook.reverse() as r}
       <div
-        class="w-full md:w-2/3 grid grid-cols-3 md:grid-cols-5 align-middle text-center border-collapse border-t-[1px] border-slate-200"
+        class="w-full md:w-full grid grid-cols-3 md:grid-cols-5 align-middle text-center border-collapse border-t-[1px] border-slate-200"
       >
         <div class="">
           Jour {r.dayCounter}: {r.day
