@@ -346,7 +346,7 @@
 <div class="py-2 grid gap-1">
   <div class="grid grid-cols-1 place-content-center w-full">
     <div class=" w-full md:w-1/2 flex flex-wrap -mx-3">
-      <div class="w-1/6 px-3 mb-6 md:mb-0">
+      <div class="w-1/3 px-3 mb-6 md:mb-0">
         <label
           class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
           for="grid-first-name"
@@ -359,7 +359,7 @@
           class=" appearance-none block w-full bg-gray-100 text-gray-600 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
         />
       </div>
-      <div class="w-5/6 px-3 mb-6 md:mb-0">
+      <div class="w-full md:w-2/3 px-3 mb-6 md:mb-0">
         <label
           class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
           for="grid-first-name"
@@ -373,7 +373,7 @@
           name="files"
           size="30"
           on:change={parcoursUpload}
-          class=" text-white border bg-teal-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-teal-700"
+          class=" appearance-none block w-full bg-gray-100 text-gray-600 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
         />
       </div>
     </div>
@@ -420,7 +420,7 @@
     </div>
     <form class="w-full " on:submit|preventDefault={insertRoadbook}>
       <div class=" w-full md:w-1/2 flex flex-wrap -mx-3">
-        <div class="w-3/4 md:w-1/3 px-3 mb-6 md:mb-0">
+        <div class="w-1/2 md:w-1/3 px-3 mb-6 md:mb-0">
           <label
             class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
             for="grid-first-name"
