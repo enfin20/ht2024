@@ -206,7 +206,7 @@
       {/each}
     </select>
   </div>
-  <div class="w-full grid grid-cols-1 md:grid-cols-6">
+  <div class="w-full grid grid-cols-1">
     Nombre de jours : {NbDay}<br />
     Distance totale : {Number(totalDistance).toLocaleString("fr")} kms<br
     />Elévation : {Number(totalElePos).toLocaleString("fr")} / {Number(
