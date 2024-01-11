@@ -72,6 +72,7 @@
     if (dayId > -1) {
       editDay.start = roadbook[dayId].end;
       editDay.debutParcours = roadbook[dayId].finParcours;
+      editDay.finParcours = editDay.debutParcours;
       editDay.dayCounter = roadbook[dayId].dayCounter + 1;
       editDay.cumul = roadbook[dayId].cumul || 0;
     }
@@ -288,6 +289,7 @@
       // By lines
       var lines = text.split("\n");
       var counter = 0;
+
       var prev_cumul = editDay.cumul;
       console.info("prev_cumul", prev_cumul);
       for (var i = 0; i < lines.length; i++) {
@@ -306,6 +308,7 @@
             .concat(
               lines[i + 1].trim().replace("<ele>", "").replace("</ele>", "")
             );
+
           data = element.split("/");
           editParcours.lat = Number(data[0]);
           editParcours.lng = Number(data[1]);
@@ -313,21 +316,21 @@
           editParcours.dayCounter = editDay.dayCounter;
           if (counter === 0) {
             // Premier point de la journéee, ne pas tenir compte du précédent point
-            prev_lat = editParcours.lat;
-            prev_lng = editParcours.lng;
             prev_ele = editParcours.ele;
+            editParcours.dist = 0;
+          } else {
+            editParcours.dist = Math.round(
+              Math.acos(
+                Math.sin((prev_lat * pi) / 180) *
+                  Math.sin((editParcours.lat * pi) / 180) +
+                  Math.cos((prev_lat * pi) / 180) *
+                    Math.cos((editParcours.lat * pi) / 180) *
+                    Math.cos(((prev_lng - editParcours.lng) * pi) / 180)
+              ) *
+                6371 *
+                1000
+            );
           }
-          editParcours.dist = Math.round(
-            Math.acos(
-              Math.sin((prev_lat * pi) / 180) *
-                Math.sin((editParcours.lat * pi) / 180) +
-                Math.cos((prev_lat * pi) / 180) *
-                  Math.cos((editParcours.lat * pi) / 180) *
-                  Math.cos(((prev_lng - editParcours.lng) * pi) / 180)
-            ) *
-              6371 *
-              1000
-          );
 
           editParcours.cumul = prev_cumul + editParcours.dist;
           if (editParcours.ele - prev_ele > 0) {
@@ -341,6 +344,9 @@
           dayElePos += editParcours.elePos;
           dayEleNeg += editParcours.eleNeg;
           editParcours.pos = pos;
+          if (counter <= 1) {
+            console.info("oui", dayDist, dayElePos, dayEleNeg);
+          }
 
           parcours.push(editParcours);
 
