@@ -3,6 +3,10 @@
   import chartjs from "chart.js/auto";
 
   let roadbook = [];
+  let totalDistance = 0;
+  let totalElePos = 0;
+  let totalEleNeg = 0;
+  let NbDay = 0;
 
   let weatherIcon = [
     "Snow",
@@ -85,6 +89,7 @@
     );
     const par = await res.json();
     parcours = await par.parcours;
+
     for (var i = 0; i < parcours.length; i++) {
       distance.push(Math.round(parcours[i].cumul / 1000, 0)),
         elevation.push(parcours[i].ele);
@@ -99,6 +104,23 @@
         } else {
           daysFinParcours.push(i);
         }
+      }
+    }
+    totalDistance =
+      Math.round(parcours[parcours.length - 1].cumul / 1000, 0) -
+      Math.round(parcours[0].cumul / 1000, 0);
+
+    totalElePos = 0;
+    totalEleNeg = 0;
+    NbDay = 0;
+    for (var i = 0; i < roadbook.length; i++) {
+      if (
+        roadbook[i].debutParcours >= debutParcours &&
+        roadbook[i].finParcours <= finParcours
+      ) {
+        totalElePos += roadbook[i].elePos;
+        totalEleNeg += roadbook[i].eleNeg;
+        NbDay++;
       }
     }
 
@@ -157,8 +179,6 @@
       plugins: [lineMarkerText],
     });
   }
-
-  export async function editDay(day) {}
 </script>
 
 <div class="w-full">
@@ -186,6 +206,13 @@
       {/each}
     </select>
   </div>
+  <div class="w-full grid grid-cols-1 md:grid-cols-6">
+    Nombre de jours : {NbDay}<br />
+    Distance totale : {Number(totalDistance).toLocaleString("fr")} kms<br
+    />Elévation : {Number(totalElePos).toLocaleString("fr")} / {Number(
+      totalEleNeg
+    ).toLocaleString("fr")} m
+  </div>
   <div class="w-full grid grid-cols-1 mt-0 md:mt-5">
     <canvas bind:this={chartParcours} />
   </div>
@@ -211,7 +238,9 @@
           kms
         </div>
         <div class="">
-          + {r.elePos || 0} / {r.eleNeg || 0} m
+          + {Number(r.elePos).toLocaleString("fr") || 0} / {Number(
+            r.eleNeg
+          ).toLocaleString("fr") || 0} m
         </div>
         <div class="md:hidden" />
         <div class="px-2">
