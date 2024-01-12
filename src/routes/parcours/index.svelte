@@ -77,7 +77,34 @@
     let daysFinParcours = [];
     let parcours = [];
     let freq = 1;
+    let borneInf = 0;
+    let borneSup = 0;
 
+    // données statistiques globales du parcours sélectionné
+    totalElePos = 0;
+    totalEleNeg = 0;
+    NbDay = 0;
+    for (var i = 0; i < roadbook.length; i++) {
+      if (roadbook[i].debutParcours === debutParcours) {
+        if (i > 0) {
+          borneInf = Math.round(roadbook[i - 1].distCumul);
+        }
+      }
+      if (roadbook[i].finParcours === finParcours) {
+        borneSup = Math.round(roadbook[i].distCumul);
+      }
+      if (
+        roadbook[i].debutParcours >= debutParcours &&
+        roadbook[i].finParcours <= finParcours
+      ) {
+        totalElePos += roadbook[i].elePos;
+        totalEleNeg += roadbook[i].eleNeg;
+        NbDay++;
+      }
+    }
+    totalDistance = borneSup - borneInf;
+
+    // pour réduire le nombre de points à récupérer dans la base
     freq = Math.round(Math.max((finParcours - debutParcours) / 2000, 1), 0);
     let res = await fetch(
       "/MDB/parcours?freq=" +
@@ -90,40 +117,32 @@
     const par = await res.json();
     parcours = await par.parcours;
 
-    for (var i = 0; i < parcours.length; i++) {
-      distance.push(Math.round(parcours[i].cumul / 1000, 0)),
-        elevation.push(parcours[i].ele);
-      for (var j = 0; j < roadbook.length; j++) {
-        if (i < parcours.length - 1) {
-          if (
-            parcours[i].pos <= roadbook[j].finParcours &&
-            parcours[i + 1].pos >= roadbook[j].finParcours
-          ) {
-            daysFinParcours.push(i);
-          }
-        } else {
-          daysFinParcours.push(i);
+    // point initial
+    let posId = 0;
+    distance.push(Math.round(parcours[0].cumul / 1000, 0));
+    elevation.push(parcours[0].ele);
+
+    for (var i = borneInf + 1; i <= borneSup; i++) {
+      // boucle sur les kms pour entrer l'élévation correspondante
+      posId = 0;
+      for (var j = 1; j < parcours.length; j++) {
+        // on cherche le point le plus proche de chaque km
+        if (Math.round(parcours[j].cumul / 1000, 0) <= i) {
+          posId = j;
         }
       }
-    }
-    totalDistance =
-      Math.round(parcours[parcours.length - 1].cumul / 1000, 0) -
-      Math.round(parcours[0].cumul / 1000, 0);
-
-    totalElePos = 0;
-    totalEleNeg = 0;
-    NbDay = 0;
-    for (var i = 0; i < roadbook.length; i++) {
-      if (
-        roadbook[i].debutParcours >= debutParcours &&
-        roadbook[i].finParcours <= finParcours
-      ) {
-        totalElePos += roadbook[i].elePos;
-        totalEleNeg += roadbook[i].eleNeg;
-        NbDay++;
+      if (posId > 0) {
+        // point trouvé, on rentre le km et son élévation
+        distance.push(i);
+        elevation.push(parcours[posId].ele);
       }
     }
+    for (var j = 0; j < roadbook.length; j++) {
+      // pour chaque fin de parcours, on entre le km
+      daysFinParcours.push(Math.round(roadbook[j].distCumul) - borneInf);
+    }
 
+    // traçage des fin de parcours
     const lineMarkerText = {
       id: "lineMarkerText",
       beforeDatasetDraw: (chart, args, plugins) => {
@@ -153,6 +172,7 @@
       },
     };
 
+    // traçage du parcours
     chartParcoursData.destroy();
     chartParcoursData = new chartjs(ctxParcours, {
       type: "line",
@@ -224,7 +244,7 @@
     <canvas bind:this={chartParcours} />
   </div>
   <div class="w-full grid grid-cols-1 mt-0 md:mt-5 text-xs md:text-base">
-    {#each roadbook.reverse() as r}
+    {#each roadbook as r}
       <div
         class="w-full md:w-full grid grid-cols-3 md:grid-cols-5 align-middle text-center border-collapse border-t-[1px] border-slate-200"
       >
