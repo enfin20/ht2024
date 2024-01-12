@@ -319,17 +319,18 @@
             prev_ele = editParcours.ele;
             editParcours.dist = 0;
           } else {
-            editParcours.dist = Math.round(
-              Math.acos(
-                Math.sin((prev_lat * pi) / 180) *
-                  Math.sin((editParcours.lat * pi) / 180) +
-                  Math.cos((prev_lat * pi) / 180) *
-                    Math.cos((editParcours.lat * pi) / 180) *
-                    Math.cos(((prev_lng - editParcours.lng) * pi) / 180)
-              ) *
-                6371 *
-                1000
-            );
+            editParcours.dist =
+              Math.round(
+                Math.acos(
+                  Math.sin((prev_lat * pi) / 180) *
+                    Math.sin((editParcours.lat * pi) / 180) +
+                    Math.cos((prev_lat * pi) / 180) *
+                      Math.cos((editParcours.lat * pi) / 180) *
+                      Math.cos(((prev_lng - editParcours.lng) * pi) / 180)
+                ) *
+                  6371 *
+                  1000
+              ) || 0;
           }
 
           editParcours.cumul = prev_cumul + editParcours.dist;
