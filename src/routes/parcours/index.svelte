@@ -134,14 +134,21 @@
           scales: { x },
         } = chart;
         ctx.save();
+        let zeroDay = 0;
         data.datasets[0].data.forEach((dfp, index) => {
           ctx.beginPath();
-          ctx.strokeStyle = "rgb(195, 39, 72)";
-          ctx.lineWidth = 2;
+          if (x.getPixelForValue(daysFinParcours[index]) === zeroDay) {
+            ctx.strokeStyle = "rgb(0, 110, 118)";
+            ctx.lineWidth = 3;
+          } else {
+            ctx.strokeStyle = "rgb(255, 159, 64)";
+            ctx.lineWidth = 2;
+          }
 
           ctx.moveTo(x.getPixelForValue(daysFinParcours[index]), top);
           ctx.lineTo(x.getPixelForValue(daysFinParcours[index]), bottom);
           ctx.stroke();
+          zeroDay = x.getPixelForValue(daysFinParcours[index]);
         });
       },
     };

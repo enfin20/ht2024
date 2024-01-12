@@ -69,11 +69,15 @@
       "images/equipementVetement.png",
     ],
     [
+      "images/hebergementRefuge.png",
       "images/hebergementCamping.png",
       "images/hebergementHotel.png",
-      "images/hebergementRefuge.png",
     ],
-    ["images/nourritureCourses.png", "images/nourritureRestaurant.png"],
+    [
+      "images/nourritureCourses.png",
+      "images/hebergementRefuge.png",
+      "images/nourritureRestaurant.png",
+    ],
     [
       "images/santeHygiene.png",
       "images/santeMedicaments.png",
@@ -320,7 +324,7 @@
       afterDatasetDraw(chart, args, plugins) {
         const { ctx, data } = chart;
         ctx.save();
-        const width = 25;
+        const width = 26;
         chart.getDatasetMeta(0).data.forEach((datapoint, index) => {
           const x = chart.getDatasetMeta(0).data[index].tooltipPosition().x;
           const y = chart.getDatasetMeta(0).data[index].tooltipPosition().y;
