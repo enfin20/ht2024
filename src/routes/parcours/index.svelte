@@ -139,7 +139,12 @@
     }
     for (var j = 0; j < roadbook.length; j++) {
       // pour chaque fin de parcours, on entre le km
-      daysFinParcours.push(Math.round(roadbook[j].distCumul) - borneInf);
+      if (
+        roadbook[j].finParcours >= debutParcours &&
+        roadbook[j].finParcours <= finParcours
+      ) {
+        daysFinParcours.push(Math.round(roadbook[j].distCumul) - borneInf);
+      }
     }
 
     // traçage des fin de parcours
