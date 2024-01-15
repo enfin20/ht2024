@@ -24,6 +24,8 @@
   editDay.dist = 0;
   editDay.elePos = 0;
   editDay.eleNeg = 0;
+  editDay.stepsAnne = 0;
+  editDay.stepsOlivier = 0;
 
   let weatherIcon = [
     "Snow",
@@ -156,6 +158,8 @@
     editDay.dist = 0;
     editDay.elePos = 0;
     editDay.eleNeg = 0;
+    editDay.stepsAnne = 0;
+    editDay.stepsOlivier = 0;
 
     let lastDay = 0;
     let dayId = 0;
@@ -203,6 +207,8 @@
     editDay.landscape = Number(editDay.landscape);
     editDay.mood = Number(editDay.mood);
     editDay.dayCounter = Number(editDay.dayCounter);
+    editDay.stepsAnne = Number(editDay.stepsAnne);
+    editDay.stepsOlivier = Number(editDay.stepsOlivier);
 
     if (editDay.key === "") {
       // Insert new day
@@ -489,6 +495,35 @@
           />
         </div>
       </div>
+      <div class=" w-full md:w-1/2 flex flex-wrap -mx-3">
+        <div class="w-1/2 md:w-1/3  px-3 mb-6 md:mb-0">
+          <label
+            class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+            for="grid-first-name"
+          >
+            Pas A.
+          </label>
+          <input
+            type="text"
+            bind:value={editDay.stepsAnne}
+            class=" appearance-none block w-full bg-gray-100 text-gray-600 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+          />
+        </div>
+        <div class="w-1/2 md:w-1/3 px-3 mb-6 md:mb-0">
+          <label
+            class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+            for="grid-first-name"
+          >
+            Pas O.
+          </label>
+          <input
+            type="text"
+            bind:value={editDay.stepsOlivier}
+            class=" appearance-none block w-full bg-gray-100 text-gray-600 border border-gray-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+          />
+        </div>
+      </div>
+
       <div class=" w-full md:w-1/2 flex flex-wrap -mx-3 mb-6">
         <div class="w-full px-3 mb-6 md:mb-0">
           <label

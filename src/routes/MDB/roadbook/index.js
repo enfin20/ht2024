@@ -81,6 +81,8 @@ export async function put(request) {
           dist: roadbook.dist,
           eleNeg:roadbook.eleNeg,
           elePos: roadbook.elePos,
+          stepsAnne: roadbook.stepsAnne,
+          stepsOlivier: roadbook.stepsOlivier,          
         },
       }
     );
