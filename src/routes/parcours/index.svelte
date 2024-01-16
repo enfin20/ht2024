@@ -238,12 +238,23 @@
       {/each}
     </select>
   </div>
-  <div class="w-full grid grid-cols-1">
-    Nombre de jours : {NbDay}<br />
-    Distance totale : {Number(totalDistance).toLocaleString("fr")} kms<br
-    />Elévation : {Number(totalElePos).toLocaleString("fr")} / {Number(
-      totalEleNeg
-    ).toLocaleString("fr")} m
+  <div class="w-full grid grid-cols-2">
+    <div class="w-1/3 md:w-1/4">
+      Nombre de jours : {NbDay}<br />
+      Distance : {Number(totalDistance).toLocaleString("fr")} <br />Elévation
+      pos : {Number(totalElePos).toLocaleString("fr")} <br />
+      Elévation nég : {Number(totalEleNeg).toLocaleString("fr")}
+    </div>
+    <div class="w-1/3 md:w-1/4 text-left">
+      Moyennes
+      <br />{Number(
+        Math.round((Number(totalDistance) / Number(NbDay)) * 10) / 10
+      ).toLocaleString("fr")} kms<br />{Math.round(
+        Number(totalElePos) / Number(NbDay)
+      ).toLocaleString("fr")} m<br />{Math.round(
+        Number(totalEleNeg) / Number(NbDay)
+      ).toLocaleString("fr")} m
+    </div>
   </div>
   <div class="w-full grid grid-cols-1 mt-0 md:mt-5">
     <canvas bind:this={chartParcours} />
