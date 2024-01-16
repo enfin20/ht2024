@@ -238,20 +238,19 @@
       {/each}
     </select>
   </div>
-  <div class="w-full grid grid-cols-2">
-    <div class="w-1/3 md:w-1/4">
-      Nombre de jours : {NbDay}<br />
-      Distance : {Number(totalDistance).toLocaleString("fr")} <br />Elévation
-      pos : {Number(totalElePos).toLocaleString("fr")} <br />
-      Elévation nég : {Number(totalEleNeg).toLocaleString("fr")}
-    </div>
-    <div class="w-1/3 md:w-1/4 text-left">
-      Moyennes
-      <br />{Number(
+  <div class="w-full grid grid-cols-1 text-xs">
+    <div>
+      Nombre de jours : {NbDay}<br
+      />Distance&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: {Number(
+        totalDistance
+      ).toLocaleString("fr")} / {Number(
         Math.round((Number(totalDistance) / Number(NbDay)) * 10) / 10
-      ).toLocaleString("fr")} kms<br />{Math.round(
+      ).toLocaleString("fr")} kms<br />Elévation pos : {Number(
+        totalElePos
+      ).toLocaleString("fr")} /{Math.round(
         Number(totalElePos) / Number(NbDay)
-      ).toLocaleString("fr")} m<br />{Math.round(
+      ).toLocaleString("fr")} m <br />
+      Elévation nég : {Number(totalEleNeg).toLocaleString("fr")} / {Math.round(
         Number(totalEleNeg) / Number(NbDay)
       ).toLocaleString("fr")} m
     </div>
