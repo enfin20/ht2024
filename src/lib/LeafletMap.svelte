@@ -36,7 +36,10 @@
         .addTo(map);
 
       leaflet
-        .marker([45.17334, 6.65169], { icon: greenIcon })
+        .marker([45.17334, 6.65169], {
+          title: "départ jour 1",
+          icon: greenIcon,
+        })
         .addTo(map)
         .bindPopup("Départ jour 1")
         .openPopup();
@@ -57,15 +60,17 @@
 </script>
 
 <main>
-  <div class="w-full">
-    <div bind:this={mapElement} />
-  </div>
+  <div bind:this={mapElement} id="map" />
 </main>
 
 <style>
   @import "leaflet/dist/leaflet.css";
-  main div {
-    width: 800px;
-    height: 800px;
+  #map {
+    position: absolute;
+    left: 0;
+    top: 50px;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
   }
 </style>
