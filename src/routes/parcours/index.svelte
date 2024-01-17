@@ -247,7 +247,7 @@
         Math.round((Number(totalDistance) / Number(NbDay)) * 10) / 10
       ).toLocaleString("fr")} kms<br />Elévation pos : {Number(
         totalElePos
-      ).toLocaleString("fr")} /{Math.round(
+      ).toLocaleString("fr")} / {Math.round(
         Number(totalElePos) / Number(NbDay)
       ).toLocaleString("fr")} m <br />
       Elévation nég : {Number(totalEleNeg).toLocaleString("fr")} / {Math.round(

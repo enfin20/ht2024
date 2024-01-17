@@ -1,5 +1,6 @@
 <script>
   import { onMount } from "svelte";
+  import { object_without_properties } from "svelte/internal";
 
   let roadbook = [];
   let parcours = [];
@@ -20,13 +21,17 @@
   editDay.dayCounter = 1;
   editDay.cumul = 0;
   editDay.debutParcours = 1;
+  editDay.debutParcoursLat = 0;
+  editDay.debutParcoursLng = 0;
   editDay.finParcours = 0;
+  editDay.finParcoursLat = 0;
+  editDay.finParcoursLng = 0;
   editDay.dist = 0;
   editDay.elePos = 0;
   editDay.eleNeg = 0;
   editDay.stepsAnne = 0;
   editDay.stepsOlivier = 0;
-
+  console.info("editDay", editDay);
   let weatherIcon = [
     "Snow",
     "Rain",
@@ -324,6 +329,8 @@
             // Premier point de la journéee, ne pas tenir compte du précédent point
             prev_ele = editParcours.ele;
             editParcours.dist = 0;
+            editDay.debutParcoursLat = editParcours.lat;
+            editDay.debutParcoursLng = editParcours.lng;
           } else {
             editParcours.dist =
               Math.round(
@@ -348,19 +355,16 @@
             editParcours.elePos = 0;
           }
           dayDist += editParcours.dist;
+          editParcours.pos = pos;
           dayElePos += editParcours.elePos;
           dayEleNeg += editParcours.eleNeg;
-          editParcours.pos = pos;
-          if (counter <= 1) {
-            console.info("oui", dayDist, dayElePos, dayEleNeg);
-          }
-
           parcours.push(editParcours);
 
           prev_lat = editParcours.lat;
           prev_lng = editParcours.lng;
           prev_ele = editParcours.ele;
           prev_cumul = editParcours.cumul;
+
           pos++;
           counter++;
         }
@@ -371,6 +375,8 @@
       editDay.elePos = dayElePos;
       editDay.eleNeg = dayEleNeg;
       editDay.finParcours = pos - 1;
+      editDay.finParcoursLat = editParcours.lat;
+      editDay.finParcoursLng = editParcours.lng;
     };
     reader.readAsText(file);
     console.info("editDay", editDay);
