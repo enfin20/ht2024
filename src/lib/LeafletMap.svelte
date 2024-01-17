@@ -43,7 +43,13 @@
         iconAnchor: [24, 48],
         popupAnchor: [0, -32],
       });
-      var typeIcons = [starIcon, campIcon, hotelIcon];
+      var reposIcon = new leaflet.Icon({
+        iconUrl: "/images/bed.png",
+        iconSize: [48, 48],
+        iconAnchor: [24, 48],
+        popupAnchor: [0, -32],
+      });
+      var typeIcons = [starIcon, campIcon, hotelIcon, reposIcon];
       let iconIndex = 0;
 
       map = leaflet
@@ -82,23 +88,42 @@
         )
       );
       for (var i = 0; i < roadbook.length; i++) {
-        if (roadbook[i].night === 1 || roadbook[i].night === 2) {
-          iconIndex = 1;
+        if (
+          Number(roadbook[i].finParcoursLat) +
+            Number(roadbook[i].finParcoursLng) >
+          0
+        ) {
+          if (roadbook[i].night === 1 || roadbook[i].night === 2) {
+            iconIndex = 1;
+          } else {
+            iconIndex = 2;
+          }
+          markers.push(
+            leaflet.marker(
+              [
+                Number(roadbook[i].finParcoursLat),
+                Number(roadbook[i].finParcoursLng),
+              ],
+              {
+                title: "Arrivée jour " + roadbook[i].dayCounter,
+                icon: typeIcons[iconIndex],
+              }
+            )
+          );
         } else {
-          iconIndex = 2;
+          markers.push(
+            leaflet.marker(
+              [
+                Number(roadbook[i - 1].finParcoursLat),
+                Number(roadbook[i - 1].finParcoursLng),
+              ],
+              {
+                title: "Arrivée jour " + roadbook[i].dayCounter,
+                icon: typeIcons[3],
+              }
+            )
+          );
         }
-        markers.push(
-          leaflet.marker(
-            [
-              Number(roadbook[i].finParcoursLat),
-              Number(roadbook[i].finParcoursLng),
-            ],
-            {
-              title: "Arrivée jour " + roadbook[i].dayCounter,
-              icon: typeIcons[iconIndex],
-            }
-          )
-        );
       }
 
       var shelterMarkers = leaflet.featureGroup();
