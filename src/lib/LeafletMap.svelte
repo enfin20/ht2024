@@ -41,13 +41,11 @@
           icon: greenIcon,
         })
         .addTo(map)
-        .bindPopup("Départ jour 1")
-        .openPopup();
+        .bindPopup("Départ jour 1");
       leaflet
         .marker([45.1234, 6.59993], { icon: redIcon })
         .addTo(map)
-        .bindPopup("Arrivée jour 1")
-        .openPopup();
+        .bindPopup("Arrivée jour 1");
     }
   });
 
