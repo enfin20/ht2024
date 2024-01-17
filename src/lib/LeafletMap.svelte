@@ -9,15 +9,15 @@
       const leaflet = await import("leaflet");
       var greenIcon = new leaflet.Icon({
         iconUrl: "/images/starred.png",
-        iconSize: [32, 32],
-        iconAnchor: [16, 32],
-        popupAnchor: [1, -24],
+        iconSize: [48, 48],
+        iconAnchor: [24, 48],
+        popupAnchor: [0, -32],
       });
       var redIcon = new leaflet.Icon({
         iconUrl: "/images/camping-tent.png",
-        iconSize: [32, 32],
-        iconAnchor: [16, 32],
-        popupAnchor: [1, -24],
+        iconSize: [48, 48],
+        iconAnchor: [24, 48],
+        popupAnchor: [0, -32],
       });
       map = leaflet.map(mapElement).setView([45.17334, 6.65169], 12);
       leaflet
