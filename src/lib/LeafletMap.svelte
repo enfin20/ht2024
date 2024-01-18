@@ -1,6 +1,15 @@
 <script>
   import { onMount, onDestroy } from "svelte";
-
+  let weatherIcon = [
+    "Snow",
+    "Rain",
+    "Fog",
+    "Wind",
+    "Thunder",
+    "Cloud",
+    "SemiSun",
+    "Sun",
+  ];
   let mapElement;
   let map;
   let roadbook = [];
@@ -99,29 +108,59 @@
             iconIndex = 2;
           }
           markers.push(
-            leaflet.marker(
-              [
-                Number(roadbook[i].finParcoursLat),
-                Number(roadbook[i].finParcoursLng),
-              ],
-              {
-                title: "Arrivée jour " + roadbook[i].dayCounter,
-                icon: typeIcons[iconIndex],
-              }
-            )
+            leaflet
+              .marker(
+                [
+                  Number(roadbook[i].finParcoursLat),
+                  Number(roadbook[i].finParcoursLng),
+                ],
+                {
+                  title: "Arrivée jour " + roadbook[i].dayCounter,
+                  icon: typeIcons[iconIndex],
+                }
+              )
+              .bindPopup(
+                "<h1>Jour " +
+                  roadbook[i].dayCounter +
+                  ": " +
+                  roadbook[i].start +
+                  " / " +
+                  roadbook[i].end +
+                  "</h1><div class='text-sm'>" +
+                  roadbook[i].dist +
+                  " kms " +
+                  roadbook[i].elePos +
+                  " / " +
+                  roadbook[i].eleNeg +
+                  " m </div><div>" +
+                  roadbook[i].summary +
+                  "</div><img src='/images/" +
+                  weatherIcon[roadbook[i].weather] +
+                  ".png' class='w-[25px] md:w-[30px] inline' />"
+              )
           );
         } else {
           markers.push(
-            leaflet.marker(
-              [
-                Number(roadbook[i - 1].finParcoursLat),
-                Number(roadbook[i - 1].finParcoursLng),
-              ],
-              {
-                title: "Arrivée jour " + roadbook[i].dayCounter,
-                icon: typeIcons[3],
-              }
-            )
+            leaflet
+              .marker(
+                [
+                  Number(roadbook[i - 1].finParcoursLat),
+                  Number(roadbook[i - 1].finParcoursLng),
+                ],
+                {
+                  title: "Arrivée jour " + roadbook[i].dayCounter,
+                  icon: typeIcons[3],
+                }
+              )
+              .bindPopup(
+                "<h1>Jour " +
+                  roadbook[i].dayCounter +
+                  ": " +
+                  roadbook[i].start +
+                  "</h1>Repos<div>" +
+                  roadbook[i].summary +
+                  "</div>"
+              )
           );
         }
       }
