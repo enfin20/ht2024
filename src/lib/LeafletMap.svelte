@@ -10,6 +10,8 @@
     "SemiSun",
     "Sun",
   ];
+  let difficultyIcon = ["ZeroDay", "Star", "Star", "Star"];
+  let starsIcon = ["Ugly", "Soso", "Star", "Star", "Star"];
   let mapElement;
   let map;
   let roadbook = [];
@@ -27,6 +29,7 @@
 
   export async function loadTables() {
     let res = await fetch("/MDB/roadbook?sort=1");
+    let diffIcons = "";
     const roa = await res.json();
 
     roadbook = await roa.roadbook;
@@ -107,6 +110,35 @@
           } else {
             iconIndex = 2;
           }
+          diffIcons = "";
+          for (var j = 0; j < difficultyIcon.length; j++) {
+            if (j === 0) {
+              if (roadbook[i].difficulty === 0) {
+                diffIcons =
+                  "<img src='/images/" +
+                  difficultyIcon[0] +
+                  ".png' class='w-[15px] md:w-[30px] inline' />";
+              } else {
+                diffIcons =
+                  "<img src='/images/" +
+                  difficultyIcon[0] +
+                  "_in.png' class='w-[15px] md:w-[30px] inline' />";
+              }
+            } else {
+              if (roadbook[i].difficulty >= j) {
+                diffIcons +=
+                  "<img src='/images/" +
+                  difficultyIcon[j] +
+                  ".png' class='w-[15px] md:w-[30px] inline' />";
+              } else {
+                diffIcons +=
+                  "<img src='/images/" +
+                  difficultyIcon[j] +
+                  "_in.png' class='w-[15px] md:w-[30px] inline' />";
+              }
+            }
+          }
+
           markers.push(
             leaflet
               .marker(
@@ -126,17 +158,19 @@
                   roadbook[i].start +
                   " / " +
                   roadbook[i].end +
-                  "</h1><div class='text-sm'>" +
+                  "</h1><div class='text-sm'><img src='/images/" +
+                  weatherIcon[roadbook[i].weather] +
+                  ".png' class='w-[25px] md:w-[30px] inline' />" +
                   roadbook[i].dist +
                   " kms " +
                   roadbook[i].elePos +
                   " / " +
                   roadbook[i].eleNeg +
-                  " m </div><div>" +
+                  " m </div><br/>" +
+                  diffIcons +
+                  "<div>" +
                   roadbook[i].summary +
-                  "</div><img src='/images/" +
-                  weatherIcon[roadbook[i].weather] +
-                  ".png' class='w-[25px] md:w-[30px] inline' />"
+                  "</div>"
               )
           );
         } else {

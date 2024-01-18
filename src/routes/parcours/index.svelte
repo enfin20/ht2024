@@ -18,24 +18,11 @@
     "SemiSun",
     "Sun",
   ];
-  let imgNewWeatherActivate = [
-    "_in",
-    "_in",
-    "_in",
-    "_in",
-    "_in",
-    "_in",
-    "_in",
-    "_in",
-  ];
+
   let nightIcon = ["Star", "Bivouac", "Camp", "Hotel", "Free"];
-  let imgNewNightActivate = ["_in", "_in", "_in", "_in", "_in"];
   let difficultyIcon = ["ZeroDay", "Star", "Star", "Star"];
-  let imgNewDifficultyActivate = ["_in", "_in", "_in", "_in"];
   let starsIcon = ["Ugly", "Soso", "Star", "Star", "Star"];
-  let imgNewLandscapeActivate = ["_in", "_in", "_in", "_in", "_in"];
   let moodIcon = ["Sad", "Neutral", "Happy"];
-  let imgNewMoodActivate = ["_in", "_in", "_in"];
   // _in rgb(200,225,200)
   let chartParcours;
   let ctxParcours;
