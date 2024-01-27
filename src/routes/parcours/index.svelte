@@ -29,6 +29,8 @@
   var chartParcoursData = [];
   let debutParcours = 100000000;
   let finParcours = 0;
+  let randos = [];
+  let currentRando = "TF";
 
   onMount(async (promise) => {
     loadTables();
@@ -37,7 +39,7 @@
   });
 
   export async function loadTables() {
-    let res = await fetch("/MDB/roadbook?sort=1");
+    let res = await fetch("/MDB/roadbook?sort=1&map=ok&rando=" + currentRando);
     const roa = await res.json();
     roadbook = await roa.roadbook;
 
@@ -99,7 +101,9 @@
         "&debutParcours=" +
         debutParcours +
         "&finParcours=" +
-        finParcours
+        finParcours +
+        "&rando=" +
+        currentRando
     );
     const par = await res.json();
     parcours = await par.parcours;
