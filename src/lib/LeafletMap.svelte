@@ -78,7 +78,7 @@
     }
 
     // pour réduire le nombre de points à récupérer dans la base
-    let freq = Math.round(Math.max((finParcours - debutParcours) / 5000, 1), 0);
+    let freq = 1; //Math.round(Math.max((finParcours - debutParcours) / 5000, 1), 0);
     res = await fetch(
       "/MDB/parcours?freq=" +
         freq +
@@ -164,10 +164,13 @@
       leaflet.polyline(latlngs, { color: "blue" }).addTo(map);
 
       leaflet
-        .tileLayer("https://a.tile.opentopomap.org/{z}/{x}/{y}.png", {
-          attribution:
-            '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        })
+        .tileLayer(
+          "https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.{ext}",
+          {
+            attribution:
+              '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+          }
+        )
         .addTo(map);
       var markers = [];
 
