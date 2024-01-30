@@ -107,7 +107,7 @@
     );
     const par = await res.json();
     parcours = await par.parcours;
-
+    console.info("parcours length", parcours.length);
     // point initial
     let posId = 0;
     distance.push(Math.round(parcours[0].cumul / 1000, 0));
@@ -209,18 +209,18 @@
     <select
       bind:value={debutParcours}
       on:change={loadParcours}
-      class="text-xs appearance-none border-2 border-gray-200 rounded w-full py-1 px-1 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-pink-400"
+      class="text-xs appearance-none block w-full bg-gray-100 text-gray-600 border border-gray-100 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
     >
       {#each roadbook as r}
         <option value={r.debutParcours}>
           Jour {r.dayCounter} : {r.start}
         </option>
       {/each}
-    </select>
+    </select>&nbsp;
     <select
       bind:value={finParcours}
       on:change={loadParcours}
-      class="text-xs appearance-none border-2 border-gray-200 rounded  w-full py-1 px-1 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-pink-400"
+      class="text-xs appearance-none block w-full bg-gray-100 text-gray-600 border border-gray-100 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
     >
       {#each roadbook as r}
         <option value={r.finParcours}>

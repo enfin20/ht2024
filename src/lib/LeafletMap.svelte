@@ -101,13 +101,25 @@
         iconAnchor: [24, 48],
         popupAnchor: [0, -32],
       });
+      var bivouacIcon = new leaflet.Icon({
+        iconUrl: "/images/free_tent.png",
+        iconSize: [48, 48],
+        iconAnchor: [24, 48],
+        popupAnchor: [0, -32],
+      });
       var campIcon = new leaflet.Icon({
-        iconUrl: "/images/camping-tent.png",
+        iconUrl: "/images/camping_tent.png",
         iconSize: [48, 48],
         iconAnchor: [24, 48],
         popupAnchor: [0, -32],
       });
       var hotelIcon = new leaflet.Icon({
+        iconUrl: "/images/maphotel.png",
+        iconSize: [48, 48],
+        iconAnchor: [24, 48],
+        popupAnchor: [0, -32],
+      });
+      var freeIcon = new leaflet.Icon({
         iconUrl: "/images/home.png",
         iconSize: [48, 48],
         iconAnchor: [24, 48],
@@ -119,7 +131,15 @@
         iconAnchor: [24, 48],
         popupAnchor: [0, -32],
       });
-      var typeIcons = [starsIcon, campIcon, hotelIcon, reposIcon];
+
+      var typeIcons = [
+        starsIcon,
+        bivouacIcon,
+        campIcon,
+        hotelIcon,
+        freeIcon,
+        reposIcon,
+      ];
       let iconIndex = 0;
 
       map = leaflet
@@ -162,13 +182,16 @@
         }
       }
       leaflet.polyline(latlngs, { color: "blue" }).addTo(map);
-
+      //'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png'
       leaflet
         .tileLayer(
           "https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.{ext}",
           {
+            minZoom: 0,
+            maxZoom: 20,
             attribution:
               '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            ext: "png",
           }
         )
         .addTo(map);
@@ -285,14 +308,10 @@
 
         // on détermine si il s'agit d'un zero day
         if (roadbook[i].difficulty > 0) {
-          if (
-            roadbook[i].night === 0 ||
-            roadbook[i].night === 1 ||
-            roadbook[i].night === 2
-          ) {
+          if (roadbook[i].night <= 1) {
             iconIndex = 1;
           } else {
-            iconIndex = 2;
+            iconIndex = roadbook[i].night;
           }
           if (i === roadbook.length - 1) {
             iconIndex = 0;
@@ -351,7 +370,7 @@
                 ],
                 {
                   title: "Arrivée jour " + roadbook[i].dayCounter,
-                  icon: typeIcons[3],
+                  icon: typeIcons[5],
                 }
               )
               .bindPopup(
