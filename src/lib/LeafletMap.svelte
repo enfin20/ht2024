@@ -42,7 +42,7 @@
     let debutParcours = 100000000;
     let finParcours = 0;
     let currentDay = 1;
-    console.info("currentRando", currentRando);
+
     let res = await fetch("/MDB/roadbook?sort=1&map=ok&rando=" + currentRando);
     const roa = await res.json();
     roadbook = await roa.roadbook;
@@ -303,7 +303,13 @@
             landscapeIcons +
             "</p><p>" +
             roadbook[i].summary +
-            "</p>"
+            "</p><p>Cumul : " +
+            Number(Math.round(roadbook[i].distCumul)).toLocaleString("fr") +
+            " kms " +
+            Number(roadbook[i].elePosCumul).toLocaleString("fr") +
+            " / " +
+            Number(roadbook[i].eleNegCumul).toLocaleString("fr") +
+            " m</p>"
         );
 
         // on détermine si il s'agit d'un zero day

@@ -19,7 +19,16 @@ export async function get(request) {
     const roadbook = await collection.find(filter).sort(sort).toArray();
     for (var i = 0; i < roadbook.length; i++) {
       if (roadbook[i].dayCounter === undefined) {
-        roadbook[i].dayCounter = i+1
+        roadbook[i].dayCounter = i + 1
+      }
+      if (i > 0) {
+        roadbook[i].distCumul = roadbook[i - 1].distCumul + Number(roadbook[i].dist || 0);
+        roadbook[i].elePosCumul = roadbook[i - 1].elePosCumul + Number(roadbook[i].elePos || 0);
+        roadbook[i].eleNegCumul = roadbook[i - 1].eleNegCumul + Number(roadbook[i].eleNeg || 0);
+      } else {
+        roadbook[0].distCumul = Number(roadbook[0].dist || 0);
+        roadbook[0].elePosCumul =  Number(roadbook[0].elePos || 0);
+        roadbook[0].eleNegCumul = Number(roadbook[0].eleNeg || 0);
       }
     }
     return {
